@@ -1,3 +1,14 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect("localhost", "root", "");
+    if (!$con) {
+        die('Could not connect: ' . mysqli_connect_error());
+    }
+
+    mysqli_select_db($con, "db_loginmembership") or die(mysqli_error($con));
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -109,7 +120,7 @@
 
   <main>
     <h1>Login</h1>
-    <form action="#" method="POST">
+    <form action="login.php" method="POST">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required />
 
