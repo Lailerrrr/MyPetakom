@@ -77,7 +77,7 @@
   </header>
 
   <main>
-    <h1>Welcome to MyPetakom Portal</h1>
+    <h1>Welcome to MyPetakom </h1>
     <p>Please login to continue</p>
     <a href="login.html">
       <button class="login-button">Login</button>
