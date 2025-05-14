@@ -1,19 +1,15 @@
 <?php
-    session_start();
-
-    $con = mysqli_connect("localhost", "root", "");
-    if (!$con) {
-      die('Could not connect:' . mysqli_connect_error());
-    }
-
-    mysqli_select_db($con, "db_loginmembership") or die(mysqli_error($con));
+   
+  
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-      $password = $_POST['password'];
-      $email = $_POST['email'];
+      $password = trim($_POST['password']);
+      $email = trim($_POST['email']);
       $role = $_POST['role'];
 
       //Process login logic here
+
+
     }
         
 ?>
