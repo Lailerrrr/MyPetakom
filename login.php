@@ -70,7 +70,7 @@
           <button type="submit">Login</button>
           <a href="forgot_password.php" class="forgot-link">Forgot Password</a>
         </div>
-        
+
       </form>
     </main>
 
