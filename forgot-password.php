@@ -1,25 +1,27 @@
 <?php
 
+    session_start();
 
+    $message = "";
 
-$message = "";
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = trim($_POST['email']);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = trim($_POST['email']);
+            $stmt = $con->prepare("SELECT * FROM User WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $res = $stmt->get_result();
 
-        $stmt = $con->prepare("SELECT * FROM User WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $res = $stmt->get_result();
+            if ($res->num_rows > 0) {
+                $_SESSION['reset_email'] = $email; // store email for use in resetPassword.php
+                header("Location: resetPassword.php");
+                exit();
+            } else {
+                $message = "Email not found in our records.";
+            }
+            $stmt->close();
 
-        if ($res->num_rows > 0) {
-            $message = "Your account exists. Please contact admin to reset your password.";
-        } else {
-            $message = "Email not found in our records.";
         }
-        $stmt->close();
-
-    }
 ?>
 
 
@@ -58,8 +60,9 @@ $message = "";
             <h2>Faculty Of Computing</h2>
             <p class="welcome-text">Enter your email to reset your password</p>
 
-            <?php
-                if ($message) echo "<p>$message</p>";
+           
+            <?php 
+                if ($message) echo "<p style='color:red;'>$message</p>"; 
             ?>
 
             <form action="forgot_password.php" method="POST" class="login-form">
