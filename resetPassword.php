@@ -14,6 +14,7 @@
             // For now, simulate success
             $success = "Your password has been reset successfully.";
         }
+
     }
 ?>
 

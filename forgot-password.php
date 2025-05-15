@@ -65,7 +65,7 @@
                 if ($message) echo "<p style='color:red;'>$message</p>"; 
             ?>
 
-            <form action="forgot_password.php" method="POST" class="login-form">
+            <form action="forgot-password.php" method="POST" class="login-form">
 
                 <label>Enter your registered email:</label><br>
                 <input type="email" name="email" required><br><br>
