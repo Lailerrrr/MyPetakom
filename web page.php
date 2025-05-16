@@ -24,13 +24,13 @@
 
       <h1>Welcome to MyPetakom </h1>
       <p>Please login to continue</p>
-      <a href="login.php" class="login-button">Login</a>
-    
+      
     </main>
 
     <footer>
       &copy; 2025 MyPetakom | Universiti Malaysia Pahang Al-Sultan Abdullah
     </footer>
+    
   </body>
 </html>
 
