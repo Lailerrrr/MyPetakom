@@ -23,8 +23,14 @@
     <main>
 
       <h1>Welcome to MyPetakom </h1>
-      <p>Please login to continue</p>
+      <p>Please login to continue</p><br>
+       <div class="form-actions">
+        <a href="login.php" class="login-button">Login</a>
+        <br><br>
+        <a href="forgot-password.php" class="forgot-link">Forgot Password</a>
+  </div>
       
+
     </main>
 
     <footer>
