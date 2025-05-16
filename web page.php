@@ -27,7 +27,7 @@
        <div class="form-actions">
         <a href="login.php" class="login-button">Login</a>
         <br><br>
-        <a href="forgot-password.php" class="forgot-link">Forgot Password</a>
+       
   </div>
       
 
