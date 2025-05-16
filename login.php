@@ -6,7 +6,7 @@
     $host = "localhost";              // Host name
     $dbUsername = "root";            // Database username
     $dbPassword = "";                // Database password
-    $dbName = "DB_loginMembership";  // Database name
+    $dbName = "db_mypetakom";  // Database name
 
     // Create connection
     $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
@@ -24,7 +24,7 @@
 
         // Validate input
         if (!empty($email) && !empty($password) && !empty($role)) {
-            $sql = "SELECT * FROM user WHERE email = ? AND role = ?";
+            $sql = "SELECT * FROM users WHERE email = ? AND role = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ss", $email, $role);
             $stmt->execute();
@@ -33,7 +33,7 @@
             // Check if user exists
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
-
+      
                 // Verify password
                 if (password_verify($password, $user['password'])) {
                     // Store user data in session

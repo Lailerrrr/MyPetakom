@@ -10,7 +10,7 @@ $error = "";
 $host = "localhost";
 $dbUsername = "root";
 $dbPassword = "";
-$dbName = "DB_loginMembership";
+$dbName = "db_mypetakom";
 
 // Create connection
 $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
