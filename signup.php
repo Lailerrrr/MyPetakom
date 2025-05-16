@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($studentID) && !empty($name) && !empty($email) && !empty($password) && !empty($role)) {
 
         // Check if email already exists
-        $checkSql = "SELECT userID FROM user WHERE email = ?";
+        $checkSql = "SELECT userID FROM login WHERE email = ?";
         $checkStmt = $conn->prepare($checkSql);
         if (!$checkStmt) {
             die("Prepare failed: " . $conn->error);
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Insert user into database
-            $insertSql = "INSERT INTO user (studentID, name, email, password, role) VALUES (?, ?, ?, ?, ?)";
+            $insertSql = "INSERT INTO login (studentID, name, email, password, role) VALUES (?, ?, ?, ?, ?)";
             $insertStmt = $conn->prepare($insertSql);
             if (!$insertStmt) {
                 die("Prepare failed: " . $conn->error);

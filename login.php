@@ -24,7 +24,7 @@
 
         // Validate input
         if (!empty($email) && !empty($password) && !empty($role)) {
-            $sql = "SELECT * FROM users WHERE email = ? AND role = ?";
+            $sql = "SELECT * FROM login WHERE email = ? AND role = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ss", $email, $role);
             $stmt->execute();
