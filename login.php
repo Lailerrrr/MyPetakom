@@ -1,16 +1,69 @@
 <?php
    
-  
+    session_start();
 
+    // Database connection settings
+    $host = "localhost";              // Host name
+    $dbUsername = "root";            // Database username
+    $dbPassword = "";                // Database password
+    $dbName = "DB_loginMembership";  // Database name
+
+    // Create connection
+    $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Handle login form submission
     if($_SERVER["REQUEST_METHOD"] == "POST"){
       $password = trim($_POST['password']);
       $email = trim($_POST['email']);
       $role = $_POST['role'];
 
-      //Process login logic here
+        // Validate input
+        if (!empty($email) && !empty($password) && !empty($role)) {
+            $sql = "SELECT * FROM user WHERE email = ? AND role = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $email, $role);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
+            // Check if user exists
+            if ($result->num_rows === 1) {
+                $user = $result->fetch_assoc();
 
+                // Verify password
+                if (password_verify($password, $user['password'])) {
+                    // Store user data in session
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['role'] = $user['role'];
+
+                    // Redirect based on role
+                    if ($role === 'student') {
+                        header("Location: student_dashboard.php");
+                    } elseif ($role === 'advisor') {
+                        header("Location: advisor_dashboard.php");
+                    } elseif ($role === 'coordinator') {
+                        header("Location: coordinator_dashboard.php");
+                    }
+                    exit();
+                } else {
+                    echo "<script>alert('Incorrect password.');</script>";
+                }
+            } else {
+                echo "<script>alert('User not found or role mismatch.');</script>";
+            }
+
+            $stmt->close();
+        } else {
+            echo "<script>alert('All fields are required.');</script>";
+        }
     }
+
+    $conn->close();
         
 ?>
 

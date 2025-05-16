@@ -1,24 +1,77 @@
+
+
 <?php
+session_start();
 
-    session_start ();
-    
-    $success = "";
-    $error = "";
+$success = "";
+$error = "";
 
-    //Handle from submission
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Database connection settings
+$host = "localhost";
+$dbUsername = "root";
+$dbPassword = "";
+$dbName = "DB_loginMembership";
 
-        $studentID = trim($_POST['studentID']);
-        $name = trim($_POST['name']);
-        $email = trim($_POST['email']);
-        $password = trim($_POST['password']);
-        $role = trim($_POST['role']);
+// Create connection
+$conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
 
-     
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $studentID = trim($_POST['studentID']);
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+    $role = trim($_POST['role']);
+
+    // Validate required fields
+    if (!empty($studentID) && !empty($name) && !empty($email) && !empty($password) && !empty($role)) {
+
+        // Check if email already exists
+        $checkSql = "SELECT userID FROM user WHERE email = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        if (!$checkStmt) {
+            die("Prepare failed: " . $conn->error);
+        }
+        $checkStmt->bind_param("s", $email);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+
+        if ($checkStmt->num_rows > 0) {
+            $error = "Email is already registered.";
+        } else {
+            // Hash the password securely
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert user into database
+            $insertSql = "INSERT INTO user (studentID, name, email, password, role) VALUES (?, ?, ?, ?, ?)";
+            $insertStmt = $conn->prepare($insertSql);
+            if (!$insertStmt) {
+                die("Prepare failed: " . $conn->error);
+            }
+            $insertStmt->bind_param("sssss", $studentID, $name, $email, $hashedPassword, $role);
+
+            if ($insertStmt->execute()) {
+                $success = "Account created successfully. <a href='login.php'>Click here to login</a>";
+            } else {
+                $error = "Failed to register. Please try again.";
+            }
+            $insertStmt->close();
+        }
+        $checkStmt->close();
+    } else {
+        $error = "All fields are required.";
     }
+}
 
+$conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
