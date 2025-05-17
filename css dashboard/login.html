@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - MyPetakom</title>
+  <link rel="stylesheet" href="login.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-left">
+      <img src="petakom-logo.png" alt="PETAKOM Logo" class="logo" />
+      <img src="umpsa-logo.png" alt="UMPSA Logo" class="logo" />
+    </div>
+    <div class="site-title">MyPetakom Student Portal</div>
+    <div class="header-right">
+      <a href="signup.php" class="signup-link">Sign Up</a>
+    </div>
+  </header>
+
+  <main class="login-section">
+    <div class="login-card">
+      <h1 class="login-heading">Login</h1>
+      <h2 class="subheading">Faculty of Computing</h2>
+      <p class="welcome-text">Welcome to MyPetakom</p>
+
+      <form class="login-form" action="#" method="POST">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="role">Role</label>
+        <select id="role" name="role" required>
+          <option value="">-- Select Role --</option>
+          <option value="student">Student</option>
+          <option value="advisor">Event Advisor</option>
+          <option value="coordinator">PETAKOM Coordinator</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-login">Login</button>
+          <a href="forgot-password.php" class="forgot-link">Forgot Password?</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2025 MyPetakom | Universiti Malaysia Pahang Al-Sultan Abdullah
+  </footer>
+
+</body>
+</html>

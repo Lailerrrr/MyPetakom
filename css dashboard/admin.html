@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - MyPetakom</title>
+  <link rel="stylesheet" href="admin_dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
+      <div>
+        <h2>MyPetakom</h2>
+        <p class="role-label">💼 Administrator</p>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <ul>
+        <li><a href="#" class="active">Dashboard</a></li>
+        <li><a href="#">Manage Users</a></li>
+        <li><a href="#">System Logs</a></li>
+        <li><a href="#">Event Control</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Merit Settings</a></li>
+        <li><a href="#">Backup & Restore</a></li>
+        <li><a href="#">System Config</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="dashboard-indicator">
+      <span class="dashboard-role">💼 Admin Dashboard</span>
+      <span class="dashboard-user">Logged in as: <strong>admin@petakom.my</strong></span>
+    </div>
+
+    <header class="main-header">
+      <h1>Welcome, <span class="username">System Admin</span>!</h1>
+      <p>Manage platform operations, user roles, and event monitoring.</p>
+    </header>
+
+    <section class="dashboard-cards">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p>150+ Registered</p>
+      </div>
+
+      <div class="card">
+        <h3>Pending Events</h3>
+        <p>3 Waiting Approval</p>
+      </div>
+
+      <div class="card">
+        <h3>Merit Requests</h3>
+        <p>7 Submitted Today</p>
+      </div>
+
+      <div class="card">
+        <h3>System Uptime</h3>
+        <p>99.99% This Month</p>
+      </div>
+    </section>
+
+    <section class="admin-overview">
+      <h2>Recent Activity Logs</h2>
+      <ul class="log-list">
+        <li>[10:24 AM] User “john.doe@edu.my” added as Event Advisor</li>
+        <li>[9:50 AM] Event “TechTalk 2025” marked as complete</li>
+        <li>[Yesterday] Database backup completed</li>
+        <li>[2 days ago] New merit rule applied</li>
+      </ul>
+    </section>
+
+  </main>
+
+</body>
+</html>
