@@ -45,20 +45,21 @@
 
 
         if (!isset($error)) {
-            $stmt = $con->prepare("SELECT $idColumn FROM $table WHERE $emailColumn = ? AND $passColumn = ?");
-            $stmt->bind_param("ss", $email, $password);
+            $stmt = $con->prepare("SELECT $idColumn, $passColumn FROM $table WHERE $emailColumn = ? ");
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
             
             if ($result->num_rows == 1) {
                 // Fetch user ID
                 $row = $result->fetch_assoc();
-                $userID = $row[$idColumn];
+                if ($password === $row[$passColumn]) {
+             
 
                 // Store role, username, and user ID in session
                 $_SESSION['role'] = $roleInput;
                 $_SESSION['email'] = $email;
-                $_SESSION['userID'] = $userID;
+                $_SESSION['userID'] =  $row[$idColumn];
 
                 // Set cookies to remember the user for 7 days
                 setcookie('role', $roleInput, time() + (86400 * 7), "/");
@@ -67,8 +68,10 @@
 
                 header("Location: $homePage");
                 exit;
-            } else {
-                $error = "Invalid username or password.";
+
+                } else {
+                    $error = "Invalid username or password.";
+                }
             }
         }
     }
@@ -95,15 +98,13 @@
 
         <header class="site-header">
             <div class="header-left">
-                <img src="petakom-logo.png" alt="PETAKOM Logo" class="logo" />
-                <img src="umpsa-logo.png" alt="UMPSA Logo" class="logo" />
+                <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
+                <img src="/MyPetakom/umpsa-logo.png" alt="UMPSA Logo" class="logo" />
             </div>
 
             <div class="site-title">MyPetakom Student Portal</div>
 
-            <div class="header-right">
-                <a href="signup.php" class="signup-link">Sign Up</a>
-            </div>
+           
         </header>
 
         <main class="login-section">
@@ -139,7 +140,7 @@
                         echo "<p style='color:red;'>$error</p>";
                     }
                 ?>
-                <p><a href="forgot-password.php" class="forgot-link">Forgot Password?</a></p>
+                <p><a href="forgotPassword.php" class="forgot-link">Forgot Password?</a></p>
             </div>
         </main>
 
