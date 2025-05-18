@@ -54,8 +54,8 @@
                 if ($result->num_rows == 1) {
                     // Fetch user ID
                     $row = $result->fetch_assoc();
+
                     if ($password === $row[$passColumn]) {
-                
 
                     // Store role, username, and user ID in session
                     $_SESSION['role'] = $roleInput;
@@ -122,7 +122,7 @@
                 <h2 class="subheading">Faculty of Computing</h2>
                 <p class="welcome-text">Welcome to MyPetakom</p>
 
-                <form class="login-form" action="#" method="POST">
+                <form class="login-form" action="Login.php" method="POST">
 
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>

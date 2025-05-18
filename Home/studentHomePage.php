@@ -1,4 +1,12 @@
 <?php
+    session_start();
+
+    if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student') {
+        header("Location: ../ManageLogin/login.php");
+        exit();
+    }
+
+    $email = $_SESSION['email'];
     
 ?>
 
@@ -41,12 +49,12 @@
             <!-- DASHBOARD INDICATOR -->
             <div class="dashboard-indicator" style="margin-bottom: 25px; width: 100%; max-width: 600px; display: flex; justify-content: space-between; color: #ffd1e8; font-weight: 600;">
             <span class="dashboard-role">🎓 Student Dashboard</span>
-            <span class="dashboard-user">Logged in as: <strong></strong></span>
+            <span class="dashboard-user">Logged in as: <strong><?php echo htmlspecialchars($email); ?></strong></span>
             </div>
 
 
             <header class="main-header">
-                <h1>Welcome back, <span class="username"></span>!</h1>
+                <h1>Welcome back, <span class="username"></span><?php echo htmlspecialchars($email); ?></span>!</h1>
                 <p>Your activity summary & updates</p>
             </header>
 
