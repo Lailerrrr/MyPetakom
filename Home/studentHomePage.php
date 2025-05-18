@@ -1,5 +1,7 @@
 <?php
     session_start();
+    require_once '../DB_mypetakom/db.php'; // adjust path if needed
+
 
     if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student') {
         header("Location: ../ManageLogin/login.php");
@@ -7,6 +9,16 @@
     }
 
     $email = $_SESSION['email'];
+    $name = "";
+
+    // Get student name from database
+    $sql = "SELECT studentName, studentID FROM student WHERE studentEmail = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($name, $student_id);
+    $stmt->fetch();
+    $stmt->close();
     
 ?>
 
@@ -54,8 +66,11 @@
 
 
             <header class="main-header">
-                <h1>Welcome back, <span class="username"></span><?php echo htmlspecialchars($email); ?></span>!</h1>
+                <h1>Welcome back, <span class="username"></span><?php echo htmlspecialchars($name); ?></span>!</h1>
                 <p>Your activity summary & updates</p>
+                 <div style="margin-top: 10px; font-size: 16px; color: #fdd;">
+                    <strong>Student ID:</strong> <?php echo htmlspecialchars($student_id); ?>
+                </div>
             </header>
 
             <section class="dashboard-cards">

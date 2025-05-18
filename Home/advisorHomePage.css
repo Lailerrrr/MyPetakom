@@ -250,3 +250,48 @@ body, html {
   }
 }
 
+.logout-btn {
+    background-color: #ff2d75;  /* bright pink */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #e6005c;  /* darker pink on hover */
+}
+
+.menu li form {
+    width: 100%;
+}
+
+.sidebar-logout-button {
+    background-color: #ff2d75;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+}
+
+.sidebar-logout-button:hover {
+    background-color: #e6005c;
+    box-shadow: 0 0 12px #e179db;
+}
+
+.menu li form {
+    width: 100%;
+}

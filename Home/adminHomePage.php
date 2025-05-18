@@ -1,5 +1,32 @@
 <?php
 
+    session_start();
+    require_once '../DB_mypetakom/db.php'; // adjust if needed
+
+    if (!isset($_SESSION['userID'])) {
+        header("Location: ../ManageLogin/login.php");
+        exit();
+    }
+
+    $adminID = $_SESSION['userID'];
+    $adminName = "";
+    $adminEmail = "";
+
+    // Fetch admin details
+    $sql = "SELECT adminName, adminEmail FROM administrator WHERE adminID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $adminID);
+    $stmt->execute();
+    $stmt->bind_result($adminName, $adminEmail);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Placeholder stats (replace with real queries if needed)
+    $totalUsers = 120;
+    $pendingEvents = 5;
+    $meritRequests = 8;
+    $uptime = "99.9%";
+ 
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +42,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
+            <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
             <div>
                 <h2>MyPetakom</h2>
                 <p class="role-label">💼 Administrator</p>
@@ -33,7 +60,7 @@
                 <li><a href="#">Backup & Restore</a></li>
                 <li><a href="#">System Config</a></li>
                 <li>
-                    <form method="post" style="display:inline;">
+                    <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
                         <button name="logout">Logout</button>
                     </form>
                 </li>
@@ -45,11 +72,11 @@
 
         <div class="dashboard-indicator">
             <span class="dashboard-role">💼 Admin Dashboard</span>
-            <span class="dashboard-user">Logged in as: <strong></strong></span>
+            <span class="dashboard-user">Logged in as: <strong><?php echo htmlspecialchars($adminEmail); ?></strong></span>
         </div>
 
         <header class="main-header">
-            <h1>Welcome, !</h1>
+            <h1>Welcome, <?php echo htmlspecialchars($adminName); ?>!</h1>
             <p>Manage platform operations, user roles, and event monitoring.</p>
         </header>
 
