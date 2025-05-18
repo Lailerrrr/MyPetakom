@@ -1,0 +1,69 @@
+/* adminStyle.css */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body, html {
+    height: 100%; font-family: 'Inter', sans-serif; background: #0b0b0e; color: white;
+    display: flex; min-height: 100vh;
+}
+.sidebar {
+    background: linear-gradient(180deg, #69003d, #1e0b17);
+    width: 280px; display: flex; flex-direction: column; padding: 20px;
+    box-shadow: 3px 0 10px rgba(255, 105, 180, 0.3);
+}
+.sidebar-header { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+.sidebar-logo { height: 48px; object-fit: contain; }
+.sidebar-header h2 { color: #fff; font-weight: 700; font-size: 24px; }
+.role-label { font-size: 14px; color: #ff80bf; }
+
+.menu ul { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.menu ul li a {
+    color: #ffc8e6; text-decoration: none; font-weight: 600; font-size: 18px;
+    padding: 10px 15px; border-radius: 12px; display: block; transition: background 0.3s, color 0.3s;
+}
+.menu ul li a:hover, .menu ul li a.active {
+    background: #ff4081; color: #fff; box-shadow: 0 0 12px #ff4081;
+}
+
+.main-content {
+    flex: 1; background: #1a0a1a; padding: 40px 60px; overflow-y: auto;
+}
+
+.dashboard-indicator {
+    background: rgba(255, 64, 129, 0.15); border: 1px solid #ff80bf;
+    border-radius: 10px; padding: 15px 25px; margin-bottom: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 0 12px #ff4081; font-size: 16px;
+}
+.dashboard-role { font-weight: 700; color: #ff7ab8; }
+.dashboard-user strong { color: #fff; }
+.main-header h1 { font-weight: 700; font-size: 36px; color: #ff4081; margin-bottom: 6px; }
+.username { color: #ff99cc; }
+.main-header p { font-size: 16px; color: #fcb3d7; margin-bottom: 40px; }
+
+.dashboard-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px; margin-bottom: 50px;
+}
+.card {
+    background: rgba(255, 64, 129, 0.1); border-radius: 16px;
+    padding: 25px 30px; box-shadow: 0 0 15px #ff99cc;
+    transition: transform 0.3s ease;
+}
+.card:hover { transform: translateY(-8px); box-shadow: 0 0 30px #ff99cc; }
+.card h3 { font-weight: 700; font-size: 22px; margin-bottom: 12px; color: #ff80bf; }
+.card p { font-size: 16px; color: #ffc8e6; }
+
+.form-section {
+    background: rgba(255, 64, 129, 0.07); border-radius: 16px;
+    padding: 30px 40px; box-shadow: 0 0 20px #ff4081; margin-bottom: 30px;
+}
+.form-section h2 { color: #ffa5d5; margin-bottom: 20px; }
+
+input[type="number"], button {
+    padding: 10px; border-radius: 8px; border: none; margin-right: 10px;
+}
+button {
+    background: #ff4081; color: white; cursor: pointer; transition: background 0.3s ease;
+}
+button:hover {
+    background: #ff80bf;
+}

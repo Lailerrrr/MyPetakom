@@ -1,5 +1,6 @@
 <?php
     session_start();
+    
 
     $con = mysqli_connect("localhost", "root", "");
     if (!$con) {
@@ -50,31 +51,37 @@
             $stmt->execute();
             $result = $stmt->get_result();
             
-            if ($result->num_rows == 1) {
-                // Fetch user ID
-                $row = $result->fetch_assoc();
-                if ($password === $row[$passColumn]) {
-             
+                if ($result->num_rows == 1) {
+                    // Fetch user ID
+                    $row = $result->fetch_assoc();
+                    if ($password === $row[$passColumn]) {
+                
 
-                // Store role, username, and user ID in session
-                $_SESSION['role'] = $roleInput;
-                $_SESSION['email'] = $email;
-                $_SESSION['userID'] =  $row[$idColumn];
+                    // Store role, username, and user ID in session
+                    $_SESSION['role'] = $roleInput;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['userID'] =  $row[$idColumn];
 
-                // Set cookies to remember the user for 7 days
-                setcookie('role', $roleInput, time() + (86400 * 7), "/");
-                setcookie('email', $email, time() + (86400 * 7), "/");
-                setcookie('userID', $userID, time() + (86400 * 7), "/");
+                    // Set cookies to remember the user for 7 days
+                    setcookie('role', $roleInput, time() + (86400 * 7), "/");
+                    setcookie('email', $email, time() + (86400 * 7), "/");
+                    setcookie('userID', $row[$idColumn], time() + (86400 * 7), "/");
 
-                header("Location: $homePage");
-                exit;
+                    header("Location: $homePage");
+                    exit;
 
-                } else {
-                    $error = "Invalid username or password.";
-                }
+                    } else {
+                        $error = "Invalid username or password.";
+                    }
+                        } else {
+                            $error = "No user found with that email.";
+                        }
+                    
+                    $stmt->close();
             }
         }
-    }
+    $con->close();
+
 
 ?>
 
@@ -126,9 +133,9 @@
                     <label for="role">Role</label>
                     <select id="role" name="role" required>
                         <option value="">-- Select Role --</option>
-                        <option value="Student">Student</option>
-                        <option value="Event Advisor">Event Advisor</option>
-                        <option value="PETAKOM Coordinator">PETAKOM Coordinator</option>
+                        <option value="student">Student</option>
+                        <option value="event advisor">Event Advisor</option>
+                        <option value="petakom coordinator">PETAKOM Coordinator</option>
                     </select>
 
                     <div class="form-actions">

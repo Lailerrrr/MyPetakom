@@ -15,27 +15,35 @@
             exit();
         }
 
-        // Escape the input data
-        $email = $con->real_escape_string($email);
-        $password = $con->real_escape_string($password);
-
-        $sql = "SELECT * FROM advisor WHERE advisorEmail ='$username' AND advisorPassword='$password'";
-        $result = $con->query($sql);
+            
+        // Prepare statement to prevent SQL injection
+        $stmt = $con->prepare("SELECT advisorID, advisorPassword FROM advisor WHERE advisorEmail = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
-            // Successful login
             $row = $result->fetch_assoc();
-            $_SESSION['userID'] = $row['advisorID']; // Store userID in session
 
-            // Determine redirect URL
-            $redirectURL = "../Home/advisorHomePage.php";
+            // Verify password - assuming password is hashed in DB
+            if (password_verify($password, $row['advisorPassword'])) {
+                $_SESSION['userID'] = $row['advisorID'];
 
-            echo json_encode(["success" => true, "redirectURL" => $redirectURL]);
+                // You can also store role or email if needed
+                $_SESSION['email'] = $email;
+                $_SESSION['role'] = 'event advisor';
+
+                $redirectURL = "../Home/advisorHomePage.php";
+                echo json_encode(["success" => true, "redirectURL" => $redirectURL]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Incorrect username or password. Please try again."]);
+            }
         } else {
-            // Failed login
             echo json_encode(["success" => false, "message" => "Incorrect username or password. Please try again."]);
         }
 
+        $stmt->close();
         $con->close();
     }
+    
 ?>
