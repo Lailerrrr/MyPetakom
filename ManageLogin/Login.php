@@ -89,7 +89,7 @@
 
 
 
-
+sssss
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +109,7 @@
                 <img src="/MyPetakom/umpsa-logo.png" alt="UMPSA Logo" class="logo" />
             </div>
 
-            <div class="site-title">MyPetakom Student Portal</div>
+            <div class="site-title">MyPetakom Portal</div>
 
            
         </header>
