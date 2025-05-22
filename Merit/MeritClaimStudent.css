@@ -33,7 +33,7 @@ body, html {
 }
 
 .logo {
-  height: 40px;
+  height: 100px;
   object-fit: contain;
   margin-bottom: 8px;
 }
@@ -89,13 +89,14 @@ body, html {
   padding: 40px 60px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;  /* <-- changed from center */
+  justify-content: flex-start;  /* <-- changed from center */
   min-height: 100vh;
   max-width: 900px;
   margin: 0 auto;
   box-sizing: border-box;
 }
+
 
 .main-content::before {
   content: "";
@@ -211,6 +212,36 @@ body, html {
     grid-template-columns: 1fr;
     max-width: 100%;
   }
+
+  .top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.username {
+  font-weight: 600;
+  color: #fff;
+  font-size: 16px;
+}
+
+.claim-btn {
+  background-color: #ff1493;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.claim-btn:hover {
+  background-color: #ff69b4;
+}
+
 }
 
 
