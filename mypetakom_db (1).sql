@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 09:06 AM
+-- Generation Time: May 22, 2025 at 08:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -66,11 +66,11 @@ INSERT INTO `advisor` (`advisorID`, `advisorName`, `advisorEmail`, `advisorPassw
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attandance`
+-- Table structure for table `attendance`
 --
 
-CREATE TABLE `attandance` (
-  `attandanceID` varchar(10) NOT NULL,
+CREATE TABLE `attendance` (
+  `attendance` varchar(10) NOT NULL,
   `checkInTime` time NOT NULL,
   `checkInDate` date NOT NULL,
   `location` varchar(100) NOT NULL,
@@ -81,10 +81,10 @@ CREATE TABLE `attandance` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attandanceslot`
+-- Table structure for table `attendanceslot`
 --
 
-CREATE TABLE `attandanceslot` (
+CREATE TABLE `attendanceslot` (
   `slotID` varchar(10) NOT NULL,
   `slotName` varchar(100) NOT NULL,
   `slotTime` time NOT NULL,
@@ -122,6 +122,7 @@ CREATE TABLE `event` (
   `approvalLetter` varchar(255) NOT NULL,
   `approvalDate` date NOT NULL,
   `status` varchar(20) NOT NULL,
+  `qr_code` varchar(100) NOT NULL,
   `advisorID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -148,7 +149,6 @@ CREATE TABLE `merit` (
   `meritID` varchar(10) NOT NULL,
   `semester` varchar(10) NOT NULL,
   `academicYear` varchar(10) NOT NULL,
-  `qr_code` varchar(255) NOT NULL,
   `totalMerit` int(255) NOT NULL,
   `eventID` varchar(10) NOT NULL,
   `studentID` varchar(10) NOT NULL
@@ -170,6 +170,22 @@ CREATE TABLE `meritapplication` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `meritclaim`
+--
+
+CREATE TABLE `meritclaim` (
+  `claimID` varchar(10) NOT NULL,
+  `claimStatus` varchar(20) NOT NULL,
+  `claimLetter` varchar(255) NOT NULL,
+  `approval_date` date NOT NULL,
+  `approval_by` varchar(50) NOT NULL,
+  `eventID` varchar(10) NOT NULL,
+  `studentID` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `meritscore`
 --
 
@@ -179,22 +195,7 @@ CREATE TABLE `meritscore` (
   `commitRole` varchar(20) NOT NULL,
   `score` int(255) NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `missingmeritclaim`
---
-
-CREATE TABLE `missingmeritclaim` (
-  `claimID` varchar(10) NOT NULL,
-  `claimStatus` varchar(20) NOT NULL,
-  `claimLetter` varchar(255) NOT NULL,
-  `approval_date` date NOT NULL,
-  `approval_by` varchar(50) NOT NULL,
-  `eventID` varchar(10) NOT NULL,
+  `updated_at` date NOT NULL,
   `studentID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -232,16 +233,17 @@ CREATE TABLE `student` (
   `studentEmail` varchar(100) NOT NULL,
   `studentPassword` varchar(20) NOT NULL,
   `studentCard` varchar(100) NOT NULL,
-  `verify` varchar(20) NOT NULL
+  `verify` varchar(20) NOT NULL,
+  `qr_code` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`studentID`, `studentName`, `studentEmail`, `studentPassword`, `studentCard`, `verify`) VALUES
-('CA22057', 'ANIS AYU SYAFIQAH BINTI MOHAMAD NABZHAM', 'anisayu@gmail.com', 'anis123', '', ''),
-('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', 'isma123', '', '');
+INSERT INTO `student` (`studentID`, `studentName`, `studentEmail`, `studentPassword`, `studentCard`, `verify`, `qr_code`) VALUES
+('CA22057', 'ANIS AYU SYAFIQAH BINTI MOHAMAD NABZHAM', 'anisayu@gmail.com', 'anis123', '', '', ''),
+('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', 'isma123', '', '', '');
 
 --
 -- Indexes for dumped tables
@@ -262,20 +264,19 @@ ALTER TABLE `advisor`
   ADD KEY `staffID` (`staffID`);
 
 --
--- Indexes for table `attandance`
+-- Indexes for table `attendance`
 --
-ALTER TABLE `attandance`
-  ADD PRIMARY KEY (`attandanceID`),
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`attendance`),
   ADD KEY `slotID` (`slotID`),
   ADD KEY `studentID` (`studentID`);
 
 --
--- Indexes for table `attandanceslot`
+-- Indexes for table `attendanceslot`
 --
-ALTER TABLE `attandanceslot`
+ALTER TABLE `attendanceslot`
   ADD PRIMARY KEY (`slotID`),
-  ADD KEY `eventID` (`eventID`),
-  ADD KEY `advisorID` (`advisorID`);
+  ADD KEY `eventID` (`eventID`);
 
 --
 -- Indexes for table `committee`
@@ -315,17 +316,18 @@ ALTER TABLE `meritapplication`
   ADD KEY `eventID` (`eventID`);
 
 --
+-- Indexes for table `meritclaim`
+--
+ALTER TABLE `meritclaim`
+  ADD PRIMARY KEY (`claimID`),
+  ADD KEY `eventID` (`eventID`),
+  ADD KEY `studentID` (`studentID`);
+
+--
 -- Indexes for table `meritscore`
 --
 ALTER TABLE `meritscore`
-  ADD PRIMARY KEY (`scoreID`);
-
---
--- Indexes for table `missingmeritclaim`
---
-ALTER TABLE `missingmeritclaim`
-  ADD PRIMARY KEY (`claimID`),
-  ADD KEY `eventID` (`eventID`),
+  ADD PRIMARY KEY (`scoreID`),
   ADD KEY `studentID` (`studentID`);
 
 --
@@ -357,18 +359,18 @@ ALTER TABLE `advisor`
   ADD CONSTRAINT `advisor_ibfk_1` FOREIGN KEY (`staffID`) REFERENCES `staff` (`staffID`);
 
 --
--- Constraints for table `attandance`
+-- Constraints for table `attendance`
 --
-ALTER TABLE `attandance`
-  ADD CONSTRAINT `attandance_ibfk_1` FOREIGN KEY (`slotID`) REFERENCES `attandanceslot` (`slotID`),
-  ADD CONSTRAINT `attandance_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
+ALTER TABLE `attendance`
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`slotID`) REFERENCES `attendanceslot` (`slotID`),
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
 
 --
--- Constraints for table `attandanceslot`
+-- Constraints for table `attendanceslot`
 --
-ALTER TABLE `attandanceslot`
-  ADD CONSTRAINT `attandanceslot_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `attandanceslot_ibfk_2` FOREIGN KEY (`advisorID`) REFERENCES `advisor` (`advisorID`);
+ALTER TABLE `attendanceslot`
+  ADD CONSTRAINT `attendanceslot_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
+  ADD CONSTRAINT `attendanceslot_ibfk_2` FOREIGN KEY (`advisorID`) REFERENCES `advisor` (`advisorID`);
 
 --
 -- Constraints for table `committee`
@@ -403,11 +405,17 @@ ALTER TABLE `meritapplication`
   ADD CONSTRAINT `meritapplication_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`);
 
 --
--- Constraints for table `missingmeritclaim`
+-- Constraints for table `meritclaim`
 --
-ALTER TABLE `missingmeritclaim`
-  ADD CONSTRAINT `missingmeritclaim_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `missingmeritclaim_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
+ALTER TABLE `meritclaim`
+  ADD CONSTRAINT `meritclaim_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
+  ADD CONSTRAINT `meritclaim_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
+
+--
+-- Constraints for table `meritscore`
+--
+ALTER TABLE `meritscore`
+  ADD CONSTRAINT `meritscore_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
