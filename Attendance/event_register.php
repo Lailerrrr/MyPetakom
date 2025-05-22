@@ -79,7 +79,7 @@
         <div class="card" style="text-align: center;">
             <h3>QR Code</h3>
             <img src="<?php echo $event['qr_image']; ?>" alt="Event QR Code" style="width: 180px; height: 180px; margin-top: 10px;" />
-            <p style="margin-top: 10px;">Scan to register</p>
+            <p style="margin-top: 10px;">Scan to registerr</p>
         </div>
     </div>
 </main>
