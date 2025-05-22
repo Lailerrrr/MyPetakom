@@ -51,6 +51,8 @@
                 <li><a href="#">Membership</a></li>
                 <li><a href="#">Merit Overview</a></li>
                 <li><a href="#">Event Registration</a></li>
+                <li><a href="../attendance/advisor_attendance_slot.php">Attendance Slot</a></li>
+                <li><a href="#">Merit Approval</a></li>
                 <li><a href="#">Manage Events</a></li>
                 <li><a href="#">Committee Management</a></li>
                 <li><a href="#">Merit Applications</a></li>
@@ -106,6 +108,7 @@
 
         <script>
         // Handle sidebar navigation clicks
+        /*
         document.querySelectorAll('.menu a').forEach(link => {
             link.addEventListener('click', e => {
                 e.preventDefault();
@@ -125,7 +128,7 @@
             }
 
             alert(`Profile updated:\nName: ${name}\nEmail: ${email}`);
-        });
+        });*/
         </script>
 
 

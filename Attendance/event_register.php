@@ -1,33 +1,43 @@
 <?php
-    session_start();
-    require_once '../DB_mypetakom/db.php'; // Adjust path if needed
+session_start();
+require_once '../DB_mypetakom/db.php';
 
-    if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student') {
-        header("Location: ../ManageLogin/login.php");
-        exit();
-    }
+if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../ManageLogin/login.php");
+    exit();
+}
 
-    $email = $_SESSION['email'];
-    $name = "";
-    $student_id = "";
+$email = $_SESSION['email'];
+$name = "";
+$student_id = "";
 
-    // Get student info
-    $sql = "SELECT studentName, studentID FROM student WHERE studentEmail = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->bind_result($name, $student_id);
-    $stmt->fetch();
-    $stmt->close();
+// Get student info
+$sql = "SELECT studentName, studentID FROM student WHERE studentEmail = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->bind_result($name, $student_id);
+$stmt->fetch();
+$stmt->close();
 
-    // Dummy event details (replace with DB query if needed)
-    $event = [
+// Get events the student is participating in (replace with actual logic)
+$events = [
+    [
         'name' => 'Tech Talk 2025',
-        'description' => 'A sharing session with industry professionals about current trends in tech.',
+        'description' => 'A session with industry leaders about AI and future tech.',
         'date' => '2025-06-10',
-        'venue' => 'Library Auditorium A',
-        'qr_image' => 'qr_placeholder.png' // Replace with real QR generation
-    ];
+        'venue' => 'Auditorium A',
+        'qr_image' => '../qr_attendance.png'
+    ],
+    [
+        'name' => 'Cyber Security Workshop',
+        'description' => 'Learn about ethical hacking and digital defense.',
+        'date' => '2025-06-15',
+        'venue' => 'Lab 3, Block B',
+        'qr_image' => '../qr_attendance.png'
+
+    ]
+];
 ?>
 
 <!DOCTYPE html>
@@ -35,9 +45,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Event Attendance Registration - MyPetakom</title>
-    <link rel="stylesheet" href="style.css" /> <!-- Your Pretty Savage CSS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <title>Event Attendance - MyPetakom</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
@@ -54,7 +64,7 @@
         <ul>
             <li><a href="#">Profile</a></li>
             <li><a href="#">Manage Membership</a></li>
-            <li><a href="#" class="active">Attendance Registration</a></li>
+            <li><a href="#" class="active">Attendance</a></li>
             <li><a href="#">Merit Claim</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
@@ -63,24 +73,29 @@
 
 <main class="main-content">
     <header class="main-header">
-        <h1>Attendance Registration</h1>
-        <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
+        <h1>My Events</h1>
+        <p>Welcome, <strong><?= htmlspecialchars($name) ?></strong> (<?= htmlspecialchars($student_id) ?>)</p>
     </header>
 
-    <div class="dashboard-cards" style="max-width: 700px; width: 100%;">
-        <div class="card" style="grid-column: span 2;">
-            <h3>Event Details</h3>
-            <p><strong>Event Name:</strong> <?php echo htmlspecialchars($event['name']); ?></p>
-            <p><strong>Description:</strong> <?php echo htmlspecialchars($event['description']); ?></p>
-            <p><strong>Date:</strong> <?php echo htmlspecialchars($event['date']); ?></p>
-            <p><strong>Venue:</strong> <?php echo htmlspecialchars($event['venue']); ?></p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <h3>QR Code</h3>
-            <img src="<?php echo $event['qr_image']; ?>" alt="Event QR Code" style="width: 180px; height: 180px; margin-top: 10px;" />
-            <p style="margin-top: 10px;">Scan to registerr</p>
-        </div>
+    <div class="event-list">
+        <?php foreach ($events as $event): ?>
+            <div class="event-card">
+                <div class="event-details">
+                    <h3><?= htmlspecialchars($event['name']) ?></h3>
+                    <p><strong>Description:</strong> <?= htmlspecialchars($event['description']) ?></p>
+                    <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                    <p><strong>Venue:</strong> <?= htmlspecialchars($event['venue']) ?></p>
+                    <form method="post" action="delete_event.php" onsubmit="return confirm('Are you sure you want to unregister?');">
+                        <input type="hidden" name="event_name" value="<?= htmlspecialchars($event['name']) ?>">
+                        <button type="submit" class="btn-delete">Unregister</button>
+                    </form>
+                </div>
+                <div class="event-qr">
+                    <img src="<?= htmlspecialchars($event['qr_image']) ?>" alt="QR Code" />
+                    <p>Scan this QR during event</p>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </main>
 
