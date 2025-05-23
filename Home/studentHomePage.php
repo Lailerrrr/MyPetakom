@@ -33,25 +33,25 @@
 
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
-            <div class="sidebar-text">
-                <h2>MyPetakom</h2>
-                <p class="role-label">🎓 Student</p>
-            </div>
+   <aside class="sidebar">
+    <div class="sidebar-header">
+        <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
+        <div class="sidebar-text">
+            <h2>MyPetakom</h2>
+            <p class="role-label">🎓 Student</p>
         </div>
+    </div>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="#" class="active">Profile</a></li>
-                <li><a href="#">Manage Membership</a></li>
-                <li><a href="../attendance/event_register.php">Attendance Registration</a></li>
-                <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-                <li><a href="../ManageLogin/Logout.php">Logout</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <nav class="menu">
+        <ul>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Manage Membership</a></li>
+            <li><a href="#">Attendance Registration</a></li>
+            <li><a href="#">Merit Claim</a></li>
+            <li><a href="../ManageLogin/Logout.php">Logout</a></li>
+        </ul>
+    </nav>
+</aside>
 
     <main class="main-content">
 
