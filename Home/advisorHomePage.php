@@ -50,7 +50,7 @@
                 <li><a href="#" class="active">Profile</a></li>
                 <li><a href="#">Membership</a></li>
                 <li><a href="#">Merit Overview</a></li>
-                <li><a href="#">Event Registration</a></li>
+                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
                 <li><a href="#">Manage Events</a></li>
                 <li><a href="#">Committee Management</a></li>
                 <li><a href="#">Merit Applications</a></li>
@@ -100,34 +100,36 @@
             </div>
         </section>
 
-        
-
     </main>
 
-        <script>
-        // Handle sidebar navigation clicks
+    <script>
+        // Only prevent default behavior for placeholder links
         document.querySelectorAll('.menu a').forEach(link => {
             link.addEventListener('click', e => {
-                e.preventDefault();
-                alert(`You clicked on "${link.textContent}"`);
+                if (link.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    alert(`You clicked on "${link.textContent}"`);
+                }
             });
         });
 
-        // Handle profile form submission
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = this.name.value.trim();
-            const email = this.email.value.trim();
+        // Handle profile form submission (if implemented)
+        const profileForm = document.getElementById('profileForm');
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = this.name.value.trim();
+                const email = this.email.value.trim();
 
-            if (name === '' || email === '') {
-                alert('Please fill in all fields.');
-                return;
-            }
+                if (name === '' || email === '') {
+                    alert('Please fill in all fields.');
+                    return;
+                }
 
-            alert(`Profile updated:\nName: ${name}\nEmail: ${email}`);
-        });
-        </script>
-
+                alert(`Profile updated:\nName: ${name}\nEmail: ${email}`);
+            });
+        }
+    </script>
 
     </body>
 </html>

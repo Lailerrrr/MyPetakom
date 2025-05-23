@@ -91,6 +91,7 @@ body, html {
 }
 
 /* Main Content */
+
 .main-content {
   flex: 1;
   background: #1a001a;
@@ -210,8 +211,8 @@ body, html {
 /* Scrollbar */
 .main-content::-webkit-scrollbar {
   width: 8px;
-}
-.main-content::-webkit-scrollbar-thumb {
+} 
+ .main-content::-webkit-scrollbar-thumb {
   background: #c267e4;
   border-radius: 8px;
 }
@@ -222,7 +223,7 @@ body, html {
     flex-direction: column;
   }
   .sidebar {
-    width: 100%;
+    width: 50%;
     flex-direction: row;
     overflow-x: auto;
     padding: 10px 20px;
