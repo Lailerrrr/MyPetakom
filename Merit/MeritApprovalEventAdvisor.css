@@ -91,7 +91,6 @@ body, html {
 }
 
 /* Main Content */
-
 .main-content {
   flex: 1;
   background: #1a001a;
@@ -211,8 +210,8 @@ body, html {
 /* Scrollbar */
 .main-content::-webkit-scrollbar {
   width: 8px;
-} 
- .main-content::-webkit-scrollbar-thumb {
+}
+.main-content::-webkit-scrollbar-thumb {
   background: #c267e4;
   border-radius: 8px;
 }
@@ -223,7 +222,7 @@ body, html {
     flex-direction: column;
   }
   .sidebar {
-    width: 50%;
+    width: 100%;
     flex-direction: row;
     overflow-x: auto;
     padding: 10px 20px;
@@ -296,3 +295,61 @@ body, html {
 .menu li form {
     width: 100%;
 }
+
+/* Basic reset */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  background-color: rgba(26, 0, 26, 0.8);
+  color: white;
+  box-shadow: 0 0 15px #ff69b4;
+  border-radius: 8px;
+  overflow: hidden;
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Table header styling */
+thead {
+  background: linear-gradient(90deg, #ff1493, #ff69b4);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: white;
+}
+
+thead th {
+  padding: 12px 15px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Table body rows */
+tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(255, 20, 147, 0.1);
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 20, 147, 0.3);
+}
+
+/* Table cells */
+thead th, tbody td {
+  padding: 12px 15px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.4);
+}
+
+
+
+
