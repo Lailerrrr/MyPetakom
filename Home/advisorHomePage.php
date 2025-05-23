@@ -47,16 +47,15 @@
 
         <nav class="menu">
             <ul>
-                <li><a href="#" class="active">Profile</a></li>
+                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
                 <li><a href="#">Membership</a></li>
                 <li><a href="#">Merit Overview</a></li>
-                <li><a href="#">Event Registration</a></li>
-                <li><a href="#">Manage Events</a></li>
-                <li><a href="#">Committee Management</a></li>
-                <li><a href="#">Merit Applications</a></li>
+                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
+                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
+                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
+                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
                 <li><a href="#">Generate QR Code</a></li>
                 <li><a href="#">User Dashboard</a></li>
-                <li>
                     <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
                         <button name="logout"  class="sidebar-logout-button">Logout</button>
                     </form>
