@@ -38,10 +38,10 @@ form select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
   border: 1px solid #c267e4;
   border-radius: 8px;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 form label {

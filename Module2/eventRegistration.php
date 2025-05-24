@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Event Registration - MyPetakom</title>
     <link rel="stylesheet" href="../sidebar.css" />
     <link rel="stylesheet" href="../Module2/eventRegistration.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    
 </head>
 <body>
     <div class="container"> 

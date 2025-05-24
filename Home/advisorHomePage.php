@@ -1,133 +1,194 @@
 <?php
+session_start();
+require_once '../DB_mypetakom/db.php';
 
-    session_start();
-    require_once '../DB_mypetakom/db.php'; // Adjust path if your db.php is elsewhere
+if (!isset($_SESSION['userID'])) {
+    header("Location: ../ManageLogin/login.php");
+    exit();
+}
 
-    if (!isset($_SESSION['userID'])) {
-        header("Location: ../ManageLogin/login.php");
-        exit();
+$advisorID = $_SESSION['userID'];
+
+// Helper function to safely fetch a single value
+function getSingleValue($conn, $query, $default = 0) {
+    $result = $conn->query($query);
+    if (!$result) {
+        return $default; // Avoid fatal error and return default value
     }
+    $row = $result->fetch_assoc();
+    return $row ? $row['total'] : $default;
+}
 
-    $advisorID = $_SESSION['userID'];
-    $advisorName = "";
-    $advisorEmail = "";
+// Total Events
+$totalEvents = getSingleValue($conn, "SELECT COUNT(*) as total FROM event WHERE advisorID = '$advisorID'");
 
-    // Fetch advisor info
-    $sql = "SELECT advisorName, advisorEmail FROM advisor WHERE advisorID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $advisorID);
-    $stmt->execute();
-    $stmt->bind_result($advisorName, $advisorEmail);
-    $stmt->fetch();
-    $stmt->close();
+// Total Registered Students under advisor's events
+$totalStudents = getSingleValue($conn, "
+    SELECT COUNT(DISTINCT r.studentID) AS total
+    FROM registration r
+    JOIN event e ON r.eventID = e.eventID
+    WHERE e.advisorID = '$advisorID'
+");
 
+// Total Committee Members
+$totalCommittees = getSingleValue($conn, "
+    SELECT COUNT(*) AS total
+    FROM committee c
+    JOIN event e ON c.eventID = e.eventID
+    WHERE e.advisorID = '$advisorID'
+");
+
+// Students per Event Chart
+$studentsPerEvent = $conn->query("
+    SELECT e.eventName, COUNT(r.studentID) as studentCount
+    FROM registration r
+    JOIN event e ON r.eventID = e.eventID
+    WHERE e.advisorID = '$advisorID'
+    GROUP BY r.eventID
+");
+
+$eventNames = [];
+$studentCounts = [];
+if ($studentsPerEvent) {
+    while ($row = $studentsPerEvent->fetch_assoc()) {
+        $eventNames[] = $row['eventName'];
+        $studentCounts[] = $row['studentCount'];
+    }
+}
+
+// Committee Role Distribution Chart
+$roleDist = $conn->query("
+    SELECT c.role, COUNT(*) AS count
+    FROM committee c
+    JOIN event e ON c.eventID = e.eventID
+    WHERE e.advisorID = '$advisorID'
+    GROUP BY c.role
+");
+
+$roles = [];
+$roleCounts = [];
+if ($roleDist) {
+    while ($row = $roleDist->fetch_assoc()) {
+        $roles[] = $row['role'];
+        $roleCounts[] = $row['count'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Advisor Dashboard - MyPetakom</title>
+    <link rel="stylesheet" href="../sidebar.css" />
+    <link rel="stylesheet" href="../Module2/MeritApplication.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Advisor Dashboard - MyPetakom</title>
-        <link rel="stylesheet" href="advisorHomePage.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    </head>
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color:rgb(40, 0, 46);
+            color: #333;
+        }
 
-    <body>
+        .dashboard-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(72, 5, 91, 0.1);
+        }
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-        <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
-        <div>
-            <h2>MyPetakom</h2>
-            <p class="role-label">🧭 Advisor</p>
-        </div>
-        </div>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
 
-        <nav class="menu">
-            <ul>
-                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
-                <li><a href="#">Membership</a></li>
-                <li><a href="#">Merit Overview</a></li>
-                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
-                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
-                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
-                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
-                <li><a href="#">Generate QR Code</a></li>
-                <li><a href="#">User Dashboard</a></li>
-                    <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
-                        <button name="logout"  class="sidebar-logout-button">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+        h2 {
+            margin-bottom: 20px;
+        }
 
+        canvas {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <?php include '../sidebar.php'; ?>
     <main class="main-content">
+        <h2>📊 Advisor Dashboard</h2>
 
-        <!-- DASHBOARD INDICATOR -->
-        <div class="dashboard-indicator">
-            <span class="dashboard-role">🧭 Advisor Dashboard</span>
-            <span class="dashboard-user">Logged in as: <strong><?php echo htmlspecialchars($advisorEmail); ?></strong></span>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Total Events</h3>
+                <p style="font-size: 28px;"><?php echo $totalEvents; ?></p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Total Registered Students</h3>
+                <p style="font-size: 28px;"><?php echo $totalStudents; ?></p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Total Committee Members</h3>
+                <p style="font-size: 28px;"><?php echo $totalCommittees; ?></p>
+            </div>
         </div>
 
-        <header class="main-header">
-            <h1>Welcome, <span class="username"><?php echo htmlspecialchars($advisorName); ?></span>!</h1>
-            <p>Here’s your PETAKOM advisor control center.</p>
-        </header>
-
-        <section class="dashboard-cards">
-            <div class="card">
-                <h3>Upcoming Events</h3>
-                <p>2 pending approvals</p>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>👨‍🎓 Students Per Event</h3>
+                <canvas id="studentsChart"></canvas>
             </div>
-
-            <div class="card">
-                <h3>Merit Submissions</h3>
-                <p>5 applications waiting review</p>
+            <div class="dashboard-card">
+                <h3>🧑‍💼 Committee Role Distribution</h3>
+                <canvas id="rolesChart"></canvas>
             </div>
-
-            <div class="card">
-                <h3>Event QR Tools</h3>
-                <p>Generate & view attendance</p>
-            </div>
-
-            <div class="card">
-                <h3>Committee Status</h3>
-                <p>3 committees under supervision</p>
-            </div>
-        </section>
-
+        </div>
     </main>
+</div>
 
-        <script>
-        // Handle sidebar navigation clicks
-        document.querySelectorAll('.menu a').forEach(link => {
-            link.addEventListener('click', e => {
-                if (link.getAttribute('href') === '#') {
-                    e.preventDefault();
-                    alert(`You clicked on "${link.textContent}"`);
-                }
-            });
-        });
+<script>
+    const eventNames = <?php echo json_encode($eventNames); ?>;
+    const studentCounts = <?php echo json_encode($studentCounts); ?>;
+    const roles = <?php echo json_encode($roles); ?>;
+    const roleCounts = <?php echo json_encode($roleCounts); ?>;
 
-        // Handle profile form submission (if implemented)
-        const profileForm = document.getElementById('profileForm');
-        if (profileForm) {
-            profileForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = this.name.value.trim();
-                const email = this.email.value.trim();
+    new Chart(document.getElementById('studentsChart'), {
+        type: 'bar',
+        data: {
+            labels: eventNames,
+            datasets: [{
+                label: 'Number of Students',
+                data: studentCounts,
+                backgroundColor: '#c061cb'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } }
+        }
+    });
 
-                if (name === '' || email === '') {
-                    alert('Please fill in all fields.');
-                    return;
-                }
-
-            alert(`Profile updated:\nName: ${name}\nEmail: ${email}`);
-        });
-        </script>
-
-    </body>
+    new Chart(document.getElementById('rolesChart'), {
+        type: 'pie',
+        data: {
+            labels: roles,
+            datasets: [{
+                label: 'Role Distribution',
+                data: roleCounts,
+                backgroundColor: ['#845EC2', '#D65DB1', '#FF6F91', '#FF9671']
+            }]
+        }
+    });
+</script>
+</body>
 </html>
