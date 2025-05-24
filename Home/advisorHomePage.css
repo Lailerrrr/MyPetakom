@@ -1,92 +1,63 @@
-/* MeritApplication.css - Styles for Advisor Dashboard */
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #640c9e;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-.container {
-    display: flex;
-    min-height: 100vh;
-}
+    html, body {
+        height: 100%;
+        width: 100%;
+        background-color: rgb(40, 0, 46);
+        font-family: 'Inter', sans-serif;
+    }
 
-.main-content {
-    flex: 1;
-    padding: 40px;
-    background-color: #fff;
-    box-sizing: border-box;
-}
+    /* body {
+        overflow-x: hidden;
+    } */
 
-/* Page Title */
-h2 {
-    color: #6a1b9a;
-    font-weight: 700;
-    margin-bottom: 30px;
-    font-size: 2.4rem;
-}
+    .container {
+        display: flex;
+        min-height: 100vh;
+        width: 100vw;
+    }
 
-/* Dashboard Grid Container */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
-}
-
-/* Dashboard Cards */
-.dashboard-card {
-    background: #f3e5f5;
-    border-radius: 12px;
-    padding: 25px 20px;
-    box-shadow: 0 6px 10px rgba(106, 27, 154, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(106, 27, 154, 0.2);
-}
-
-/* Card Headings */
-.dashboard-card h3 {
-    color: #4a148c;
-    margin-bottom: 15px;
-    font-size: 1.6rem;
-}
-
-/* Card Numbers */
-.dashboard-card p {
-    font-size: 2.6rem;
-    font-weight: 700;
-    color: #7b1fa2;
-    margin: 0;
-}
-
-/* Canvas (Charts) */
-canvas {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    max-width: 100%;
-    height: auto !important;
-}
-
-/* Responsive tweaks */
-@media (max-width: 600px) {
     .main-content {
+        flex: 1;
+        padding: 40px 60px;
+        background-color: rgb(40, 0, 46);
+        color: #fff;
+    }
+
+    .dashboard-card {
+       background: rgba(193, 94, 224, 0.1);
+       border-radius: 16px;
+       padding: 25px 30px;
+       box-shadow: 0 0 15px #d56ce8;
+       transition: transform 0.3s ease;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px #d56ce8;
+    }
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    h3 {
+            margin-bottom: 20px;
+        }
+
+    canvas {
+        background: white;
+        border-radius: 12px;
         padding: 20px;
     }
-    
-    h2 {
-        font-size: 1.8rem;
-    }
-    
-    .dashboard-card p {
-        font-size: 2rem;
-    }
-}
+

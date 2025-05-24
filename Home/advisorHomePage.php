@@ -9,6 +9,7 @@ if (!isset($_SESSION['userID'])) {
 
 $advisorID = $_SESSION['userID'];
 
+
 // Helper function to safely fetch a single value
 function getSingleValue($conn, $query, $default = 0) {
     $result = $conn->query($query);
@@ -81,9 +82,11 @@ if ($roleDist) {
     <meta charset="UTF-8" />
     <title>Advisor Dashboard - MyPetakom</title>
     <link rel="stylesheet" href="../sidebar.css" />
-    <link rel="stylesheet" href="../Module2/MeritApplication.css" />
+    <link rel="stylesheet" href="advisorHomePage.css" />
+    <!-- <link rel="stylesheet" href="../Module2/MeritApplication.css" /> -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+    <!-- <style>
         .container {
             display: flex;
             min-height: 100vh;
@@ -115,19 +118,18 @@ if ($roleDist) {
             margin-bottom: 20px;
         }
 
-        canvas {
+        /* canvas {
             background: white;
             border-radius: 12px;
             padding: 20px;
-        }
-    </style>
+        } */
+    </style> -->
 </head>
 <body>
 <div class="container">
     <?php include '../sidebar.php'; ?>
     <main class="main-content">
-        <h2>📊 Advisor Dashboard</h2>
-
+        <h1>📊 Advisor Dashboard</h1>
         <div class="dashboard-grid">
             <div class="dashboard-card">
                 <h3>Total Events</h3>

@@ -10,7 +10,7 @@ if (!isset($_SESSION['userID'])) {
 $advisorID = $_SESSION['userID'];
 
 // Fetch advisor details
-$advisorQuery = $conn->prepare("SELECT name, email, phone, department FROM advisor WHERE advisorID = ?");
+$advisorQuery = $conn->prepare("SELECT advisorName, advisorEmail, advisor_phoneNum, advisor_department FROM advisor WHERE advisorID = ?");
 $advisorQuery->bind_param("s", $advisorID);
 $advisorQuery->execute();
 $advisorQuery->bind_result($name, $email, $phone, $department);

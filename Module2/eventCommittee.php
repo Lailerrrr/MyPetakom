@@ -2,6 +2,9 @@
 session_start();
 require_once '../DB_mypetakom/db.php';
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_SESSION['userID'])) {
     header("Location: ../ManageLogin/login.php");
     exit();
@@ -11,28 +14,43 @@ $advisorID = $_SESSION['userID'];
 $successMsg = $errorMsg = "";
 
 // Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eventID'], $_POST['studentID'], $_POST['role'])) {
-    $eventID = $_POST['eventID'];
-    $studentID = $_POST['studentID'];
-    $role = $_POST['role'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    $eventID = trim($_POST['eventID']);
+    $studentID = trim($_POST['studentID']);
+    $role = trim($_POST['role']);
+    $committeeID = uniqid("CMT"); // Auto-generate
 
-    $check = $conn->prepare("SELECT * FROM committee WHERE eventID = ? AND studentID = ?");
-    $check->bind_param("ss", $eventID, $studentID);
-    $check->execute();
-    $result = $check->get_result();
+    if (!empty($eventID) && !empty($studentID) && !empty($role)) {
+        $check = $conn->prepare("SELECT * FROM committee WHERE eventID = ? AND studentID = ?");
 
-    if ($result->num_rows == 0) {
-        $stmt = $conn->prepare("INSERT INTO committee (eventID, studentID, role) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $eventID, $studentID, $role);
-
-        if ($stmt->execute()) {
-            $successMsg = "Student assigned as committee member successfully.";
-        } else {
-            $errorMsg = "Database error: " . $stmt->error;
+        if (!$check) {
+            die("Prepare failed for SELECT: " . $conn->error);
         }
-        $stmt->close();
+
+        $check->bind_param("ss", $eventID, $studentID);
+        $check->execute();
+        $result = $check->get_result();
+
+        if ($result->num_rows == 0) {
+           $stmt = $conn->prepare("INSERT INTO committee (committeeID, eventID, studentID, role) VALUES (?, ?, ?, ?)");
+
+            if (!$stmt) {
+                die("Prepare failed for INSERT: " . $conn->error);
+            }
+
+             $stmt->bind_param("ssss", $committeeID, $eventID, $studentID, $role);
+            if ($stmt->execute()) {
+                $successMsg = "Student assigned as committee member successfully.";
+            } else {
+                $errorMsg = "Database error: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            $errorMsg = "This student is already a committee member for this event.";
+        }
+        $check->close();
     } else {
-        $errorMsg = "This student is already a committee member for this event.";
+        $errorMsg = "Please fill in all fields.";
     }
 }
 
@@ -100,10 +118,10 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
         <h2>👥 Manage Committee Members</h2>
 
         <?php if (!empty($successMsg)): ?>
-            <p class="success"><?php echo $successMsg; ?></p>
+            <p class="success"><?php echo htmlspecialchars($successMsg); ?></p>
         <?php endif; ?>
         <?php if (!empty($errorMsg)): ?>
-            <p class="error"><?php echo $errorMsg; ?></p>
+            <p class="error"><?php echo htmlspecialchars($errorMsg); ?></p>
         <?php endif; ?>
 
         <form method="POST">
@@ -111,7 +129,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
             <select name="eventID" required>
                 <option value="">-- Select Event --</option>
                 <?php while ($row = $events->fetch_assoc()): ?>
-                    <option value="<?php echo $row['eventID']; ?>"><?php echo $row['eventName']; ?></option>
+                    <option value="<?php echo htmlspecialchars($row['eventID']); ?>"><?php echo htmlspecialchars($row['eventName']); ?></option>
                 <?php endwhile; ?>
             </select>
 
@@ -119,7 +137,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
             <select name="studentID" required>
                 <option value="">-- Select Student --</option>
                 <?php while ($row = $students->fetch_assoc()): ?>
-                    <option value="<?php echo $row['studentID']; ?>"><?php echo $row['studentName']; ?></option>
+                    <option value="<?php echo htmlspecialchars($row['studentID']); ?>"><?php echo htmlspecialchars($row['studentName']); ?></option>
                 <?php endwhile; ?>
             </select>
 
@@ -132,7 +150,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
                 <option value="Member">Member</option>
             </select>
 
-            <button type="submit">Assign as Committee</button>
+            <button type="submit" name="submit">Assign as Committee</button>
         </form>
     </main>
 </div>
