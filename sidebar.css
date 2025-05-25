@@ -23,11 +23,15 @@
   color: #fff;
   font-weight: 700;
   font-size: 24px;
+  margin: 0;           /* ✅ ADDED */
+  line-height: 1.2;     /* ✅ ADDED */
 }
 
 .role-label {
   font-size: 14px;
   color: #f5b8ff;
+  margin: 0;            /* ✅ ADDED */
+  line-height: 1.2;     /* ✅ ADDED */
 }
 
 .menu ul {

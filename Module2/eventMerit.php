@@ -15,25 +15,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eventID'])) {
     $eventID = $_POST['eventID'];
 
     // Check if merit application already exists
-    $check = $conn->prepare("SELECT * FROM merit_application WHERE eventID = ?");
+    $check = $conn->prepare("SELECT * FROM meritapplication WHERE eventID = ?");
     $check->bind_param("s", $eventID);
     $check->execute();
     $result = $check->get_result();
 
     if ($result->num_rows == 0) {
-        $stmt = $conn->prepare("INSERT INTO merit_application (eventID, advisorID, status) VALUES (?, ?, 'Pending')");
-        $stmt->bind_param("ss", $eventID, $advisorID);
+        // Generate a unique meritApplicationID (e.g., "MA202405250001")
+        $uniqueID = 'MA' . rand(10, 99);
+
+        // Get current date
+        $appliedDate = date("Y-m-d");
+
+        // Prepare insert query
+        $stmt = $conn->prepare("INSERT INTO meritapplication (meritApplicationID, appliedDate, approvalStatus, eventID) VALUES (?, ?, 'Pending', ?)");
+        $stmt->bind_param("sss", $uniqueID, $appliedDate, $eventID);
 
         if ($stmt->execute()) {
             $successMsg = "Merit application submitted successfully. Awaiting coordinator approval.";
         } else {
             $errorMsg = "Database error: " . $stmt->error;
         }
+
         $stmt->close();
     } else {
         $errorMsg = "Merit application for this event has already been submitted.";
     }
+
+    $check->close();
 }
+
 
 // Fetch events under this advisor
 $events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '$advisorID'");
@@ -47,7 +58,7 @@ $events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '
     <link rel="stylesheet" href="../sidebar.css" />
     <link rel="stylesheet" href="../Module2/eventMerit.css">
     <style>
-        .container {
+        /* .container {
             display: flex;
             min-height: 100vh;
         }
@@ -57,7 +68,7 @@ $events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '
             padding: 40px;
             background-color: #1a001f;
             color: #f0d9ff;
-        }
+        } */
 
         select, button {
             width: 100%;
@@ -97,9 +108,7 @@ $events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '
         <p>The Event Advisor must apply for student participation merit during registration to ensure that the event qualifies for a merit award. The merit application will be approved by the Petakom Coordinator.</p>
 
         <?php if (!empty($successMsg)): ?>
-             <option value="<?php echo $row['eventID']; ?>" <?php echo $row['hasApplied'] ? 'disabled' : ''; ?>>
-        <?php echo $row['eventName'] . ($row['hasApplied'] ? ' (Already Applied)' : ''); ?>
-    </option>
+            
             <p class="success"><?php echo $successMsg; ?></p>
         <?php endif; ?>
         <?php if (!empty($errorMsg)): ?>

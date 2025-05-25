@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label>Event Date:</label>
                     <input type="date" name="eventDate" required><br><br>
 
-                    <label>Geolocation (Venue):</label>
+                    <label>Venue:</label>
                     <input type="text" name="venue" placeholder="Google Maps link or address" required><br><br>
 
                     <label>Approval Date:</label>

@@ -30,8 +30,9 @@ $eventResult = $eventQuery->get_result();
     <meta charset="UTF-8">
     <title>Advisor Profile - MyPetakom</title>
     <link rel="stylesheet" href="../sidebar.css">
-    <link rel="stylesheet" href="../Module2/eventRegistration.css">
-    <style>
+    <!-- <link rel="stylesheet" href="../Module2]/eventRegistration.css"> -->
+     <link rel="stylesheet" href="../Advisor/advisorProfile.css">
+    <!-- <style>
         .profile-section {
             padding: 20px;
         }
@@ -51,7 +52,7 @@ $eventResult = $eventQuery->get_result();
             padding: 8px;
             text-align: left;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <div class="container">
@@ -65,28 +66,6 @@ $eventResult = $eventQuery->get_result();
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
                     <p><strong>Phone:</strong> <?php echo htmlspecialchars($phone); ?></p>
                     <p><strong>Department:</strong> <?php echo htmlspecialchars($department); ?></p>
-                </div>
-
-                <div class="event-list">
-                    <h3>📋 Managed Events</h3>
-                    <?php if ($eventResult->num_rows > 0): ?>
-                        <table>
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                            <?php while ($row = $eventResult->fetch_assoc()): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($row['eventName']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['eventDate']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['status']); ?></td>
-                                </tr>
-                            <?php endwhile; ?>
-                        </table>
-                    <?php else: ?>
-                        <p>No events found.</p>
-                    <?php endif; ?>
                 </div>
             </div>
         </main>

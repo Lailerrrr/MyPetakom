@@ -30,19 +30,21 @@ h2 {
   color: #f3b4ec;
   margin-bottom: 20px;
 }
+
 form input[type="text"],
 form input[type="date"],
 form input[type="file"],
 form textarea,
 form select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 1)!important;;  /* force white background */
+  color: black !important;              /* force black text */
   border: 1px solid #c267e4;
   border-radius: 8px;
-  color: rgb(255, 255, 255);
+  padding: 10px;
+  margin-top: 5px;
 }
+
+
 
 form label {
   display: block;

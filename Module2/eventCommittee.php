@@ -69,7 +69,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
     <link rel="stylesheet" href="../sidebar.css" />
     <link rel="stylesheet" href="../Module2/eventCommittee.css">
     <style>
-        .container {
+        /* .container {
             display: flex;
             min-height: 100vh;
         }
@@ -79,7 +79,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
             padding: 40px;
             background-color: #1a001f;
             color: #f0d9ff;
-        }
+        } */
 
         select, input, button {
             width: 100%;

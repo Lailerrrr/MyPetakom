@@ -83,47 +83,9 @@ if ($roleDist) {
     <title>Advisor Dashboard - MyPetakom</title>
     <link rel="stylesheet" href="../sidebar.css" />
     <link rel="stylesheet" href="advisorHomePage.css" />
-    <!-- <link rel="stylesheet" href="../Module2/MeritApplication.css" /> -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <style>
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color:rgb(40, 0, 46);
-            color: #333;
-        }
-
-        .dashboard-card {
-            background-color: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(72, 5, 91, 0.1);
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        /* canvas {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-        } */
-    </style> -->
+    
 </head>
 <body>
 <div class="container">
@@ -143,9 +105,9 @@ if ($roleDist) {
                 <h3>Total Committee Members</h3>
                 <p style="font-size: 28px;"><?php echo $totalCommittees; ?></p>
             </div>
-        </div>
+             </div>
 
-        <div class="dashboard-grid">
+            <div class="dashboard-grid">
             <div class="dashboard-card">
                 <h3>👨‍🎓 Students Per Event</h3>
                 <canvas id="studentsChart"></canvas>
