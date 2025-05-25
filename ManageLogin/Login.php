@@ -16,6 +16,13 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
 
+        // Define default values
+        $table = "";
+        $emailColumn = "";
+        $passColumn = "";
+        $idColumn = "";
+        $homePage = "";   
+
         // Check the role and select the corresponding table
         switch ($roleInput) {
             case 'student':
@@ -26,22 +33,17 @@
                 $homePage = '../Home/studentHomePage.php';
                 break;
             case 'event advisor':
-                $table = 'advisor';
-                $emailColumn = 'advisorEmail';
-                $passColumn = 'advisorPassword';
-                $idColumn = 'advisorID';
-                $homePage = '../Home/advisorHomePage.php';
-                break;
             case 'petakom coordinator':
-                $table = 'administrator';
-                $emailColumn = 'adminEmail';
-                $passColumn = 'adminPassword';
-                $idColumn = 'adminID';
-                $homePage = '../Home/adminHomePage.php';
+                $table = 'staff';
+                $emailColumn = 'staffEmail';
+                $passColumn = 'staffPassword';
+                $idColumn = 'staffID';
+                $homePage = ($roleInput === 'event advisor') 
+                        ? '../Home/advisorHomePage.php' 
+                        : '../Home/adminHomePage.php';
                 break;
             default:
                 $error = "Invalid role selected.";
-                break;
         }
 
 
@@ -51,12 +53,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             
-                if ($result->num_rows == 1) {
+                if ($result && $result->num_rows === 1) {
                     // Fetch user ID
                     $row = $result->fetch_assoc();
 
-                    if ($password === $row[$passColumn]) {
-
+                    if (password_verify($password, $row[$passColumn])) {
                     // Store role, username, and user ID in session
                     $_SESSION['role'] = $roleInput;
                     $_SESSION['email'] = $email;
@@ -73,11 +74,11 @@
                     } else {
                         $error = "Invalid username or password.";
                     }
-                        } else {
-                            $error = "No user found with that email.";
-                        }
+                } else {
+                    $error = "No user found with that email.";
+                }
                     
-                    $stmt->close();
+                $stmt->close();
             }
         }
     $con->close();
