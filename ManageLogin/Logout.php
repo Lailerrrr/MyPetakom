@@ -2,12 +2,21 @@
     session_start();
 
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-    header("Cache-Control: post-check=0, pre-check=0", false);
+
     header("Pragma: no-cache");
 
 
     session_unset();
     session_destroy();
+
+    // Also delete the session cookie
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
 
     // Clear cookies
     setcookie('role', '', time() - 3600, "/");
@@ -33,17 +42,16 @@
         </div>
 
         <script>
-            
+
             document.getElementById('loginButton').addEventListener('click', function() {
                 window.location.href = 'Login.php';  
             });
 
-            if (window.history && window.history.pushState) {
-                window.history.pushState(null, null, window.location.href);
-                window.onpopstate = function () {
-                    window.location.href = 'Login.php';
-                };
-            }
+            // Prevent access via back button
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
 
         </script>
     </body>
