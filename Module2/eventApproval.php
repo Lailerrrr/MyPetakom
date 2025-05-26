@@ -110,8 +110,8 @@ $result = $conn->query($query);
     <nav class="menu">
         <ul>
             <li><a href="#" class="active">Dashboard</a></li>
-            <li><a href="#">Manage Users</a></li>
-            <li><a href="#">Membership Applications</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Verify Membership</a></li>
             <li><a href="../Module2/eventApproval.php">Event Management</a></li>
             <li><a href="#">Attendance Tracking</a></li>
             <li><a href="#">Merit Applications</a></li>
