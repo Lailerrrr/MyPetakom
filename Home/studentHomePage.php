@@ -48,6 +48,7 @@
             <li><a href="#">Manage Membership</a></li>
             <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
             <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
+            <li><a href="#">Scan QR</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>

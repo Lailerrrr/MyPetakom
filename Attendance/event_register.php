@@ -65,7 +65,7 @@ $events = [
             <li><a href="#">Profile</a></li>
             <li><a href="#">Manage Membership</a></li>
             <li><a href="#" class="active">Attendance</a></li>
-            <li><a href="#">Merit Claim</a></li>
+            <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>

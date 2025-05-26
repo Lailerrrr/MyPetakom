@@ -45,8 +45,9 @@ $stmt->close();
         <ul>
             <li><a href="#">Profile</a></li>
             <li><a href="#">Manage Membership</a></li>
-            <li><a href="#">Attendance Registration</a></li>
+            <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
             <li><a href="#" class="active">Merit Claim</a></li>
+            <li><a href="#">Scan QR</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>
