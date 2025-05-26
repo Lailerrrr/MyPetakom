@@ -57,7 +57,7 @@
                     // Fetch user ID
                     $row = $result->fetch_assoc();
 
-                    if (password_verify($password, $row[$passColumn])) {
+                    if (($password === $row[$passColumn])) {
                     // Store role, username, and user ID in session
                     $_SESSION['role'] = $roleInput;
                     $_SESSION['email'] = $email;
