@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 08:41 AM
+-- Generation Time: May 26, 2025 at 07:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,53 +24,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `administrator`
---
-
-CREATE TABLE `administrator` (
-  `adminID` varchar(10) NOT NULL,
-  `adminName` varchar(100) NOT NULL,
-  `adminEmail` varchar(20) NOT NULL,
-  `adminPassword` varchar(20) NOT NULL,
-  `staffID` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `administrator`
---
-
-INSERT INTO `administrator` (`adminID`, `adminName`, `adminEmail`, `adminPassword`, `staffID`) VALUES
-('admin1', 'NOORAINA LAILATIE', 'admin@petakom.my', 'admin123', 'staff2');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `advisor`
---
-
-CREATE TABLE `advisor` (
-  `advisorID` varchar(10) NOT NULL,
-  `advisorName` varchar(100) NOT NULL,
-  `advisorEmail` varchar(20) NOT NULL,
-  `advisorPassword` varchar(20) NOT NULL,
-  `staffID` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `advisor`
---
-
-INSERT INTO `advisor` (`advisorID`, `advisorName`, `advisorEmail`, `advisorPassword`, `staffID`) VALUES
-('advisor1', 'MUHAMMAD SYAHMI DANIEL', 'advisor@petakom.my', 'advisor123', 'staff1');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `attendance`
 --
 
 CREATE TABLE `attendance` (
-  `attendance` varchar(10) NOT NULL,
+  `attendanceID` varchar(10) NOT NULL,
   `checkInTime` time NOT NULL,
   `checkInDate` date NOT NULL,
   `location` varchar(100) NOT NULL,
@@ -89,9 +47,8 @@ CREATE TABLE `attendanceslot` (
   `slotName` varchar(100) NOT NULL,
   `slotTime` time NOT NULL,
   `qrCodePath` varchar(255) NOT NULL,
-  `attandanceDate` date NOT NULL,
-  `eventID` varchar(10) NOT NULL,
-  `advisorID` varchar(10) NOT NULL
+  `attendanceDate` date NOT NULL,
+  `eventID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -102,10 +59,18 @@ CREATE TABLE `attendanceslot` (
 
 CREATE TABLE `committee` (
   `committeeID` varchar(10) NOT NULL,
-  `position` varchar(100) NOT NULL,
-  `eventD` varchar(10) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  `eventID` varchar(10) NOT NULL,
   `studentID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `committee`
+--
+
+INSERT INTO `committee` (`committeeID`, `role`, `eventID`, `studentID`) VALUES
+('CMT6831831', 'Chairperson', 'EVT6830d45', 'CA22074'),
+('CMT6831d29', 'Secretary', 'EVT6831d25', 'CA22074');
 
 -- --------------------------------------------------------
 
@@ -122,9 +87,17 @@ CREATE TABLE `event` (
   `approvalLetter` varchar(255) NOT NULL,
   `approvalDate` date NOT NULL,
   `status` varchar(20) NOT NULL,
-  `qr_code` varchar(100) NOT NULL,
-  `advisorID` varchar(10) NOT NULL
+  `qrCode` varchar(100) NOT NULL,
+  `staffID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`eventName`, `eventID`, `eventDescription`, `eventDate`, `venue`, `approvalLetter`, `approvalDate`, `status`, `qrCode`, `staffID`) VALUES
+('Hari Lahir Saya', 'EVT6830d45', 'dfdfsd', '2025-04-30', 'Dataran', 'uploads/CA22011_Assignment1__1_.pdf', '2025-05-20', 'Active', '', ''),
+('Hari Gawai', 'EVT6831d25', 'dfdsfdsfds', '2025-05-13', 'Bilik Guru', 'uploads/CA22011_Assignment__1_.pdf', '2025-05-22', 'Active', '', '');
 
 -- --------------------------------------------------------
 
@@ -133,7 +106,7 @@ CREATE TABLE `event` (
 --
 
 CREATE TABLE `membership` (
-  `memebershipID` varchar(10) NOT NULL,
+  `membershipID` varchar(10) NOT NULL,
   `studentCard` varchar(100) NOT NULL,
   `status` varchar(20) NOT NULL,
   `studentID` varchar(10) NOT NULL
@@ -195,8 +168,20 @@ CREATE TABLE `meritscore` (
   `commitRole` varchar(20) NOT NULL,
   `score` int(255) NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  `studentID` varchar(10) NOT NULL
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `registration`
+--
+
+CREATE TABLE `registration` (
+  `registrationID` int(11) NOT NULL,
+  `studentID` varchar(20) NOT NULL,
+  `eventID` int(11) NOT NULL,
+  `registrationDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -208,7 +193,7 @@ CREATE TABLE `meritscore` (
 CREATE TABLE `staff` (
   `staffID` varchar(10) NOT NULL,
   `staffName` varchar(100) NOT NULL,
-  `staffEmail` varchar(20) NOT NULL,
+  `staffEmail` varchar(100) NOT NULL,
   `staffPassword` varchar(20) NOT NULL,
   `staffRole` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -242,32 +227,18 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`studentID`, `studentName`, `studentEmail`, `studentPassword`, `studentCard`, `verify`, `qr_code`) VALUES
-('CA22057', 'ANIS AYU SYAFIQAH BINTI MOHAMAD NABZHAM', 'anisayu@gmail.com', 'anis123', '', '', ''),
-('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', 'isma123', '', '', '');
+('CA22057', 'ANIS AYU SYAFIQAH BINTI MOHAMAD NABZHAM', 'anisayu@gmail.com', 'anis123', '', '', '0'),
+('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', 'isma123', '', '', '0');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `administrator`
---
-ALTER TABLE `administrator`
-  ADD PRIMARY KEY (`adminID`),
-  ADD KEY `staffID` (`staffID`);
-
---
--- Indexes for table `advisor`
---
-ALTER TABLE `advisor`
-  ADD PRIMARY KEY (`advisorID`),
-  ADD KEY `staffID` (`staffID`);
-
---
 -- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
-  ADD PRIMARY KEY (`attendance`),
+  ADD PRIMARY KEY (`attendanceID`),
   ADD KEY `slotID` (`slotID`),
   ADD KEY `studentID` (`studentID`);
 
@@ -283,7 +254,7 @@ ALTER TABLE `attendanceslot`
 --
 ALTER TABLE `committee`
   ADD PRIMARY KEY (`committeeID`),
-  ADD KEY `eventD` (`eventD`),
+  ADD KEY `eventD` (`eventID`),
   ADD KEY `studentID` (`studentID`);
 
 --
@@ -291,13 +262,13 @@ ALTER TABLE `committee`
 --
 ALTER TABLE `event`
   ADD PRIMARY KEY (`eventID`),
-  ADD KEY `advisorID` (`advisorID`);
+  ADD KEY `staffID` (`staffID`);
 
 --
 -- Indexes for table `membership`
 --
 ALTER TABLE `membership`
-  ADD PRIMARY KEY (`memebershipID`),
+  ADD PRIMARY KEY (`membershipID`),
   ADD KEY `studentID` (`studentID`);
 
 --
@@ -327,8 +298,13 @@ ALTER TABLE `meritclaim`
 -- Indexes for table `meritscore`
 --
 ALTER TABLE `meritscore`
-  ADD PRIMARY KEY (`scoreID`),
-  ADD KEY `studentID` (`studentID`);
+  ADD PRIMARY KEY (`scoreID`);
+
+--
+-- Indexes for table `registration`
+--
+ALTER TABLE `registration`
+  ADD PRIMARY KEY (`registrationID`);
 
 --
 -- Indexes for table `staff`
@@ -343,79 +319,14 @@ ALTER TABLE `student`
   ADD PRIMARY KEY (`studentID`);
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Constraints for table `administrator`
+-- AUTO_INCREMENT for table `registration`
 --
-ALTER TABLE `administrator`
-  ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`staffID`) REFERENCES `staff` (`staffID`);
-
---
--- Constraints for table `advisor`
---
-ALTER TABLE `advisor`
-  ADD CONSTRAINT `advisor_ibfk_1` FOREIGN KEY (`staffID`) REFERENCES `staff` (`staffID`);
-
---
--- Constraints for table `attendance`
---
-ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`slotID`) REFERENCES `attendanceslot` (`slotID`),
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
-
---
--- Constraints for table `attendanceslot`
---
-ALTER TABLE `attendanceslot`
-  ADD CONSTRAINT `attendanceslot_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `attendanceslot_ibfk_2` FOREIGN KEY (`advisorID`) REFERENCES `advisor` (`advisorID`);
-
---
--- Constraints for table `committee`
---
-ALTER TABLE `committee`
-  ADD CONSTRAINT `committee_ibfk_1` FOREIGN KEY (`eventD`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `committee_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
-
---
--- Constraints for table `event`
---
-ALTER TABLE `event`
-  ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`advisorID`) REFERENCES `advisor` (`advisorID`);
-
---
--- Constraints for table `membership`
---
-ALTER TABLE `membership`
-  ADD CONSTRAINT `membership_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
-
---
--- Constraints for table `merit`
---
-ALTER TABLE `merit`
-  ADD CONSTRAINT `merit_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `merit_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
-
---
--- Constraints for table `meritapplication`
---
-ALTER TABLE `meritapplication`
-  ADD CONSTRAINT `meritapplication_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`);
-
---
--- Constraints for table `meritclaim`
---
-ALTER TABLE `meritclaim`
-  ADD CONSTRAINT `meritclaim_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `event` (`eventID`),
-  ADD CONSTRAINT `meritclaim_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
-
---
--- Constraints for table `meritscore`
---
-ALTER TABLE `meritscore`
-  ADD CONSTRAINT `meritscore_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
+ALTER TABLE `registration`
+  MODIFY `registrationID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
