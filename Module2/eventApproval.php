@@ -105,21 +105,34 @@ $result = $conn->query($query);
    
 <div class="container">
    <aside class="sidebar">
-    <h2>MyPetakom</h2>
-    <p>Administrator</p>
-    <nav class="menu">
-        <ul>
-            <li><a href="#" class="active">Dashboard</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Verify Membership</a></li>
-            <li><a href="../Module2/eventApproval.php">Event Management</a></li>
-            <li><a href="#">Attendance Tracking</a></li>
-            <li><a href="#">Merit Applications</a></li>
-            <li><a href="#">Reports & Analytics</a></li>
-            <li><a href="#">System Settings</a></li>
-            <li><form method="post" action="../ManageLogin/Logout.php"><button name="logout">Logout</button></form></li>
-        </ul>
-    </nav>
+        <div class="sidebar-header">
+            <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
+            <div class="sidebar-text">
+                <h2>MyPetakom</h2>
+                <p class="role-label">🧑‍💼 PETAKOM Coordinator</p>
+            </div>
+        </div>
+  
+            <nav class="menu">
+                <ul>
+                    <li><a href="../Home/adminHomePage.php" class="active">Dashboard</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
+                    <li><a href="../Module2/eventApproval.php">Event Management</a></li>
+                    <li><a href="#">Attendance Tracking</a></li>
+                    <li><a href="#">Merit Applications</a></li>
+                    <li><a href="#">Reports & Analytics</a></li>
+                    <li><a href="#">System Settings</a></li>
+                    <li>
+                    <li>
+                        <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
+                            <button type="submit" name="logout" class="sidebar-button">Logout</button>
+                        </form>
+                    </li>
+
+
+                </ul>
+            </nav>
 </aside>
 
     <main class="main-content">
