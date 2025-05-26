@@ -1,0 +1,127 @@
+/* Reset & base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #000000 0%, #ff1493 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, #ff2a9e, #4a004e);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    box-shadow: 3px 0 10px rgba(255, 20, 147, 0.5);
+}
+
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+.logo {
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.sidebar-text h2 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 22px;
+    text-shadow: 1px 1px #3a003a;
+    margin-bottom: 0;
+}
+
+.role-label {
+    color: #f8bbd0;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* Menu */
+.menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-left: 5px;
+}
+
+.menu ul li a {
+    color: #f8bbd0;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    display: block;
+    transition: background 0.3s, color 0.3s;
+    box-shadow: 0 0 5px transparent;
+}
+
+.menu ul li a:hover,
+.menu ul li a.active {
+    background: #ff69b4;
+    color: #fff;
+    box-shadow: 0 0 12px #ff69b4;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background: rgba(26, 0, 26, 0.6);
+    backdrop-filter: blur(4px);
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 100vh;
+    max-width: 900px; /* Set max width for main content */
+    margin: 0 auto; /* Center main content */
+    box-sizing: border-box;
+}
+
+.main-content::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, rgba(252, 228, 236, 0.8), transparent);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Header */
+.main-header h1 {
+  font-weight: 700;
+  font-size: 36px;
+  color: #ffff;
+  margin-bottom: 6px;
+}
+
+.username {
+  color: #ffff;
+}
+
+.main-header p {
+  font-size: 16px;
+  color: #ffff;
+  margin-bottom: 40px;
+}

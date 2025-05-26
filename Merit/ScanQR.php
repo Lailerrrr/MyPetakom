@@ -26,8 +26,8 @@ $stmt->close();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Merit Claim - MyPetakom</title>
-    <link rel="stylesheet" href="MeritClaimStudent.css" /> <!-- Your Pretty Savage CSS -->
+    <title>Scan QR - MyPetakom</title>
+    <link rel="stylesheet" href="scanQR.css" /> <!-- Your Pretty Savage CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
 </head>
 <body>
@@ -46,8 +46,8 @@ $stmt->close();
             <li><a href="#">Profile</a></li>
             <li><a href="#">Manage Membership</a></li>
             <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
-            <li><a href="#" class="active">Merit Claim</a></li>
-            <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
+            <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
+            <li><a href="#"class="active">Scan QR</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>
@@ -55,38 +55,7 @@ $stmt->close();
 
 <main class="main-content">
     <header class="main-header">
-        <h1>MERIT CLAIM</h1><br>
+        <h1>Scan to Check Your Merit Points</h1><br>
         <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
-        <p>Please fill out the form below to submit your merit claim.</p>
+        <p>Use this QR code to quickly access and share your merit information.</p>
     </header>
-
-    <div>
-        <form action="" method="post"> <!-- Use POST method and action="" to submit to the same page -->
-            <label for="Stdid">Student ID:</label>
-            <input type="text" id="Stdid" name="StdID" required><br><br>
-
-            <label for="EID">Event ID:</label>
-            <input type="text" id="EID" name="EventID" required><br><br>
-
-            <label for="role">Role:</label>
-            <select id="role" name="Role">
-                <option value="mainCommittee">Main Committee</option>
-                <option value="committee">Committee</option>
-                <option value="participant">Participant</option>
-            </select><br><br>
-            <form>
-    <label for="file-upload" class="custom-file-upload">
-      Upload Official Letter (PDF):
-    </label>
-    <input id="file-upload" type="file" accept=".pdf" onchange="updateFileName()" required>
-    
-  </form>
-
-            <input type="submit" value="Submit"> <!-- Add a submit button -->
-        </form>
-    </div>
-</main>
-
-
-</body>
-</html>
