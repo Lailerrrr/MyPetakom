@@ -1,0 +1,114 @@
+/* Membership Form Styling Matching Student UI */
+
+.main-content {
+  flex: 1;
+  background: rgba(26, 0, 26, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+.main-content h2 {
+  font-size: 32px;
+  color: #ffd1f1;
+  text-shadow: 1px 1px #4a004e;
+  margin-bottom: 20px;
+}
+
+.logo {
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+form {
+  background-color: rgba(255, 255, 255, 0.06);
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 15px #ff69b4;
+  color: #fff;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  color: #fcdfff;
+}
+
+/* Readonly text inputs (Name & Student ID) styled to match theme */
+form input[type="text"][readonly] {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid #ff69b4;
+  color: #fcdfff;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.2);
+  margin-top: 5px;
+}
+
+/* File input (student card upload) */
+form input[type="file"] {
+  width: 100%;
+  background-color: #fff;
+  color: #000;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+form button {
+  margin-top: 25px;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  background-color: #ff69b4;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #ff1493;
+}
+
+.success {
+  color: #00ff8c;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: #ff7070;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.username {
+  color: #ff1493;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 30px 20px;
+  }
+
+  form {
+    padding: 20px;
+  }
+}

@@ -32,10 +32,11 @@ body, html {
   padding-left: 5px;
 }
 
+
 .logo {
-  height: 40px;
-  object-fit: contain;
-  margin-bottom: 8px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
 }
 
 .sidebar-text h2 {
