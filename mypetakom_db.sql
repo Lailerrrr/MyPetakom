@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 07:12 AM
+-- Generation Time: May 26, 2025 at 05:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -194,7 +194,7 @@ CREATE TABLE `staff` (
   `staffID` varchar(10) NOT NULL,
   `staffName` varchar(100) NOT NULL,
   `staffEmail` varchar(100) NOT NULL,
-  `staffPassword` varchar(20) NOT NULL,
+  `staffPassword` varchar(255) NOT NULL,
   `staffRole` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -203,8 +203,8 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staffID`, `staffName`, `staffEmail`, `staffPassword`, `staffRole`) VALUES
-('staff1', 'MUHAMMAD SYAHMI DANIEL', 'advisor@petakom.my', 'advisor123', 'advisor'),
-('staff2', 'NOORAINA LAILATIE', 'admin@petakom.my', 'admin123', 'petakom coordinator');
+('staff01', 'NOORAINA LAILATIE BINTI MAZLAN', 'admin@petakom.my', '$2y$10$2x.m/JhhyY4kUXrfXTNy6.3Bpw5gD/fCosUGQFcKKCSAAIu16n4Qa', 'PETAKOM Coordinator'),
+('staff02', 'MUHAMMAD SYAHMI DANIEL BIN SHIRMI', 'advisor@petakom.my', '$2y$10$c4rWwCoyXNSn7zkNtULBROE5qwenFxuXL9PVVqNgo8mpLvWm37IM2', 'Event Advisor');
 
 -- --------------------------------------------------------
 
@@ -216,7 +216,7 @@ CREATE TABLE `student` (
   `studentID` varchar(10) NOT NULL,
   `studentName` varchar(80) NOT NULL,
   `studentEmail` varchar(100) NOT NULL,
-  `studentPassword` varchar(20) NOT NULL,
+  `studentPassword` varchar(255) NOT NULL,
   `studentCard` varchar(100) NOT NULL,
   `verify` varchar(20) NOT NULL,
   `qr_code` varchar(100) NOT NULL
@@ -227,8 +227,9 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`studentID`, `studentName`, `studentEmail`, `studentPassword`, `studentCard`, `verify`, `qr_code`) VALUES
-('CA22057', 'ANIS AYU SYAFIQAH BINTI MOHAMAD NABZHAM', 'anisayu@gmail.com', 'anis123', '', '', '0'),
-('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', 'isma123', '', '', '0');
+('CA22057', 'ANIS AYU SYAFIQAH BINTI NABZHAM', 'anisayu@gmail.com', '$2y$10$hWydwrNl7FI9b0oHeo4exOcTtZUrDOJeOejoOuLWySz1V1O.HN9vy', '', '', ''),
+('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', '$2y$10$jDXIPvaLPbUukmdvNS9fIu1RJWTlB5u3lBSSHuuO1CrG/yUm1LpEq', '', '', ''),
+('CA23044', 'ALIYA MAISARA BINTI ANUAR', 'aliyamaisara@gmail.com', '$2y$10$y8eG5dXfTd7NQvkvM5Yp..ASTRb8YlRckduuCJJf2BmkkG0MaOHV6', '', '', '');
 
 --
 -- Indexes for dumped tables

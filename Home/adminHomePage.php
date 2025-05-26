@@ -130,7 +130,7 @@
         </aside>
 
         <main class="main-content">
-            <h1>Welcome, <?php echo htmlspecialchars($adminName); ?>!</h1>
+            <h1>Welcome, <?php echo htmlspecialchars($staffName); ?>!</h1>
 
             <section class="dashboard-cards">
                 <div class="card">
