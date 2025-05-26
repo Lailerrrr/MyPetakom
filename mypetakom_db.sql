@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 05:14 PM
+-- Generation Time: May 26, 2025 at 05:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -88,6 +88,7 @@ CREATE TABLE `event` (
   `approvalDate` date NOT NULL,
   `status` varchar(20) NOT NULL,
   `qrCode` varchar(100) NOT NULL,
+  `eventLevel` varchar(255) NOT NULL,
   `staffID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -95,9 +96,9 @@ CREATE TABLE `event` (
 -- Dumping data for table `event`
 --
 
-INSERT INTO `event` (`eventName`, `eventID`, `eventDescription`, `eventDate`, `venue`, `approvalLetter`, `approvalDate`, `status`, `qrCode`, `staffID`) VALUES
-('Hari Lahir Saya', 'EVT6830d45', 'dfdfsd', '2025-04-30', 'Dataran', 'uploads/CA22011_Assignment1__1_.pdf', '2025-05-20', 'Active', '', ''),
-('Hari Gawai', 'EVT6831d25', 'dfdsfdsfds', '2025-05-13', 'Bilik Guru', 'uploads/CA22011_Assignment__1_.pdf', '2025-05-22', 'Active', '', '');
+INSERT INTO `event` (`eventName`, `eventID`, `eventDescription`, `eventDate`, `venue`, `approvalLetter`, `approvalDate`, `status`, `qrCode`, `eventLevel`, `staffID`) VALUES
+('Hari Lahir Saya', 'EVT6830d45', 'dfdfsd', '2025-04-30', 'Dataran', 'uploads/CA22011_Assignment1__1_.pdf', '2025-05-20', 'Active', '', '', ''),
+('Hari Gawai', 'EVT6831d25', 'dfdsfdsfds', '2025-05-13', 'Bilik Guru', 'uploads/CA22011_Assignment__1_.pdf', '2025-05-22', 'Active', '', '', '');
 
 -- --------------------------------------------------------
 
