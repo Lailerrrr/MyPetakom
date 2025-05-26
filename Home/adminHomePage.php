@@ -1,30 +1,36 @@
 <?php
-session_start();
-require_once '../DB_mypetakom/db.php';
+    session_start();
 
-if (!isset($_SESSION['userID'])) {
-    header("Location: ../ManageLogin/login.php");
-    exit();
-}
+    // 🔒 Prevent page from being cached after logout
+    header("Cache-Control: no-store, no-cache, must-revalidate");
+    header("Pragma: no-cache");
+    header("Expires: 0");
 
-$adminID = $_SESSION['userID'];
-$adminName = "";
-$adminEmail = "";
+    require_once '../DB_mypetakom/db.php';
 
-// Fetch admin details
-$sql = "SELECT staffName, staffEmail, staffRole FROM staff WHERE staffID = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $staffID);
-$stmt->execute();
-$stmt->bind_result($staffName, $staffEmail, $staffRole);
-$stmt->fetch();
-$stmt->close();
+    if (!isset($_SESSION['userID'])) {
+        header("Location: ../ManageLogin/login.php");
+        exit();
+    }
 
-// Placeholder stats
-$totalUsers = 120;
-$pendingEvents = 5;
-$meritRequests = 8;
-$uptime = "99.9%";
+    $adminID = $_SESSION['userID'];
+    $adminName = "";
+    $adminEmail = "";
+
+    // Fetch admin details
+    $sql = "SELECT staffName, staffEmail, staffRole FROM staff WHERE staffID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $staffID);
+    $stmt->execute();
+    $stmt->bind_result($staffName, $staffEmail, $staffRole);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Placeholder stats
+    $totalUsers = 120;
+    $pendingEvents = 5;
+    $meritRequests = 8;
+    $uptime = "99.9%";
 ?>
 
 <!DOCTYPE html>

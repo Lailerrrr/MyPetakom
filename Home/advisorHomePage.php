@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// 🔒 Prevent page from being cached after logout
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 require_once '../DB_mypetakom/db.php';
 
 if (!isset($_SESSION['userID'])) {
