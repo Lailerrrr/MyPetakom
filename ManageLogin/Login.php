@@ -48,12 +48,9 @@
 
 
         if (!isset($error)) {
-            $stmt = $con->prepare("SELECT $idColumn, $passColumn FROM $table WHERE $emailColumn = ? ");
-            
-            // If staff, include staffRole in SELECT
-            $selectFields = ($table === 'staff') ? "$idColumn, $passColumn, staffRole" : "$idColumn, $passColumn";  
+            // Use correct fields in SELECT
+            $selectFields = ($table === 'staff') ? "$idColumn, $passColumn, staffRole" : "$idColumn, $passColumn, studentName";
             $stmt = $con->prepare("SELECT $selectFields FROM $table WHERE $emailColumn = ?");
-            
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -63,15 +60,16 @@
                     $row = $result->fetch_assoc();
 
                     if (password_verify($password, $row[$passColumn])) {
-                    // Store role, username, and user ID in session
+                    // Set session and cookies
                     $_SESSION['role'] = $roleInput;
                     $_SESSION['email'] = $email;
                     $_SESSION['userID'] =  $row[$idColumn];
 
-                        // Store staffRole only if logging in as staff
-                        if ($table === 'staff') {
-                            $_SESSION['staffRole'] = $row['staffRole'];
-                        }
+                     if ($table === 'student') {
+                        $_SESSION['studentName'] = $row['studentName'];
+                    } else {
+                        $_SESSION['staffRole'] = $row['staffRole'];
+                    }
 
 
                     // Set cookies to remember the user for 7 days
@@ -83,7 +81,7 @@
                     exit;
 
                     } else {
-                        $error = "Invalid username or password.";
+                        $error = "Invalid email or password.";
                     }
                 } else {
                     $error = "No user found with that email.";
@@ -96,10 +94,6 @@
 
 
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -120,22 +114,16 @@
                 <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
                 <img src="/MyPetakom/umpsa-logo.png" alt="UMPSA Logo" class="logo" />
             </div>
-
             <div class="site-title">MyPetakom Portal</div>
-
-           
         </header>
 
         <main class="login-section">
-
             <div class="login-card">
-
                 <h1 class="login-heading">Login</h1>
                 <h2 class="subheading">Faculty of Computing</h2>
                 <p class="welcome-text">Welcome to MyPetakom</p>
 
-                <form class="login-form" action="Login.php" method="POST">
-
+                <form class="login-form" action="login.php" method="POST">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
 
@@ -154,11 +142,13 @@
                         <button type="submit" class="btn-login">Login</button>
                     </div>
                 </form>
+
                 <?php
-                    if (isset($error)) {
-                        echo "<p style='color:red;'>$error</p>";
-                    }
+                if (isset($error)) {
+                    echo "<p style='color:red;'>$error</p>";
+                }
                 ?>
+
                 <p><a href="forgotPassword.php" class="forgot-link">Forgot Password?</a></p>
             </div>
         </main>
