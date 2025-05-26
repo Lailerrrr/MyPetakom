@@ -53,8 +53,14 @@
     <body>
 
         <header class="site-header">
-            <div class="site-title">MyPETAKOM Portal</div>
-            <a href="login.php" class="signup-link">Back to Login</a>
+            
+            <div class="header-left">
+                <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
+                <img src="/MyPetakom/umpsa-logo.png" alt="UMPSA Logo" class="logo" />
+            </div>
+             <a href="login.php" class="signup-link">Back to Login</a>
+            <div class="site-title">MyPetakom Portal</div>  
+        
         </header>
 
         <section class="login-section">

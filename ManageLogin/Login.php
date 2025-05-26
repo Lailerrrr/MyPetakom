@@ -13,7 +13,7 @@
 
         // Normalize role input to lowercase
         $roleInput = strtolower(trim($_POST['role']));
-        $email = $_POST['email'];
+        $email = strtolower(trim($_POST['email']));
         $password = $_POST['password'];
 
         // Define default values
@@ -51,6 +51,9 @@
             // Use correct fields in SELECT
             $selectFields = ($table === 'staff') ? "$idColumn, $passColumn, staffRole" : "$idColumn, $passColumn, studentName";
             $stmt = $con->prepare("SELECT $selectFields FROM $table WHERE $emailColumn = ?");
+            if (!$stmt) {
+                die("Prepare failed: " . $con->error);
+            }
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -58,6 +61,19 @@
                 if ($result && $result->num_rows === 1) {
                     // Fetch user ID
                     $row = $result->fetch_assoc();
+
+
+                // Debug - remove these after confirming it works
+                
+                echo "<pre>";
+                var_dump($row);
+                var_dump("Password input: " . $password);
+                var_dump("Password hash DB: " . $row[$passColumn]);
+                var_dump("Password verify: " . password_verify($password, $row[$passColumn]));
+                echo "</pre>";
+                
+
+
 
                     if (password_verify($password, $row[$passColumn])) {
                     // Set session and cookies
