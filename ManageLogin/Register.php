@@ -37,8 +37,11 @@
             }
         }
 
-        $stmt->close();
-        $conn->close();
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+    $conn->close();
+
     }
 ?>
 
@@ -91,10 +94,12 @@
 
                     <div id="staffFields" style="display:none;">
                         <label for="staffRole">Staff Role:</label>
-                        <select name="staffRole" id="staffRole">
+                        <select name="staffRole" id="staffRole" required>
+                            <option value="">-- Select Staff Role --</option>
                             <option value="Event Advisor">Event Advisor</option>
                             <option value="PETAKOM Coordinator">PETAKOM Coordinator</option>
                         </select>
+
                     </div>
 
                     <div class="form-actions">
@@ -116,6 +121,18 @@
                 document.getElementById("staffFields").style.display = (role === "Staff") ? "block" : "none";
             }
         </script>
+        <script>
+            function toggleFields() {
+                const role = document.getElementById("role").value;
+                document.getElementById("staffFields").style.display = (role === "Staff") ? "block" : "none";
+            }
+
+            // Run this when the page loads
+            window.onload = function() {
+                toggleFields();
+            };
+        </script>
+
 
     </body>
 </html>

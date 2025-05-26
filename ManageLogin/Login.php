@@ -131,6 +131,7 @@
                 <img src="/MyPetakom/umpsa-logo.png" alt="UMPSA Logo" class="logo" />
             </div>
             <div class="site-title">MyPetakom Portal</div>
+            <a href="Register.php" class="signup-link">Back to Register</a>
         </header>
 
         <main class="login-section">
