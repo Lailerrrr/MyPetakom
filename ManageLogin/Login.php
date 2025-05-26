@@ -49,6 +49,11 @@
 
         if (!isset($error)) {
             $stmt = $con->prepare("SELECT $idColumn, $passColumn FROM $table WHERE $emailColumn = ? ");
+            
+            // If staff, include staffRole in SELECT
+            $selectFields = ($table === 'staff') ? "$idColumn, $passColumn, staffRole" : "$idColumn, $passColumn";  
+            $stmt = $con->prepare("SELECT $selectFields FROM $table WHERE $emailColumn = ?");
+            
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -62,6 +67,12 @@
                     $_SESSION['role'] = $roleInput;
                     $_SESSION['email'] = $email;
                     $_SESSION['userID'] =  $row[$idColumn];
+
+                        // Store staffRole only if logging in as staff
+                        if ($table === 'staff') {
+                            $_SESSION['staffRole'] = $row['staffRole'];
+                        }
+
 
                     // Set cookies to remember the user for 7 days
                     setcookie('role', $roleInput, time() + (86400 * 7), "/");

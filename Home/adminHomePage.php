@@ -12,11 +12,11 @@ $adminName = "";
 $adminEmail = "";
 
 // Fetch admin details
-$sql = "SELECT adminName, adminEmail FROM administrator WHERE adminID = ?";
+$sql = "SELECT staffName, staffEmail, staffRole FROM staff WHERE staffID = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $adminID);
+$stmt->bind_param("i", $staffID);
 $stmt->execute();
-$stmt->bind_result($adminName, $adminEmail);
+$stmt->bind_result($staffName, $staffEmail, $staffRole);
 $stmt->fetch();
 $stmt->close();
 

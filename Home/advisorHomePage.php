@@ -7,7 +7,15 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
+$staffRole = strtolower($_SESSION['staffRole']);
+
+
+// Access control: only allow advisors
+if ($staffRole !== 'advisor') {
+    echo "Access denied. This section is only for advisors.";
+    exit();
+}
 
 
 // Helper function to safely fetch a single value
@@ -21,14 +29,14 @@ function getSingleValue($conn, $query, $default = 0) {
 }
 
 // Total Events
-$totalEvents = getSingleValue($conn, "SELECT COUNT(*) as total FROM event WHERE advisorID = '$advisorID'");
+$totalEvents = getSingleValue($conn, "SELECT COUNT(*) as total FROM event WHERE staffID = '$staffID'");
 
 // Total Registered Students under advisor's events
 $totalStudents = getSingleValue($conn, "
     SELECT COUNT(DISTINCT r.studentID) AS total
     FROM registration r
     JOIN event e ON r.eventID = e.eventID
-    WHERE e.advisorID = '$advisorID'
+    WHERE e.staffID = '$staffID'
 ");
 
 // Total Committee Members
@@ -36,7 +44,7 @@ $totalCommittees = getSingleValue($conn, "
     SELECT COUNT(*) AS total
     FROM committee c
     JOIN event e ON c.eventID = e.eventID
-    WHERE e.advisorID = '$advisorID'
+    WHERE e.staffID = '$staffID'
 ");
 
 // Students per Event Chart
@@ -44,7 +52,7 @@ $studentsPerEvent = $conn->query("
     SELECT e.eventName, COUNT(r.studentID) as studentCount
     FROM registration r
     JOIN event e ON r.eventID = e.eventID
-    WHERE e.advisorID = '$advisorID'
+    WHERE e.staffID = '$staffID'
     GROUP BY r.eventID
 ");
 
@@ -62,7 +70,7 @@ $roleDist = $conn->query("
     SELECT c.role, COUNT(*) AS count
     FROM committee c
     JOIN event e ON c.eventID = e.eventID
-    WHERE e.advisorID = '$advisorID'
+    WHERE e.staffID = '$staffID'
     GROUP BY c.role
 ");
 
