@@ -121,6 +121,14 @@
 
 
 <script src="studentHomePage.js"></script>
+<script>
+// This forces re-navigation on back button
+window.history.pushState(null, "", window.location.href);
+window.onpopstate = function () {
+    window.location.href = "../ManageLogin/logout.php";
+};
+</script>
+
 </body>
 </html>
 
