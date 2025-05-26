@@ -13,14 +13,15 @@
         exit();
     }
 
-    $adminID = $_SESSION['userID'];
-    $adminName = "";
-    $adminEmail = "";
+    $staffID = $_SESSION['userID'];
+    $staffName = "";
+    $staffEmail = "";
+    $staffRole= "";
 
     // Fetch admin details
     $sql = "SELECT staffName, staffEmail, staffRole FROM staff WHERE staffID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $staffID);
+    $stmt->bind_param("s", $staffID);
     $stmt->execute();
     $stmt->bind_result($staffName, $staffEmail, $staffRole);
     $stmt->fetch();

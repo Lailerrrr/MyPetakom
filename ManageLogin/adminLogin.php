@@ -4,38 +4,48 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+    require_once '../DB_mypetakom/db.php'; // Ensure this sets $conn = new mysqli(...)
 
-        $con = new mysqli("localhost", "root", "", "mypetakom_db");
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
 
-        if ($con->connect_error) {
-            echo json_encode(["success" => false, "message" => "Connection failed: " . $con->connect_error]);
+        // Basic validation
+        if (empty($email) || empty($password)) {
+            echo json_encode(["success" => false, "message" => "Please enter both email and password."]);
             exit();
         }
 
-        // Escape the input data
-        $email = $con->real_escape_string($email);
-        $password = $con->real_escape_string($password);
+        // Use prepared statements for secure query
+        $sql = "SELECT staffID, staffPassword FROM staff WHERE staffEmail = ?";
+        $stmt = $conn->prepare($sql);
 
-        $sql = "SELECT * FROM administrator WHERE adminEmail='$email' AND adminPassword='$password'";
-        $result = $con->query($sql);
-
-        if ($result->num_rows == 1) {
-            // Successful login
-            $row = $result->fetch_assoc();
-            $_SESSION['userID'] = $row['adminID']; // Store userID in session
-
-            // Determine redirect URL
-            $redirectURL = "../Home/adminHomePage.php";
-
-            echo json_encode(["success" => true, "redirectURL" => $redirectURL]);
-        } else {
-            // Failed login
-            echo json_encode(["success" => false, "message" => "Incorrect username or password. Please try again."]);
+        if (!$stmt) {
+            echo json_encode(["success" => false, "message" => "Database error: " . $conn->error]);
+            exit();
         }
 
-        $con->close();
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Check if user exists
+        if ($result && $result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+
+            // Verify hashed password
+            if (password_verify($password, $row['staffPassword'])) {
+                $_SESSION['userID'] = $row['staffID'];
+                echo json_encode(["success" => true, "redirectURL" => "../Home/adminHomePage.php"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "❌ Incorrect password."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "❌ Email not found."]);
+        }
+
+        $stmt->close();
+        $conn->close();
     }
 ?>
+

@@ -18,7 +18,7 @@
 
 
     // Access control: only allow advisors
-    if ($staffRole !== 'advisor') {
+    if ($staffRole !== 'event advisor') {
         echo "Access denied. This section is only for advisors.";
         exit();
     }
