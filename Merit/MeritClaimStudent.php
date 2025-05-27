@@ -20,6 +20,7 @@ $stmt->bind_result($name, $student_id);
 $stmt->fetch();
 $stmt->close();
 
+//Handle new claim submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $student_id = $_POST['StdID'] ?? '';
     $event_id = $_POST['EventID'] ?? '';
@@ -51,12 +52,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "❌ Sorry, there was an error uploading your file.";
         }
     } else {
-        echo "❌ No file uploaded or file error.";
-    }
-
-    $conn->close();
+        echo "❌ No file uploaded.";
+    }  
 }
 
+// Fetch claim list
+$sql = "SELECT * FROM meritclaim WHERE studentID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $student_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 
@@ -95,11 +100,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <main class="main-content">
     <header class="main-header">
-        <h1>MERIT CLAIM</h1><br>
+        <h1>MANAGE MISSING MERIT CLAIM</h1><br>
         <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
-        <p>Please fill out the form below to submit your merit claim.</p>
-    </header>
-
+        
+    
+    <div class="claims-table">
+        <h2>YOUR MERIT CLAIMS</h2></p>
+        </header>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Claim ID</th>
+                <th>Event ID</th>
+                <th>Letter</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['claimID']) ?></td>
+                    <td><?= htmlspecialchars($row['eventID']) ?></td>
+                    <td><a href="uploads/<?= htmlspecialchars($row['claimLetter']) ?>" target="_blank">View</a></td>
+                    <td><?= htmlspecialchars($row['claimStatus']) ?></td>
+                    <td>
+                        <?php if ($row['claimStatus'] !== 'Submitted'): ?>
+                            <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a> | 
+                            <a href="deleteClaim.php?id=<?= $row['claimID'] ?>" onclick="return confirm('Are you sure?')">Delete</a><br>
+                        <?php else: ?>
+                            Locked
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
+    </div><br>
     <div>
         <form action="" method="post" enctype="multipart/form-data">
     <label for="Stdid">Student ID:</label>
@@ -113,8 +146,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <input type="submit" value="Submit"> 
 </form>
+</div>
 
- </div>
+
+
+
 </main>
 
 
