@@ -9,14 +9,14 @@ body, html {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #000000 0%, #ff1493 100%);
     color: #333;
-    height: 100%;
+    min-height: 100vh;
     display: flex;
 }
 
 /* Sidebar */
 .sidebar {
     background: linear-gradient(180deg, #ff2a9e, #4a004e);
-    width: 20%;
+    width: 280px;
     display: flex;
     flex-direction: column;
     padding: 20px 15px;
@@ -91,7 +91,7 @@ body, html {
     align-items: stretch;
     justify-content: flex-start;
     min-height: 100vh;
-    width: 100%; 
+    max-width: 900px; /* Set max width for main content */
     margin: 0 auto; /* Center main content */
     box-sizing: border-box;
 }
@@ -135,7 +135,7 @@ body, html {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     width: 100%;
-    
+    max-width: 600px;
     margin-top: 30px;
 }
 
@@ -309,76 +309,5 @@ input[type=submit]:hover {
 .upload-container input[type="submit"]:hover {
   background-color: #45a049;
 }
-
-.main-content, 
-.main-content h1, 
-.main-content h2,
-.main-content p,
-.main-content table,
-.main-content th,
-.main-content td,
-.main-content a {
-    color: white;
-}
-
-/* Optional: Make table borders white */
-.main-content table {
-    border: 1px solid white;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.main-content th,
-.main-content td {
-    border: 1px solid white;
-    padding: 8px;
-}
-
-/* Optional: Link styling */
-.main-content a {
-    color: #add8e6; /* light blue for better contrast */
-    text-decoration: none;
-}
-.main-content a:hover {
-    color: white;
-    text-decoration: underline;
-}
-
-.main-content tbody {
-    color: white;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  

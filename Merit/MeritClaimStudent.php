@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $approvalBy = null;
 
             $sql = "INSERT INTO meritclaim (claimID, claimStatus, claimLetter, approval_date, approval_by, eventID, studentID)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, 'draft', ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
             $claimID = uniqid("CLM"); // generate unique claim ID
@@ -124,7 +124,7 @@ $result = $stmt->get_result();
             <td><?= htmlspecialchars($row['claimStatus']) ?></td>
             <td>
                 <?php if ($row['claimStatus'] !== 'Submitted'): ?>
-                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a> | 
+                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a>
                     <a href="#" class="delete-btn" data-id="<?= $row['claimID'] ?>">Delete</a>
                 <?php else: ?>
                     Locked
