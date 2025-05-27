@@ -34,25 +34,12 @@
             </div>
             
             <nav class="menu">
-                <ul>
-                    <li><a href="../Home/adminHomePage.php" class="active">Dashboard</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
-                    <li><a href="../Module2/eventApproval.php">Event Management</a></li>
-                    <li><a href="#">Attendance Tracking</a></li>
-                    <li><a href="#">Merit Applications</a></li>
-                    <li><a href="#">Reports & Analytics</a></li>
-                    <li><a href="#">System Settings</a></li>
-                    <li>
-                    <li>
-                        <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
-                            <button type="submit" name="logout" class="sidebar-button">Logout</button>
-                        </form>
-                    </li>
-
-
-                </ul>
-            </nav>
+            <ul>
+                <li><a href="../Home/adminHomePage.php">Dashboard</a></li>
+                <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
+                <li><a href="../membership/deleteMembership.php" class="active">Delete Membership</a></li>
+            </ul>
+        </nav>
         </aside>
 
         <main class="main-content">

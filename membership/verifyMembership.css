@@ -1,6 +1,7 @@
 /* verifyMembership.css */
 body {
     font-family: 'Inter', sans-serif;
+    height: 100%;
     background-color: #0b0b0e;
     color: white;
     margin: 0;
@@ -8,10 +9,27 @@ body {
     box-sizing: border-box;
 }
 
-.main-content {
-    padding: 40px 60px;
-    background-color: #1a0a1a;
-    min-height: 100vh;
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, #69003d, #1e0b17);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 3px 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.sidebar h2 {
+    color: white;
+    margin-bottom: 10px;
+}
+.sidebar p {
+    color: #ffc8e6;
+    margin-bottom: 30px;
 }
 
 h1, h2 {
@@ -73,6 +91,26 @@ button {
     transition: background 0.3s ease;
 }
 
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu ul li a {
+    color: #ffc8e6;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    display: block;
+    transition: background 0.3s, color 0.3s;
+}
+
+
 button.approve {
     background-color: #28a745;
     color: white;
@@ -97,3 +135,18 @@ button.reject:hover {
     border-radius: 6px;
     box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
 }
+
+.main-content {
+    flex: 1;
+    padding: 40px 60px;
+    background: #1a0a1a;
+    overflow-y: auto;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffa5d5;
+}
+
