@@ -1,0 +1,81 @@
+/* viewMembership.css */
+
+body, html {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #000000 0%, #ff1493 100%);
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 100px auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+h2 {
+  text-align: center;
+  color: #ffc0e0;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 15px;
+  color: #ffbde5;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="datetime"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+img.uploaded-card {
+  margin-top: 20px;
+  max-width: 100%;
+  border-radius: 12px;
+  border: 2px solid #ff69b4;
+}
+
+a.back-btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 10px 20px;
+  background: #ff69b4;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+a.back-btn:hover {
+  background: #ff99cc;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 60px 20px;
+    padding: 20px;
+  }
+}
