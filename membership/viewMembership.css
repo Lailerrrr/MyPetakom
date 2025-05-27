@@ -1,0 +1,101 @@
+/* View Membership Styling to Match Apply Membership Theme */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: rgba(26, 0, 26, 0.6);
+    backdrop-filter: blur(4px);
+    color: #fcdfff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 0 15px #ff69b4;
+}
+
+h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #ffd1f1;
+    text-shadow: 1px 1px #4a004e;
+    margin-bottom: 30px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #fff;
+}
+
+th, td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+th {
+    background-color: #ff69b4;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px #4a004e;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Status labels */
+.status-approved {
+    color: #00ff8c;
+    font-weight: bold;
+}
+
+.status-rejected {
+    color: #ff7070;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* Back button styling */
+.back-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 24px;
+    background-color: #ff69b4;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #ff1493;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    table th, table td {
+        padding: 10px 12px;
+    }
+}
