@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
     if ($event) {
         $slotName = $event['eventName'];
         $attendanceDate = $event['eventDate'];
+        
 
         // Step 2: Generate unique slotID
         $result = $conn->query("SELECT slotID FROM AttendanceSlot ORDER BY slotID DESC LIMIT 1");
@@ -53,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
 
         // Step 3: Insert slot
         $stmt = $conn->prepare("INSERT INTO AttendanceSlot (slotID, eventID, slotName, attendanceDate, slotTime) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $slotID, $eventID, $slotName, $attendanceDate, $slotTime);
         $stmt->bind_param("sssss", $slotID, $eventID, $slotName, $attendanceDate, $slotTime);
         $stmt->execute();
         $stmt->close();
@@ -119,108 +121,151 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Attendance Slots - Advisor</title>
-    <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-<aside class="sidebar">
-    <div class="sidebar-header">
-        <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
-        <div>
-            <h2>MyPetakom</h2>
-            <p class="role-label">🧭 Advisor</p>
+<!-- Bootstrap 5 CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="d-flex">
+     <!-- Sidebar -->
+    <div class="bg-dark text-white p-3" style="min-width: 200px; height: 100vh;">
+       <aside class="sidebar">
+       <div class="sidebar-header">
+         <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
+            <div class="sidebar-text"> <!-- ✅ Add this class -->
+                <h2>MyPetakom</h2>
+                <p class="role-label">🧭 Advisor</p>
+            </div>
         </div>
+
+
+        <nav class="menu">
+            <ul>
+               
+                <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
+                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
+                <li><a href="../Module2/eventList.php">Event List</a></li>
+                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
+                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
+                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
+                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+                <li><a href="../Attendance/advisor_attendance_slot.php">Attendance Slot</a></li>
+              
+            
+                <li>
+                    <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
+                        <button name="logout"  class="sidebar-logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </aside>
     </div>
-    <nav class="menu">
-        <ul>
-            <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
-            <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
-            <li><a href="../Module2/eventList.php">Event List</a></li>
-            <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
-            <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
-            <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
-            <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
-            <li><a href="../Attendance/advisor_attendance_slot.php" class="active">Attendance Slot</a></li>
-            <li>
-                <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
-                    <button name="logout" class="sidebar-logout-button">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</aside>
 
-<main class="main-content">
-    <div class="dashboard-indicator">
-        <span class="dashboard-role">📅 Attendance Slot Management</span>
-    </div>
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
 
-    <header class="main-header">
-        <h1>Create & Manage Attendance Slots</h1>
-        <p>Enter Event ID of an event you created. A QR code will be generated upon slot creation.</p>
-    </header>
+        <header class="main-header">
+            <h1>Create & Manage Attendance Slots</h1>
+        </header>
 
-    <section class="form-section">
-        <form method="post" class="slot-form">
-            <h2>Create New Attendance Slot</h2><br>
+        <section class="form-section mt-4">
+            <form method="post" class="slot-form">
+                <h2>Create New Attendance Slot</h2><br>
 
-            <label>Event ID:</label>
-            <input type="text" name="eventID" required><br><br>
+                <label>Event ID:</label>
+                <input type="text" name="eventID" required class="form-control mb-3">
 
-            <label>Slot Time:</label>
-            <input type="time" name="slotTime" required><br><br>
+                <label>Slot Time:</label>
+                <input type="time" name="slotTime" required class="form-control mb-3">
 
-            <button type="submit" name="create_slot" class="btn">Create Slot</button><br><br>
+                <button type="submit" name="create_slot" class="btn btn-primary">Create Slot</button>
+            </form>
 
             <?php if (!empty($error)): ?>
-                <p style="color:red;"><?php echo $error; ?></p>
+                <div class="alert alert-danger mt-3"><?= $error; ?></div>
             <?php endif; ?>
             <?php if (!empty($success)): ?>
-                <p style="color:white;"><?php echo $success; ?></p>
+                <div class="alert alert-success mt-3"><?= $success; ?></div>
             <?php endif; ?>
-        </form>
-    </section>
+        </section>
 
-    <?php if (!empty($slots)): ?>
-        <section class="slot-list">
-            <h2>Your Attendance Slots</h2>
-            <br>
-            <table style="border-collapse: collapse; width: 100%;">
-                <tr>
-                    <th>Slot ID</th>
-                    <th>Event</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>QR Code</th>
-                    <th>Action</th>
-                </tr>
-                <?php foreach ($slots as $slot): ?>
+        <hr>
+
+        <div class="container-fluid">
+            <h2>Attendance Slots</h2>
+            <p>Manage attendance slots for events.</p>
+
+            <table class="table table-bordered mt-4">
+                <thead class="table-dark">
                     <tr>
-                        <td><?php echo htmlspecialchars($slot['slotID']); ?></td>
-                        <td><?php echo htmlspecialchars($slot['slotName']); ?></td>
-                        <td><?php echo $slot['attendanceDate']; ?></td>
-                        <td><?php echo $slot['slotTime']; ?></td>
+                        <th>Slot ID</th>
+                        <th>Slot Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>QR Code</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($slots as $slot): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($slot['slotID']); ?></td>
+                        <td><?= htmlspecialchars($slot['slotName']); ?></td>
+                        <td><?= $slot['attendanceDate']; ?></td>
+                        <td><?= $slot['slotTime']; ?></td>
                         <td>
                             <?php if (!empty($slot['qrCodePath'])): ?>
-                                <img src="../QR/<?php echo $slot['qrCodePath']; ?>" alt="QR Code" width="100">
+                                <img src="../QR/<?= $slot['qrCodePath']; ?>" alt="QR Code" width="100">
+                            <?php else: ?>
+                                <span style="color:red;">QR Missing</span>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <form method="post" onsubmit="return confirm('Are you sure you want to delete this slot?');">
-                                <input type="hidden" name="slotID" value="<?php echo $slot['slotID']; ?>">
-                                <button type="submit" name="delete_slot" class="btn delete-btn">Delete</button>
-                            </form>
+                            <div class="d-flex flex-column gap-2">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $slot['slotID']; ?>">
+                                    Edit
+                                </button>
+
+                                <form method="post" onsubmit="return confirm('Are you sure you want to delete this slot?');">
+                                    <input type="hidden" name="slotID" value="<?= $slot['slotID']; ?>">
+                                    <button type="submit" name="delete_slot" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
-                <?php endforeach; ?>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal<?= $slot['slotID']; ?>" tabindex="-1" aria-labelledby="editModalLabel<?= $slot['slotID']; ?>" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form method="post">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="editModalLabel<?= $slot['slotID']; ?>">Edit Slot: <?= $slot['slotID']; ?></h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="edit_slotID" value="<?= $slot['slotID']; ?>">
+                                <div class="mb-3">
+                                    <label class="form-label">Attendance Date</label>
+                                    <input type="date" class="form-control" name="edit_attendanceDate" value="<?= $slot['attendanceDate']; ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Slot Time</label>
+                                    <input type="time" class="form-control" name="edit_slotTime" value="<?= $slot['slotTime']; ?>" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" name="edit_slot_submit" class="btn btn-success">Save Changes</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
-        </section>
-    <?php endif; ?>
-</main>
-</body>
-</html>
+        </div>
+    </div>
+</div>
