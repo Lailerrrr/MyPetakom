@@ -301,3 +301,33 @@ body, html {
 .menu li form {
     width: 100%;
 }
+
+.slot-entry {
+    background-color: #ffffff;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.slot-form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.slot-form-inline label {
+    font-weight: 600;
+}
+
+.qr-preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
