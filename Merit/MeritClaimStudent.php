@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $approvalBy = null;
 
             $sql = "INSERT INTO meritclaim (claimID, claimStatus, claimLetter, approval_date, approval_by, eventID, studentID)
-                    VALUES (?, 'draft', ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
             $claimID = uniqid("CLM"); // generate unique claim ID
