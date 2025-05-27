@@ -124,13 +124,14 @@ $result = $stmt->get_result();
             <td><a href="uploads/<?= htmlspecialchars($row['claimLetter']) ?>" target="_blank">View</a></td>
             <td><?= htmlspecialchars($row['claimStatus']) ?></td>
             <td>
-                <?php if ($row['claimStatus'] !== 'Submitted'): ?>
-                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a>
-                    <a href="#" class="delete-btn" data-id="<?= $row['claimID'] ?>">Delete</a>
-                <?php else: ?>
-                    Locked
-                <?php endif; ?>
-            </td>
+    <?php if ($row['claimStatus'] === 'Pending') { ?>
+        <a href="EditClaim.php?id=<?= $row['claimID'] ?>">Edit</a>
+        <a href="DeleteClaim.php?id=<?= $row['claimID'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+    <?php } else { ?>
+        <span style="color:gray;">Locked</span>
+    <?php } ?>
+</td>
+
         </tr>
     <?php endwhile; ?>
 </table>
@@ -172,7 +173,7 @@ document.querySelectorAll('.delete-btn').forEach(button => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = `deleteClaim.php?id=${claimId}`;
+                window.location.href = deleteClaim.php?id=${claimId};
             }
         });
     });
