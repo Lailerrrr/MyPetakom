@@ -11,6 +11,13 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
+$success = '';
+if (isset($_SESSION['success'])) {
+    $success = $_SESSION['success'];
+    unset($_SESSION['success']);
+}
+
+
 $staffID = $_SESSION['userID'];
 $slots = [];
 $error = '';
@@ -18,16 +25,12 @@ $success = '';
 
 // Create new slot
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
-    $eventid = $_POST['eventID'];
+    $eventID = $_POST['eventID'];
     $slotTime = $_POST['slotTime'];
 
-// Debug to check input values
-//echo "DEBUG: EventID entered: " . $_POST['eventID'] . "<br>";
-//echo "DEBUG: Logged-in staffID: " . $_SESSION['userID'] . "<br>";
-
-    // Step 1: Get event info
-    $stmt = $conn->prepare("SELECT eventName, eventDate FROM event WHERE eventID = ? AND staffID = ?");
-    $stmt->bind_param("ss", $eventID, $staffID);
+    // Step 1: Get event info (without checking staffID)
+    $stmt = $conn->prepare("SELECT eventName, eventDate FROM event WHERE eventID = ?");
+    $stmt->bind_param("s", $eventID);
     $stmt->execute();
     $eventResult = $stmt->get_result();
     $event = $eventResult->fetch_assoc();
@@ -37,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
         $slotName = $event['eventName'];
         $attendanceDate = $event['eventDate'];
 
-        // Step 2: Generate unique slotID (S001, S002, ...)
+        // Step 2: Generate unique slotID
         $result = $conn->query("SELECT slotID FROM AttendanceSlot ORDER BY slotID DESC LIMIT 1");
         if ($row = $result->fetch_assoc()) {
             $lastID = $row['slotID'];
@@ -60,17 +63,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
         $qrPath = "../QR/$qrFileName";
         QRcode::png($qrContent, $qrPath, QR_ECLEVEL_L, 4);
 
-        // Step 5: Update slot with QR path
+        // Step 5: Update QR path
         $stmt = $conn->prepare("UPDATE AttendanceSlot SET qrCodePath = ? WHERE slotID = ?");
         $stmt->bind_param("ss", $qrFileName, $slotID);
         $stmt->execute();
         $stmt->close();
 
-        $success = "Attendance slot created successfully.";
+        $_SESSION['success'] = "Attendance slot created successfully.";
+        header("Location: advisor_attendance_slot.php");  // redirect to same page
+        exit();
     } else {
-        $error = "Invalid Event ID or you are not authorized.";
+        $error = "Invalid Event ID.";
     }
 }
+
 
 // Delete slot
 if (isset($_POST['delete_slot'])) {
@@ -173,7 +179,7 @@ $stmt->close();
                 <p style="color:red;"><?php echo $error; ?></p>
             <?php endif; ?>
             <?php if (!empty($success)): ?>
-                <p style="color:green;"><?php echo $success; ?></p>
+                <p style="color:white;"><?php echo $success; ?></p>
             <?php endif; ?>
         </form>
     </section>
@@ -181,7 +187,8 @@ $stmt->close();
     <?php if (!empty($slots)): ?>
         <section class="slot-list">
             <h2>Your Attendance Slots</h2>
-            <table>
+            <br>
+            <table style="border-collapse: collapse; width: 100%;">
                 <tr>
                     <th>Slot ID</th>
                     <th>Event</th>

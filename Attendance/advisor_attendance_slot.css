@@ -331,3 +331,20 @@ body, html {
     background-color: #e74c3c;
     color: white;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid b600b6;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #b600b6;
+}
