@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #100021;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px 40px;
+    background-color: #1c0030;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+h2 {
+    color: #f9c74f;
+    border-bottom: 2px solid #7209b7;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    align-self: flex-start;
+}
+
+.detail-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffb703;
+    margin-bottom: 6px;
+}
+
+.detail-value {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding-left: 12px;
+    border-left: 3px solid #3a0ca3;
+    color: #e0c3fc;
+}
+
+.approval-letter a {
+    color: #ffb703;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.approval-letter a:hover {
+    text-decoration: underline;
+}
+
+.committee-section {
+    margin-top: 25px;
+}
+
+.committee-member {
+    background: linear-gradient(135deg, #300048, #4b0072);
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    border-left: 5px solid #f72585;
+    transition: transform 0.2s ease;
+}
+
+.committee-member:hover {
+    transform: scale(1.02);
+}
+
+.committee-member p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.back-link {
+    align-self: flex-start;
+    margin-top: 20px;
+    color: #cdb4db;
+    background-color: #240046;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.back-link:hover {
+    background-color: #3c096c;
+}
