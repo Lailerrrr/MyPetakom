@@ -110,22 +110,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Update Merit Claim - MyPetakom</title>
     <link rel="stylesheet" href="editClaim.css" /> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
-    <aside class="sidebar">
+<aside class="sidebar">
     <div class="sidebar-header">
         <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
         <div class="sidebar-text">
             <h2>MyPetakom</h2>
             <p class="role-label">🎓 Student</p>
         </div>
-    </div>
-
-    
+    </div> 
     <nav class="menu">
             <ul>
                 <li><a href="#">Profile</a></li>
@@ -137,15 +136,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
     </nav>
 </aside>
+<main class="main-content">
+    <header class="main-header">
+        <h1>UPDATE MERIT</h1><br>
+        <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
 
-<h1>UPDATE MERIT CLAIM</h1>
+
 <?php if (!empty($successMessage)): ?>
     <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
         <?= htmlspecialchars($successMessage) ?>
     </div>
 <?php endif; ?>
 
-<p>Welcome, <strong><?= htmlspecialchars($name) ?></strong> (<?= htmlspecialchars($student_id) ?>)</p>
+
 <form action="editClaim.php?id=<?= htmlspecialchars($claimID) ?>" method="POST" enctype="multipart/form-data">
 
     <label for="eventID">Event ID:</label><br>
