@@ -9,14 +9,16 @@ body, html {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #000000 0%, #ff1493 100%);
     color: #333;
-    min-height: 100vh;
+    height: 100%;
     display: flex;
 }
 
 /* Sidebar */
 .sidebar {
     background: linear-gradient(180deg, #ff2a9e, #4a004e);
-    width: 280px;
+    width: 240px;
+    min-width: 200px;
+    max-width: 280px;
     display: flex;
     flex-direction: column;
     padding: 20px 15px;
@@ -91,7 +93,8 @@ body, html {
     align-items: stretch;
     justify-content: flex-start;
     min-height: 100vh;
-    max-width: 900px; /* Set max width for main content */
+    min-width: 0;
+    width: 100%; 
     margin: 0 auto; /* Center main content */
     box-sizing: border-box;
 }
@@ -135,7 +138,7 @@ body, html {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     width: 100%;
-    max-width: 600px;
+
     margin-top: 30px;
 }
 
@@ -347,6 +350,22 @@ input[type=submit]:hover {
 .main-content tbody {
     color: white;
 }
+
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+  .main {
+    width: 80%;
+    padding: 0;
+  }
+  .right {
+    width: 100%;
+  }
+}
+@media only screen and (max-width:500px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width: 100%;
+  }
 
 
 

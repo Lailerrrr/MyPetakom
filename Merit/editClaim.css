@@ -1,0 +1,313 @@
+/* Reset & base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #000000 0%, #ff1493 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, #ff2a9e, #4a004e);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    box-shadow: 3px 0 10px rgba(255, 20, 147, 0.5);
+}
+
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+.logo {
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.sidebar-text h2 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 22px;
+    text-shadow: 1px 1px #3a003a;
+    margin-bottom: 0;
+}
+
+.role-label {
+    color: #f8bbd0;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* Menu */
+.menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-left: 5px;
+}
+
+.menu ul li a {
+    color: #f8bbd0;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    display: block;
+    transition: background 0.3s, color 0.3s;
+    box-shadow: 0 0 5px transparent;
+}
+
+.menu ul li a:hover,
+.menu ul li a.active {
+    background: #ff69b4;
+    color: #fff;
+    box-shadow: 0 0 12px #ff69b4;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background: rgba(26, 0, 26, 0.6);
+    backdrop-filter: blur(4px);
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 100vh;
+    max-width: 900px; /* Set max width for main content */
+    margin: 0 auto; /* Center main content */
+    box-sizing: border-box;
+}
+
+.main-content::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, rgba(252, 228, 236, 0.8), transparent);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Header in Main Content */
+.main-header h1 {
+    font-weight: 700;
+    font-size: 36px;
+    color: #ffffff;
+    text-shadow: 1px 1px #4a004e;
+    margin-bottom: 6px;
+}
+
+.username {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+.main-header p {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+/* Dashboard Cards layout: 2x2 grid, centered */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 30px;
+}
+
+.card {
+    background: rgba(255, 20, 147, 0.1);
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0 0 15px #ff69b4;
+    transition: transform 0.3s ease;
+    max-width: 260px;
+    min-height: 120px;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px #ff1493;
+}
+
+.card h3 {
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: #ffb6c1;
+}
+
+.card p {
+    font-size: 16px;
+    color: #ffd1e8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px 20px;
+    }
+    .sidebar-header {
+        flex: 1;
+        margin-bottom: 0;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    .logo {
+        height: 30px;
+        margin-bottom: 0;
+    }
+    .sidebar-text h2 {
+        font-size: 18px;
+    }
+    .role-label {
+        font-size: 12px;
+    }
+    .menu ul {
+        flex-direction: row;
+        gap: 15px;
+        padding-left: 0;
+    }
+    .menu ul li a {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+    .main-content {
+        padding: 20px;
+        min-height: auto;
+        justify-content: flex-start;
+    }
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+}
+
+/* Form Styles */
+div.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    color: white;
+    max-width: 400px;   /* max width for larger screens */
+    margin: 0 auto;     /* center on large screens */
+}
+
+/* Labels */
+form label {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Inputs and Select */
+form input[type="text"],
+form select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+
+/* Submit button */
+input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0 0 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+/* Container for the upload form */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  color: white;
+  max-width: 400px;   /* max width for larger screens */
+  margin: 0 auto;     /* center on large screens */
+}
+
+/* Label text */
+.upload-container label {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* File input styling */
+.upload-container input[type="file"] {
+  width: 100%;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Submit button styling */
+.upload-container input[type="submit"] {
+  width: 50%;
+  background-color: #4CAF50;
+  padding: 14px 20px;
+  margin: 8px 0 0 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Submit button hover effect */
+.upload-container input[type="submit"]:hover {
+  background-color: #45a049;
+}
+  
+  
