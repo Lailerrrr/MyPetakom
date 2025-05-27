@@ -8,9 +8,29 @@
         exit();
     }
 
-    // Fetch pending membership applications
-    $query = "SELECT membershipID, studentID, studentCard, status FROM membership";
+    
+    // Fetch all membership applications with student info
+    $query = "
+        SELECT 
+            m.membershipID, 
+            m.studentID, 
+            m.studentCard AS cardImage, 
+            m.status, 
+            s.studentName
+        FROM 
+            membership m
+        JOIN 
+            student s ON m.studentID = s.studentID
+        ORDER BY m.apply_at DESC
+    ";
+
     $result = $conn->query($query);
+
+    if (!$result) {
+        die("Query failed: " . $conn->error);
+    }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -45,27 +65,45 @@
         <main class="main-content">
             <div class="main-header">
                 <h1>Verify Membership Applications</h1>
-                <p class="subheading">Review and approve or reject student membership applications.</p>
+                <p class="subheading">Review and approve, reject, or delete student membership applications.</p>
             </div>
-
+            
             <section class="application-list">
                 <?php if ($result && $result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <div class="application-card">
                             <h3><?= htmlspecialchars($row['studentName']) ?> (<?= htmlspecialchars($row['studentID']) ?>)</h3>
-                            <p><strong>Program:</strong> <?= htmlspecialchars($row['program']) ?></p>
-                            <div class="card-image-preview">
-                                <img src="../uploads/<?= htmlspecialchars($row['cardImage']) ?>" alt="Student Card" />
-                            </div>
-                            <form method="post" action="processMembership.php">
-                                <input type="hidden" name="application_id" value="<?= $row['id'] ?>">
-                                <button name="approve" class="btn approve">Approve</button>
-                                <button name="reject" class="btn reject">Reject</button>
-                            </form>
-                        </div>
+                            
+                            
+                            <p><strong>Status:</strong> 
+                                <span class="
+                                    <?= $row['status'] === 'Pending' ? 'status-pending' : 
+                                        ($row['status'] === 'Approved' ? 'status-approved' : 
+                                        ($row['status'] === 'Rejected' ? 'status-rejected' : '')) ?>">
+                                    <?= htmlspecialchars($row['status']) ?>
+                                </span>
+                            </p>
+                            
+                 <div class="application-card">
+                    <div class="card-image-preview">
+                        <img src="../uploads/<?= htmlspecialchars($row['cardImage']) ?>" alt="Student Card" />
+                    </div>
+
+                    <div class="application-details">
+                        <h3><?= htmlspecialchars($row['studentName']) ?> (<?= htmlspecialchars($row['studentID']) ?>)</h3>
+                        <p><strong>Status:</strong> <?= htmlspecialchars($row['status']) ?></p>
+
+                        <form method="post" action="processMembership.php" class="action-buttons">
+                            <input type="hidden" name="membershipID" value="<?= $row['membershipID'] ?>">
+                            <button type="submit" name="action" value="approve" class="btn approve">Approve</button>
+                            <button type="submit" name="action" value="reject" class="btn reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p class="no-applications">No pending applications at the moment.</p>
+                    <p class="no-applications">No membership applications found.</p>
                 <?php endif; ?>
             </section>
         </main>
