@@ -9,6 +9,7 @@ if (!isset($_SESSION['userID'])) {
 
 $studentID = $_SESSION['userID'];
 
+
 $query = "
     SELECT m.membershipID, s.studentName, m.studentCard, m.status, m.apply_at
     FROM membership m
@@ -30,7 +31,7 @@ $membership = $result->fetch_assoc();
     <meta charset="UTF-8">
     <title>View PETAKOM Membership</title>
     <link rel="stylesheet" href="../Home/studentHomePage.css">
-    <link rel="stylesheet" href="applyMembership.css">
+    <link rel="stylesheet" href="viewMembership.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
 </head>
 <body>
@@ -46,10 +47,9 @@ $membership = $result->fetch_assoc();
             <ul>
                 <li><a href="#">Profile</a></li>
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
-                <li><a href="../membership/viewMembership.php">View Membership</a></li>
+                <li><a href="../membership/viewMembership.php" class="active">View Membership</a></li>
                 <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-                <li><a href="../Merit/meritScore.php">Merit</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
                 <li><a href="../ManageLogin/Logout.php">Logout</a></li>
             </ul>

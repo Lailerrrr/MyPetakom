@@ -92,7 +92,7 @@ $result = $conn->query($sql);
                         <td><?= htmlspecialchars($row['studentID']); ?></td>
                         <td><?= htmlspecialchars($row['studentName']); ?></td>
                         <td><?= htmlspecialchars($row['status']); ?></td>
-                        <td><a href="<?= '../membership/' . htmlspecialchars($row['studentCard']); ?>" target="_blank">View</a></td>
+                        <td><a href="<?= '../uploads/' . htmlspecialchars($row['studentCard']); ?>" target="_blank">View</a></td>
                         <td>
                             <form method="POST" onsubmit="return confirm('Are you sure you want to delete this membership?');">
                                 <input type="hidden" name="membershipID" value="<?= $row['membershipID']; ?>">

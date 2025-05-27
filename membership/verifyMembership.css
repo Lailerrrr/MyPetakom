@@ -1,152 +1,166 @@
-/* verifyMembership.css */
-body {
-    font-family: 'Inter', sans-serif;
-    height: 100%;
-    background-color: #0b0b0e;
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    padding: 40px 60px;
+    background: #1a0a1a; /* Dark background */
+    overflow-y: auto;
+    min-height: 100vh;
     color: white;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
-
-.container {
-    display: flex;
-}
-
-.sidebar {
-    background: linear-gradient(180deg, #69003d, #1e0b17);
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 3px 0 10px rgba(255, 105, 180, 0.3);
-}
-
-.sidebar h2 {
-    color: white;
-    margin-bottom: 10px;
-}
-.sidebar p {
-    color: #ffc8e6;
-    margin-bottom: 30px;
-}
-
-h1, h2 {
-    color: #ff4081;
+.main-header h1 {
+    font-size: 2rem;
     font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffa5d5; /* Matching deleteMembership heading color */
 }
 
-.membership-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: rgba(255, 64, 129, 0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 0 10px #ff99cc;
-    margin-top: 30px;
+.subheading {
+    font-size: 1rem;
+    color: #ffc8e6;
+    margin-bottom: 2rem;
 }
 
-.membership-table th, .membership-table td {
-    padding: 15px 20px;
-    text-align: left;
-    border-bottom: 1px solid #ff80bf;
-}
-
-.membership-table th {
-    background-color: #69003d;
-    color: #fff;
-}
-
-.membership-table tr:hover {
-    background-color: rgba(255, 128, 191, 0.1);
-}
-
-.status-pending {
-    color: #ffc107;
-    font-weight: 600;
-}
-
-.status-approved {
-    color: #28a745;
-    font-weight: 600;
-}
-
-.status-rejected {
-    color: #dc3545;
-    font-weight: 600;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s ease;
-}
-
-
-.menu ul {
-    list-style: none;
+/* Application List Container */
+.application-list {
+    max-width: 900px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.menu ul li a {
-    color: #ffc8e6;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 10px 15px;
+/* Application Card */
+.application-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 64, 129, 0.07);
+    padding: 1.5rem;
     border-radius: 12px;
-    display: block;
-    transition: background 0.3s, color 0.3s;
-}
-
-
-button.approve {
-    background-color: #28a745;
+    border: 1px solid #444;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease;
     color: white;
 }
 
-button.approve:hover {
-    background-color: #45c16c;
+.application-card:hover {
+    transform: translateY(-3px);
 }
 
-button.reject {
-    background-color: #dc3545;
-    color: white;
-}
-
-button.reject:hover {
-    background-color: #e05b67;
-}
-
-.card-preview {
-    max-width: 100px;
-    height: auto;
-    border-radius: 6px;
-    box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
-}
-
-.main-content {
+/* Student Info */
+.application-details {
     flex: 1;
-    padding: 40px 60px;
-    background: #1a0a1a;
-    overflow-y: auto;
+    margin-right: 20px;
 }
 
-.main-content h1 {
-    font-size: 32px;
+.application-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: #ffc8e6;
+}
+
+.application-card p {
+    font-size: 0.95rem;
+    margin: 0.3rem 0;
+    color: #ddd;
+}
+
+/* Status Styling */
+.status-pending {
+    color: #ff9800;
     font-weight: bold;
-    margin-bottom: 20px;
-    color: #ffa5d5;
 }
 
+.status-approved {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.status-rejected {
+    color: #f44336;
+    font-weight: bold;
+}
+
+/* Image Preview */
+.card-image-preview {
+    flex: 0 0 auto;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.card-image-preview img {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+    object-fit: contain;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 0.8rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.btn.approve {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.btn.approve:hover {
+    background-color: #43a047;
+}
+
+.btn.reject {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.btn.reject:hover {
+    background-color: #e53935;
+}
+
+/* No applications message */
+.no-applications {
+    font-size: 1rem;
+    color: #bbb;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .application-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .application-details {
+        margin-right: 0;
+    }
+
+    .card-image-preview {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+
+    .card-image-preview img {
+        width: 100%;
+        max-width: 200px;
+    }
+}
