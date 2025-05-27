@@ -19,7 +19,46 @@ $stmt->execute();
 $stmt->bind_result($name, $student_id);
 $stmt->fetch();
 $stmt->close();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $student_id = $_POST['StdID'] ?? '';
+    $event_id = $_POST['EventID'] ?? '';
+    $document = $_FILES['document']['name'] ?? '';
+
+    if (isset($_FILES['document']) && $_FILES['document']['error'] === 0) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($document);
+
+        if (move_uploaded_file($_FILES['document']['tmp_name'], $target_file)) {
+            $claimStatus = "Pending";
+            $approvalDate = null;
+            $approvalBy = null;
+
+            $sql = "INSERT INTO meritclaim (claimID, claimStatus, claimLetter, approval_date, approval_by, eventID, studentID)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+            $claimID = uniqid("CLM"); // generate unique claim ID
+            $stmt->bind_param("sssssss", $claimID, $claimStatus, $document, $approvalDate, $approvalBy, $event_id, $student_id);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Claim submitted successfully.');</script>";
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "❌ Sorry, there was an error uploading your file.";
+        }
+    } else {
+        echo "❌ No file uploaded or file error.";
+    }
+
+    $conn->close();
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +87,6 @@ $stmt->close();
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
                 <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-                <li><a href="../Merit/meritScore.php">Merit</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
                 <li><a href="../ManageLogin/Logout.php">Logout</a></li>
             </ul>
@@ -63,30 +101,20 @@ $stmt->close();
     </header>
 
     <div>
-        <form action="" method="post"> <!-- Use POST method and action="" to submit to the same page -->
-            <label for="Stdid">Student ID:</label>
-            <input type="text" id="Stdid" name="StdID" required><br><br>
+        <form action="" method="post" enctype="multipart/form-data">
+    <label for="Stdid">Student ID:</label>
+    <input type="text" id="Stdid" name="StdID" required><br><br>
 
-            <label for="EID">Event ID:</label>
-            <input type="text" id="EID" name="EventID" required><br><br>
+    <label for="EID">Event ID:</label>
+    <input type="text" id="EID" name="EventID" required><br><br>
 
-            <label for="role">Role:</label>
-            <select id="role" name="Role">
-                <option value="mainCommittee">Main Committee</option>
-                <option value="committee">Committee</option>
-                <option value="participant">Participant</option>
-            </select><br><br>
-            <form>
-    <label for="file-upload" class="custom-file-upload">
-      Upload Official Letter (PDF):
-    </label>
-    <input id="file-upload" type="file" accept=".pdf" onchange="updateFileName()" required>
-    
-  </form>
+    <label for="file-upload">Upload Official Letter (PDF): </label> 
+    <input id="file-upload" type="file" name="document" accept=".pdf" required><br><br>
 
-            <input type="submit" value="Submit"> <!-- Add a submit button -->
-        </form>
-    </div>
+    <input type="submit" value="Submit"> 
+</form>
+
+ </div>
 </main>
 
 
