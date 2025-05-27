@@ -7,16 +7,16 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $slots = [];
 
 // Fetch slots created by the advisor
 $sql = "SELECT s.slotID, s.slotName, s.qrCodePath, s.attendanceDate, s.slotTime, e.eventName
         FROM AttendanceSlot s
         JOIN event e ON s.eventID = e.eventID
-        WHERE s.advisorID = ?";
+        WHERE e.staffID = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $advisorID);
+$stmt->bind_param("s", $staffID);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -32,7 +32,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <title>Attendance Slots - Advisor</title>
-    <link rel="stylesheet" href="../advisor/advisorHomePage.css"> 
+    <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -46,12 +46,21 @@ $stmt->close();
         </div>
         <nav class="menu">
             <ul>
-                <li><a href="../advisor/advisor_dashboard.php">Profile</a></li>
-                <li><a href="#" class="active">Attendance Slot</a></li>
+                
+                <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
+                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
+                <li><a href="../Module2/eventList.php">Event List</a></li>
+                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
+                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
+                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
+                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+                <li><a href="../Attendance/advisor_attendance_slot.php" class="active">Attendance Slot</a></li>
+
                 <li>
-                    <form method="post" action="../ManageLogin/Logout.php">
-                        <button name="logout" class="sidebar-logout-button">Logout</button>
+                    <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
+                        <button name="logout"  class="sidebar-logout-button">Logout</button>
                     </form>
+                </li>
                 </li>
             </ul>
         </nav>
@@ -60,7 +69,7 @@ $stmt->close();
     <main class="main-content">
         <div class="dashboard-indicator">
             <span class="dashboard-role">📅 Attendance Slot Management</span>
-            <span class="dashboard-user">Logged in as: <strong><?php echo htmlspecialchars($advisorID); ?></strong></span>
+
         </div>
 
         <header class="main-header">

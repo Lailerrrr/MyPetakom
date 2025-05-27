@@ -19,6 +19,7 @@
                 <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
                 <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
                 <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+                <li><a href="../Attendance/advisor_attendance_slot.php">Attendance Slot</a></li>
               
             
                 <li>

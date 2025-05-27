@@ -57,6 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 100vh;
         }
 
+
+        .logo {
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 8px;
+        }
+        
         .attendance-box {
             background: white;
             padding: 30px;

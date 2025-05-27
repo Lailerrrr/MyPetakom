@@ -24,9 +24,13 @@ html, body {
   box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
+
+
 .logo {
-  height: 45px;
-  margin-right: 10px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    margin-right: 10px;
 }
 
 .site-title {

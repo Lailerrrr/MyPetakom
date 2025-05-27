@@ -44,7 +44,7 @@ $stmt->close();
     <nav class="menu">
         <ul>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Manage Membership</a></li>
+            <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
             <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
             <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
             <li><a href="#"class="active">Scan QR</a></li>

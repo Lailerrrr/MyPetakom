@@ -1,0 +1,152 @@
+/* verifyMembership.css */
+body {
+    font-family: 'Inter', sans-serif;
+    height: 100%;
+    background-color: #0b0b0e;
+    color: white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, #69003d, #1e0b17);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 3px 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.sidebar h2 {
+    color: white;
+    margin-bottom: 10px;
+}
+.sidebar p {
+    color: #ffc8e6;
+    margin-bottom: 30px;
+}
+
+h1, h2 {
+    color: #ff4081;
+    font-weight: 700;
+}
+
+.membership-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 64, 129, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #ff99cc;
+    margin-top: 30px;
+}
+
+.membership-table th, .membership-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ff80bf;
+}
+
+.membership-table th {
+    background-color: #69003d;
+    color: #fff;
+}
+
+.membership-table tr:hover {
+    background-color: rgba(255, 128, 191, 0.1);
+}
+
+.status-pending {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.status-approved {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-rejected {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu ul li a {
+    color: #ffc8e6;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    display: block;
+    transition: background 0.3s, color 0.3s;
+}
+
+
+button.approve {
+    background-color: #28a745;
+    color: white;
+}
+
+button.approve:hover {
+    background-color: #45c16c;
+}
+
+button.reject {
+    background-color: #dc3545;
+    color: white;
+}
+
+button.reject:hover {
+    background-color: #e05b67;
+}
+
+.card-preview {
+    max-width: 100px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px 60px;
+    background: #1a0a1a;
+    overflow-y: auto;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffa5d5;
+}
+
