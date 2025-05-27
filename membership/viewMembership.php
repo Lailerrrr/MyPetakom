@@ -46,7 +46,7 @@ $membership = $result->fetch_assoc();
             <ul>
                 <li><a href="#">Profile</a></li>
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
-                <li><a href="../membership/viewMembership.php">View Membership</a></li>
+                <li><a href="../membership/viewMembership.php" class="active">View Membership</a></li>
                 <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
                 <li><a href="../Merit/meritScore.php">Merit</a></li>

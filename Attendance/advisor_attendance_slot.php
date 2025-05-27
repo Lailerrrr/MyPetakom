@@ -138,13 +138,14 @@ $stmt->close();
     </div>
     <nav class="menu">
         <ul>
-            <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
-            <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
-            <li><a href="../Module2/eventList.php">Event List</a></li>
-            <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
-            <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
-            <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
-            <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+             <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
+                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
+                <li><a href="../Module2/eventList.php">Event List</a></li>
+                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
+                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
+                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
+                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+                <li><a href="../Merit/MeritApprovalEventAdvisor.php">Merit Approval</a></li>
             <li><a href="../Attendance/advisor_attendance_slot.php" class="active">Attendance Slot</a></li>
             <li>
                 <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
