@@ -3,7 +3,7 @@ session_start();
 require_once '../DB_mypetakom/db.php';
 require_once '../phpqrcode/qrlib.php';
 
-//echo "SESSION userID: " . $_SESSION['userID'] . "<br>";
+
 
 
 if (!isset($_SESSION['userID'])) {
@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
     $slotTime = $_POST['slotTime'];
 
     // Step 1: Get event info (without checking staffID)
-    $stmt = $conn->prepare("SELECT eventName, eventDate FROM event WHERE eventID = ?");
-    $stmt->bind_param("s", $eventID);
+    $stmt = $conn->prepare("SELECT eventName, eventDate FROM event WHERE eventID = ? AND staffID = ?");
+    $stmt->bind_param("ss", $eventID, $staffID);
     $stmt->execute();
     $eventResult = $stmt->get_result();
     $event = $eventResult->fetch_assoc();
@@ -72,10 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
         $_SESSION['success'] = "Attendance slot created successfully.";
         header("Location: advisor_attendance_slot.php");  // redirect to same page
         exit();
+
     } else {
         $error = "Invalid Event ID.";
     }
 }
+
 
 
 // Delete slot
