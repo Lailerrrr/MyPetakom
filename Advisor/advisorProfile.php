@@ -7,19 +7,19 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 
 // Fetch advisor details
-$advisorQuery = $conn->prepare("SELECT advisorName, advisorEmail, advisor_phoneNum, advisor_department FROM advisor WHERE advisorID = ?");
-$advisorQuery->bind_param("s", $advisorID);
+$advisorQuery = $conn->prepare("SELECT staffName, staffEmail, staffPhone, staff_Department FROM staff WHERE staffID = ?");
+$advisorQuery->bind_param("s", $staffID);
 $advisorQuery->execute();
 $advisorQuery->bind_result($name, $email, $phone, $department);
 $advisorQuery->fetch();
 $advisorQuery->close();
 
 // Fetch advisor's events
-$eventQuery = $conn->prepare("SELECT eventName, eventDate, status FROM event WHERE advisorID = ?");
-$eventQuery->bind_param("s", $advisorID);
+$eventQuery = $conn->prepare("SELECT eventName, eventDate, status FROM event WHERE staffID = ?");
+$eventQuery->bind_param("s", $staffID);
 $eventQuery->execute();
 $eventResult = $eventQuery->get_result();
 ?>

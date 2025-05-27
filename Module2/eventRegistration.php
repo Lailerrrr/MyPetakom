@@ -3,12 +3,13 @@ session_start();
 require_once '../DB_mypetakom/db.php';
 
 
+
 if (!isset($_SESSION['userID'])) {
     header("Location: ../ManageLogin/login.php");
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $successMsg = "";
 $errorMsg = "";
 
@@ -21,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $venue = $_POST['venue'];
     $approvalDate = $_POST['approvalDate'];
     $status = $_POST['status'];
+    $eventLevel= $_POST['eventLevel'];
     
 
    $uploadDir = "uploads/";
@@ -37,9 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (move_uploaded_file($_FILES["approvalLetter"]["tmp_name"], $targetFilePath)) {
         $approvalLetter = $targetFilePath;
 
-            $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, advisorID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $advisorID);
-
+            $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status,$eventLevel, $staffID);
+           
+            
             if ($stmt->execute()) {
                 $successMsg = "Event registered successfully.";
             } else {
@@ -54,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errorMsg = "Please upload the approval letter.";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -69,21 +73,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container"> 
         <?php include '../sidebar.php'; ?>
-    
         <main class="main-content">
         
             <h2>📅 Register a New Event</h2>
 
-            <?php if ($successMsg): ?>
-                <p style="color: green;"><?php echo $successMsg; ?></p>
-            <?php endif; ?>
-            <?php if ($errorMsg): ?>
-                <p style="color: red;"><?php echo $errorMsg; ?></p>
-            <?php endif; ?>
-
+          
                 <form method="POST" enctype="multipart/form-data">
                    
-
                     <label>Event Name:</label>
                     <input type="text" name="eventName" required><br><br>
 
@@ -101,6 +97,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <label>Approval Letter (PDF):</label>
                     <input type="file" name="approvalLetter" accept=".pdf" required><br><br>
+
+                    <label>Event Level:</label>
+                    <select name="eventLevel" required>
+                        <option value="International">International</option>
+                        <option value="National">Postponed</option>
+                        <option value="State">State</option>
+                        <option value="District">District</option>
+                        <option value="UMPSA">UMPSA</option>
+                    </select><br><br>
 
                     <label>Status:</label>
                     <select name="status" required>

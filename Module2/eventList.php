@@ -10,14 +10,14 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $successMsg = $errorMsg = "";
 
 if (isset($_GET['delete'])) {
     $eventID = $_GET['delete'];
 
-        $delete = $conn->prepare("DELETE FROM event WHERE eventID = ? AND advisorID = ?");
-        $delete->bind_param("ss", $eventID, $advisorID);
+        $delete = $conn->prepare("DELETE FROM event WHERE eventID = ? AND staffID = ?");
+        $delete->bind_param("ss", $eventID, $staffID);
         if ($delete->execute()) {
             $successMsg = "Event deleted successfully.";
         } else {
@@ -28,11 +28,11 @@ if (isset($_GET['delete'])) {
     }
 
 // Fetch events for this advisor
-$stmt = $conn->prepare("SELECT eventID, eventName, eventDate, venue, status FROM event WHERE advisorID = ? ORDER BY eventDate DESC");
+$stmt = $conn->prepare("SELECT eventID, eventName, eventDate, venue, status FROM event WHERE staffID = ? ORDER BY eventDate DESC");
 if (!$stmt) {
     die("Prepare failed: " . $conn->error);
 }
-$stmt->bind_param("s", $advisorID);
+$stmt->bind_param("s", $staffID);
 $stmt->execute();
 $result = $stmt->get_result();
 

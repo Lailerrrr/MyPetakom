@@ -7,7 +7,7 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $successMsg = $errorMsg = "";
 
 // Handle merit application form submission
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eventID'])) {
 
 
 // Fetch events under this advisor
-$events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '$advisorID'");
+$events = $conn->query("SELECT eventID, eventName FROM event WHERE staffID = '$staffID'");
 ?>
 
 <!DOCTYPE html>

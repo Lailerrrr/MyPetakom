@@ -7,7 +7,7 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $successMsg = $errorMsg = "";
 
 // Helper function to get committee members for an event
@@ -41,8 +41,8 @@ function getCommitteeMembers($conn, $eventID) {
 if (isset($_GET['delete'])) {
     $eventID = $_GET['delete'];
 
-    $getFile = $conn->prepare("SELECT approvalLetter FROM event WHERE eventID = ? AND advisorID = ?");
-    $getFile->bind_param("ss", $eventID, $advisorID);
+    $getFile = $conn->prepare("SELECT approvalLetter FROM event WHERE eventID = ? AND staffID = ?");
+    $getFile->bind_param("ss", $eventID, $staffID);
     $getFile->execute();
     $result = $getFile->get_result();
 
@@ -56,8 +56,8 @@ if (isset($_GET['delete'])) {
         $delCommittee->bind_param("s", $eventID);
         $delCommittee->execute();
 
-        $delete = $conn->prepare("DELETE FROM event WHERE eventID = ? AND advisorID = ?");
-        $delete->bind_param("ss", $eventID, $advisorID);
+        $delete = $conn->prepare("DELETE FROM event WHERE eventID = ? AND staffID = ?");
+        $delete->bind_param("ss", $eventID, $staffID);
         if ($delete->execute()) {
             $successMsg = "Event deleted successfully.";
         } else {
@@ -76,8 +76,8 @@ if (isset($_POST['updateEvent'])) {
     $venue = $_POST['venue'];
     $status = $_POST['status'];
 
-    $stmt = $conn->prepare("UPDATE event SET eventName = ?, eventDate = ?, venue = ?, status = ? WHERE eventID = ? AND advisorID = ?");
-    $stmt->bind_param("ssssss", $eventName, $eventDate, $venue, $status, $eventID, $advisorID);
+    $stmt = $conn->prepare("UPDATE event SET eventName = ?, eventDate = ?, venue = ?, status = ? WHERE eventID = ? AND staffID = ?");
+    $stmt->bind_param("ssssss", $eventName, $eventDate, $venue, $status, $eventID, $staffID);
 
     if ($stmt->execute()) {
         // Update committee members
@@ -109,7 +109,7 @@ if (isset($_POST['updateEvent'])) {
 }
 
 // Fetch advisor's events
-$events = $conn->query("SELECT * FROM event WHERE advisorID = '$advisorID'");
+$events = $conn->query("SELECT * FROM event WHERE staffID = '$staffID'");
 ?>
 
 <!DOCTYPE html>
