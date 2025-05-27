@@ -10,7 +10,7 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
-$advisorID = $_SESSION['userID'];
+$staffID = $_SESSION['userID'];
 $successMsg = $errorMsg = "";
 
 // Handle form submission
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 }
 
 // Fetch events under this advisor
-$events = $conn->query("SELECT eventID, eventName FROM event WHERE advisorID = '$advisorID'");
+$events = $conn->query("SELECT eventID, eventName FROM event WHERE staffID = '$staffID'");
 
 // Fetch students
 $students = $conn->query("SELECT studentID, studentName FROM student");
