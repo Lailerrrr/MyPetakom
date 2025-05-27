@@ -73,6 +73,7 @@ $result = $stmt->get_result();
     <title>Merit Claim - MyPetakom</title>
     <link rel="stylesheet" href="MeritClaimStudent.css" /> <!-- Your Pretty Savage CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -108,29 +109,30 @@ $result = $stmt->get_result();
         <h2>YOUR MERIT CLAIMS</h2></p>
         </header>
         <table border="1" cellpadding="5">
-            <tr>
-                <th>Claim ID</th>
-                <th>Event ID</th>
-                <th>Letter</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['claimID']) ?></td>
-                    <td><?= htmlspecialchars($row['eventID']) ?></td>
-                    <td><a href="uploads/<?= htmlspecialchars($row['claimLetter']) ?>" target="_blank">View</a></td>
-                    <td><?= htmlspecialchars($row['claimStatus']) ?></td>
-                    <td>
-                        <?php if ($row['claimStatus'] !== 'Submitted'): ?>
-                            <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a> | 
-                            <a href="deleteClaim.php?id=<?= $row['claimID'] ?>" onclick="return confirm('Are you sure?')">Delete</a><br>
-                        <?php else: ?>
-                            Locked
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
+    <tr>
+        <th>Claim ID</th>
+        <th>Event ID</th>
+        <th>Letter</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?= htmlspecialchars($row['claimID']) ?></td>
+            <td><?= htmlspecialchars($row['eventID']) ?></td>
+            <td><a href="uploads/<?= htmlspecialchars($row['claimLetter']) ?>" target="_blank">View</a></td>
+            <td><?= htmlspecialchars($row['claimStatus']) ?></td>
+            <td>
+                <?php if ($row['claimStatus'] !== 'Submitted'): ?>
+                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a> | 
+                    <a href="#" class="delete-btn" data-id="<?= $row['claimID'] ?>">Delete</a>
+                <?php else: ?>
+                    Locked
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+</table>
         </table>
     </div><br>
     <div>
@@ -153,6 +155,28 @@ $result = $stmt->get_result();
 
 </main>
 
+<script>
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const claimId = this.getAttribute('data-id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `deleteClaim.php?id=${claimId}`;
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>
