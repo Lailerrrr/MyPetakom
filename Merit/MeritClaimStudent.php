@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $approvalBy = null;
 
             $sql = "INSERT INTO meritclaim (claimID, claimStatus, claimLetter, approval_date, approval_by, eventID, studentID)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, 'draft', ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
             $claimID = uniqid("CLM"); // generate unique claim ID
@@ -91,6 +91,7 @@ $result = $stmt->get_result();
             <ul>
                 <li><a href="#">Profile</a></li>
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
+                <li><a href="../membership/viewMembership.php">View Membership</a></li>
                 <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
@@ -124,7 +125,7 @@ $result = $stmt->get_result();
             <td><?= htmlspecialchars($row['claimStatus']) ?></td>
             <td>
                 <?php if ($row['claimStatus'] !== 'Submitted'): ?>
-                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a> | 
+                    <a href="editClaim.php?id=<?= $row['claimID'] ?>">Edit</a>
                     <a href="#" class="delete-btn" data-id="<?= $row['claimID'] ?>">Delete</a>
                 <?php else: ?>
                     Locked
