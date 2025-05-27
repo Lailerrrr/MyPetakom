@@ -131,7 +131,7 @@ body, html {
 /* Header */
 .main-header h1 {
   font-weight: 700;
-  font-size: 36px;
+  font-size: 36 px;
   color: #db5ce5;
   text-shadow: 1px 1px #330033;
   margin-bottom: 6px;
