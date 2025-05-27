@@ -50,7 +50,7 @@ $result_events = $conn->query($sql_events);
             <ul>
                 <li><a href="#">Profile</a></li>
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
-                <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
+                <li><a href="../Attendance/event_register.php" class="active">Attendance Registration</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
                 <li><a href="../ManageLogin/Logout.php">Logout</a></li>
