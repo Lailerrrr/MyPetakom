@@ -19,11 +19,9 @@
                 <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
                 <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
                 <li><a href="../Attendance/advisor_attendance_slot.php">Attendance Slot</a></li>
-<<<<<<< HEAD
                 <li><a href="../Attendance/advisor_attendance_slot.php">Merit Approval</a></li>
-=======
                 <li><a href="../Merit/MeritApprovalEventAdvisor.php">Merit Approval</a></li>
->>>>>>> e30b338036abff6c2166b6a26d4a017854ee0b7a
+
             
                 <li>
                     <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
