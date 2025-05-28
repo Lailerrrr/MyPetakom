@@ -46,7 +46,7 @@ $stmt->close();
             <li><a href="../User/studentProfile.php">Profile</a></li>
             <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
             <li><a href="../membership/viewMembership.php">View Membership</a></li>
-            <li><a href="../Attendance/event_register.php">Attendance Registration</a></li>
+            <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
             <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
             <li><a href="#"class="active">Scan QR</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
