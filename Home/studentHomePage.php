@@ -50,13 +50,13 @@
 
             <nav class="menu">
                 <ul>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
-                    <li><a href="../membership/viewMembership.php">View Membership</a></li>
-                    <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
-                    <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-                    <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
-                    <li><a href="../ManageLogin/Logout.php">Logout</a></li>
+                    <li><a href="/MyPetakom/User/studentProfile.php">Profile</a></li>
+                    <li><a href="/MyPetakom//membership/applyMembership.php">Apply Membership</a></li>
+                    <li><a href="/MyPetakom//membership/viewMembership.php">View Membership</a></li>
+                    <li><a href="/MyPetakom//Attendance/event_register.php">Event Attendance</a></li>
+                    <li><a href="/MyPetakom//Merit/MeritClaimStudent.php">Merit Claim</a></li>
+                    <li><a href="/MyPetakom//Merit/ScanQR.php">Scan QR</a></li>
+                    <li><a href="/MyPetakom//ManageLogin/Logout.php">Logout</a></li>
                 </ul>
             </nav>
         </aside>
