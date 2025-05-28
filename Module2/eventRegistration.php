@@ -21,35 +21,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
     $eventLevel = $_POST['eventLevel'];
 
-    $uploadDir = "uploads/";
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
-    $approvalLetter = "";
-
-    if (isset($_FILES['approvalLetter']) && $_FILES['approvalLetter']['error'] == 0) {
-        $filename = basename($_FILES["approvalLetter"]["name"]);
-        $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $filename);
-        $targetFilePath = $uploadDir . $filename;
-
-        if (move_uploaded_file($_FILES["approvalLetter"]["tmp_name"], $targetFilePath)) {
-            $approvalLetter = $targetFilePath;
-
-            $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $eventLevel, $staffID);
-
-            if ($stmt->execute()) {
-                $successMsg = "✅ Event registered successfully.";
-            } else {
-                $errorMsg = "❌ Database error: " . $stmt->error;
-            }
-
-            $stmt->close();
-        } else {
-            $errorMsg = "❌ Failed to upload approval letter.";
-        }
+    // Check staffID is still set (failsafe)
+    if (empty($staffID)) {
+        $errorMsg = "❌ Session expired. Please log in again.";
     } else {
-        $errorMsg = "❌ Please upload the approval letter.";
+        $uploadDir = "uploads/";
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        if (isset($_FILES['approvalLetter']) && $_FILES['approvalLetter']['error'] == 0) {
+            $filename = basename($_FILES["approvalLetter"]["name"]);
+            $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $filename);
+            $targetFilePath = $uploadDir . $filename;
+
+            if (move_uploaded_file($_FILES["approvalLetter"]["tmp_name"], $targetFilePath)) {
+                $approvalLetter = $targetFilePath;
+
+                $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $eventLevel, $staffID);
+
+                if ($stmt->execute()) {
+                    $successMsg = "✅ Event registered successfully.";
+                } else {
+                    $errorMsg = "❌ Database error: " . $stmt->error;
+                }
+
+                $stmt->close();
+            } else {
+                $errorMsg = "❌ Failed to upload approval letter.";
+            }
+        } else {
+            $errorMsg = "❌ Please upload the approval letter.";
+        }
     }
 }
 ?>
@@ -149,6 +153,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       color: white;
     }
 
+    .session-info {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #f3f3f3;
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -169,6 +182,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include '../sidebar.php'; ?>
     <main class="main-content">
       <h2>📅 Register a New Event</h2>
+
+      <div class="session-info">
+        Logged in as: <strong><?php echo htmlspecialchars($staffID); ?></strong>
+      </div>
 
       <?php if ($successMsg): ?>
         <div class="message success"><?php echo $successMsg; ?></div>
@@ -197,15 +214,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label>Event Level:</label>
         <select name="eventLevel" required>
+          <option value="UMPSA" selected>UMPSA</option>
           <option value="International">International</option>
           <option value="State">State</option>
           <option value="District">District</option>
-          <option value="UMPSA">UMPSA</option>
         </select>
 
         <label>Status:</label>
         <select name="status" required>
-          <option value="Active">Active</option>
+          <option value="Active" selected>Active</option>
           <option value="Postponed">Postponed</option>
           <option value="Cancelled">Cancelled</option>
         </select>

@@ -126,12 +126,14 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <title>Attendance Slots - Advisor</title>
+    
     <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <aside class="sidebar">
     <div class="sidebar-header">
+        
         <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
         <div>
             <h2>MyPetakom</h2>
@@ -159,6 +161,7 @@ $stmt->close();
 
 <main class="main-content">
     <div class="dashboard-indicator">
+        
         <span class="dashboard-role">📅 Attendance Slot Management</span>
     </div>
 

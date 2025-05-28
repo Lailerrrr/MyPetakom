@@ -57,60 +57,113 @@ $committeeStmt->close();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>View Event</title>
-    <link rel="stylesheet" href="../Module2/viewEvent.css">
-    <link rel="stylesheet" href="../Module2/eventRegistration.css">
+    <meta charset="UTF-8">
+    <title>View Event - <?= htmlspecialchars($event['eventName']) ?></title>
+    <link rel="stylesheet" href="../sidebar.css" />
     <style>
-        .container {
-            padding: 30px;
+        body {
+            margin: 0;
             background-color: #1a001f;
             color: #f0d9ff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        h2, h3 {
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 30px;
+            background-color: #2a0033;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(200, 100, 255, 0.2);
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
             color: #f9c74f;
+            border-bottom: 2px solid #f9c74f;
+            padding-bottom: 10px;
         }
-        p {
-            font-size: 16px;
-            margin: 5px 0;
+
+        h3 {
+            margin-top: 40px;
+            color: #a29bfe;
+            font-size: 22px;
         }
-        .committee-member {
+
+        .event-detail {
+            margin: 10px 0;
+            padding: 12px;
             background-color: #3a0f5a;
-            padding: 15px;
-            margin-bottom: 10px;
             border-radius: 8px;
-            border: 1px solid #7209b7;
+            border-left: 5px solid #7209b7;
         }
-        .committee-member p {
-            margin: 3px 0;
+
+        .event-detail strong {
+            display: inline-block;
+            width: 160px;
         }
+
+        .committee-member {
+            background-color: #4e1a68;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #9d4edd;
+            transition: transform 0.2s ease;
+        }
+
+        .committee-member:hover {
+            transform: scale(1.02);
+            background-color: #5e2a78;
+        }
+
         a {
-            color: #f0d9ff;
+            color: #ffb3ff;
+            text-decoration: none;
         }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #8e44ad;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-link:hover {
+            background-color: #a65fd2;
+        }
+        
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>📄 View Event Details</h2>
+    <h2>📄 <?= htmlspecialchars($event['eventName']) ?></h2>
 
-    <p><strong>Event ID:</strong> <?= htmlspecialchars($event['eventID']) ?></p>
-    <p><strong>Name:</strong> <?= htmlspecialchars($event['eventName']) ?></p>
-    <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['eventDescription'])) ?></p>
-    <p><strong>Date:</strong> <?= htmlspecialchars($event['eventDate']) ?></p>
-    <p><strong>Venue:</strong> <a href="<?= htmlspecialchars($event['venue']) ?>" target="_blank"><?= htmlspecialchars($event['venue']) ?></a></p>
-    <p><strong>Approval Date:</strong> <?= htmlspecialchars($event['approvalDate']) ?></p>
-    <p><strong>Event Level:</strong> <?= htmlspecialchars($event['eventLevel']) ?></p>
-    <p><strong>Status:</strong> <?= htmlspecialchars($event['status']) ?></p>
-    <p><strong>Merit Status:</strong> <?= htmlspecialchars($meritStatus) ?></p>
-    <p><strong>Approval Letter:</strong> 
+    <div class="event-detail"><strong>Event ID:</strong> <?= htmlspecialchars($event['eventID']) ?></div>
+    <div class="event-detail"><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['eventDescription'])) ?></div>
+    <div class="event-detail"><strong>Date:</strong> <?= htmlspecialchars($event['eventDate']) ?></div>
+    <div class="event-detail"><strong>Venue:</strong> <a href="<?= htmlspecialchars($event['venue']) ?>" target="_blank"><?= htmlspecialchars($event['venue']) ?></a></div>
+    <div class="event-detail"><strong>Approval Date:</strong> <?= htmlspecialchars($event['approvalDate']) ?></div>
+    <div class="event-detail"><strong>Event Level:</strong> <?= htmlspecialchars($event['eventLevel']) ?></div>
+    <div class="event-detail"><strong>Status:</strong> <?= htmlspecialchars($event['status']) ?></div>
+    <div class="event-detail"><strong>Merit Status:</strong> <?= htmlspecialchars($meritStatus) ?></div>
+    <div class="event-detail"><strong>Approval Letter:</strong> 
         <?php if (!empty($event['approvalLetter'])): ?>
             <a href="<?= htmlspecialchars($event['approvalLetter']) ?>" target="_blank">📄 View PDF</a>
         <?php else: ?>
             Not uploaded
         <?php endif; ?>
-    </p>
+    </div>
 
     <h3>👥 Committee Members</h3>
     <?php if (count($committee) > 0): ?>
@@ -124,8 +177,7 @@ $committeeStmt->close();
         <p>No committee members assigned yet.</p>
     <?php endif; ?>
 
-    <br>
-    <a href="eventList.php">⬅️ Back to Event List</a>
+    <a href="eventManage.php" class="back-link">⬅️ Back to Event List</a>
 </div>
 </body>
 </html>
