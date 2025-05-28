@@ -126,7 +126,10 @@ $result = $stmt->get_result();
             <td>
     <?php if ($row['claimStatus'] === 'Pending') { ?>
         <a href="EditClaim.php?id=<?= $row['claimID'] ?>">Edit</a>
-        <a href="DeleteClaim.php?id=<?= $row['claimID'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+        <a href="DeleteClaim.php?id=<?= $row['claimID'] ?>" 
+   class="delete-btn" 
+   data-id="<?= $row['claimID'] ?>">Delete</a>
+
     <?php } else { ?>
         <span style="color:gray;">Locked</span>
     <?php } ?>
@@ -157,6 +160,7 @@ $result = $stmt->get_result();
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.querySelectorAll('.delete-btn').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -173,12 +177,13 @@ document.querySelectorAll('.delete-btn').forEach(button => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = deleteClaim.php?id=${claimId};
+                window.location.href = `DeleteClaim.php?id=${claimId}`;
             }
         });
     });
 });
 </script>
+
 
 </body>
 </html>
