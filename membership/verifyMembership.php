@@ -64,8 +64,8 @@
             <nav class="menu">
             <ul>
                 <li><a href="../Home/adminHomePage.php">Dashboard</a></li>
-                <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
-                <li><a href="../membership/deleteMembership.php" class="active">Delete Membership</a></li>
+                <li><a href="../membership/verifyMembership.php" class="active">Verify Membership</a></li>
+                <li><a href="../membership/deleteMembership.php">Delete Membership</a></li>
             </ul>
         </nav>
         </aside>
