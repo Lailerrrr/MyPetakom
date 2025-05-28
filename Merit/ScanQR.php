@@ -43,7 +43,7 @@ $stmt->close();
 
     <nav class="menu">
         <ul>
-            <li><a href="../User/studentProfile.php">Profile</a></li>
+            <li><a href="#">Profile</a></li>
             <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
             <li><a href="../membership/viewMembership.php">View Membership</a></li>
             <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
