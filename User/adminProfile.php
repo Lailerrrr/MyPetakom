@@ -2,14 +2,14 @@
 session_start();
 require_once '../DB_mypetakom/db.php';
 
-if (!isset($_SESSION['staffID']) || $_SESSION['staffRole'] !== 'Petakom Coordinator') {
+if (!isset($_SESSION['userID']) || $_SESSION['staffRole'] !== 'Petakom Coordinator') {
     header("Location: ../ManageLogin/login.php");
     exit();
 }
 
 
 
-$staffID = $_SESSION['staffID'];
+$staffID = $_SESSION['userID'];
 
 // Update admin profile
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateAdmin'])) {
@@ -21,6 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateAdmin'])) {
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ssss", $staffName, $staffEmail, $staffPassword, $staffID);
     $stmt->execute();
+    $stmt->close();
+
+    // Optional: show success message or redirect
+    header("Location: adminProfile.php?success=1");
+    exit();
 }
 
 // Fetch admin profile
@@ -28,6 +33,7 @@ $stmt = $conn->prepare("SELECT * FROM staff WHERE staffID=?");
 $stmt->bind_param("s", $staffID);
 $stmt->execute();
 $admin = $stmt->get_result()->fetch_assoc();
+$stmt->close();
 
 // Fetch all students
 $students = $conn->query("SELECT * FROM student");
@@ -44,8 +50,14 @@ $students = $conn->query("SELECT * FROM student");
 <body>
     <div class="profile-container">
         <h2>My Profile (Admin)</h2>
+
+        <?php if (isset($_GET['success'])): ?>
+            <p style="color: green;">Profile updated successfully!</p>
+        <?php endif; ?>
+
         <form method="POST">
             <input type="hidden" name="updateAdmin" value="1">
+            
             <label>Name:</label>
             <input type="text" name="staffName" value="<?= htmlspecialchars($admin['staffName']) ?>" required><br>
 
@@ -66,12 +78,12 @@ $students = $conn->query("SELECT * FROM student");
             </tr>
             <?php while ($row = $students->fetch_assoc()): ?>
                 <tr>
-                    <td><?= $row['studentID'] ?></td>
-                    <td><?= $row['studentName'] ?></td>
-                    <td><?= $row['studentEmail'] ?></td>
+                    <td><?= htmlspecialchars($row['studentID']) ?></td>
+                    <td><?= htmlspecialchars($row['studentName']) ?></td>
+                    <td><?= htmlspecialchars($row['studentEmail']) ?></td>
                     <td>
-                        <a href="editStudent.php?id=<?= $row['studentID'] ?>">Edit</a> | 
-                        <a href="deleteStudent.php?id=<?= $row['studentID'] ?>" onclick="return confirm('Delete this student?')">Delete</a>
+                        <a href="editStudent.php?id=<?= urlencode($row['studentID']) ?>">Edit</a> | 
+                        <a href="deleteStudent.php?id=<?= urlencode($row['studentID']) ?>" onclick="return confirm('Delete this student?')">Delete</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
