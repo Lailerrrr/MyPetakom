@@ -399,53 +399,63 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
    
 
         <!-- JavaScript Functions -->
-        <script>
-            // View user details
-            function viewUser (type, id) {
-                // Fetch user details from the server
-                fetch(`getUser Details.php?type=${type}&id=${id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        displayUser Details(type, data);
-                        document.getElementById('viewModal').style.display = 'block';
-                    });
+      <script>
+    // View user details
+    function viewUser(type, id) {
+    document.getElementById('viewContent').innerHTML = '<p>Loading user details...</p>';
+    fetch(`getUserDetails.php?type=${type}&id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('viewContent').innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                displayUserDetails(type, data);
             }
+            document.getElementById('viewModal').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching user details:', error);
+            document.getElementById('viewContent').innerHTML = '<p>Failed to load user details.</p>';
+            document.getElementById('viewModal').style.display = 'block';
+        });
+    }
 
-            // Display user details in modal
-            function displayUser Details(type, data) {
-                const content = `
-                    <p><strong>ID:</strong> ${data.id}</p>
-                    <p><strong>Name:</strong> ${data.name}</p>
-                    <p><strong>Email:</strong> ${data.email}</p>
-                    <p><strong>Status:</strong> ${data.status}</p>
-                    <p><strong>Last Login:</strong> ${data.lastLogin}</p>
-                `;
-                document.getElementById('viewContent').innerHTML = content;
-            }
 
-            // Edit user details
-            function editUser (type, id, name, email) {
-                document.getElementById('editType').value = type;
-                document.getElementById('editId').value = id;
-                document.getElementById('editName').value = name || '';
-                document.getElementById('editEmail').value = email || '';
-                document.getElementById('editTitle').textContent = 'Edit ' + (type === 'student' ? 'Student' : 'Advisor');
-                document.getElementById('editModal').style.display = 'block'; 
-            }
+    // Display user details in modal
+    function displayUserDetails(type, data) {
+        const content = `
+            <p><strong>ID:</strong> ${data.id}</p>
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Email:</strong> ${data.email}</p>
+            <p><strong>Status:</strong> ${data.status || 'N/A'}</p>
+            <p><strong>Last Login:</strong> ${data.lastLogin || 'N/A'}</p>
+        `;
+        document.getElementById('viewContent').innerHTML = content;
+    }
 
-            // Close modal
-            function closeModal(modalId) {
-                document.getElementById(modalId).style.display = 'none';
-            }
+    // Edit user details
+    function editUser(type, id, name, email) {
+        document.getElementById('editType').value = type;
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name || '';
+        document.getElementById('editEmail').value = email || '';
+        document.getElementById('editTitle').textContent = 'Edit ' + (type === 'student' ? 'Student' : 'Advisor');
+        document.getElementById('editModal').style.display = 'block';
+    }
 
-            // Close when clicking outside modal
-            window.onclick = function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = 'none';
-                }
-            }
-        </script>
-    </div>
+    // Close modal
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Optional: Close modal when clicking outside of it
+    window.onclick = function(event) {
+        const viewModal = document.getElementById('viewModal');
+        const editModal = document.getElementById('editModal');
+        if (event.target === viewModal) closeModal('viewModal');
+        if (event.target === editModal) closeModal('editModal');
+    }
+</script>
 
 
 
