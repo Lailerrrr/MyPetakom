@@ -106,21 +106,7 @@
                                     <button type="submit" name="action" value="reject" class="btn reject">Reject</button>
                                 </form>
                             </div>
-                            <?php foreach ($membershipApplications as $membership): ?>
-                                <div class="student-card">
-                                    <form method="POST" action="processMembership.php">
-                                        <input type="hidden" name="membershipID" value="<?= $membership['membershipID'] ?>">
-                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
-                                        <img src="../uploads/<?= $membership['studentCard'] ?>" alt="Student Card">
-                                        <p><strong><?= $membership['studentName'] ?> (<?= $membership['studentMatrix'] ?>)</strong></p>
-                                        <p>Status: <?= $membership['status'] ?></p>
-
-                                        <button type="submit" name="action" value="approve" class="approve-button">Approve</button>
-                                        <button type="submit" name="action" value="reject" class="reject-button">Reject</button>
-                                    </form>
-                                </div>
-                            <?php endforeach; ?>
 
                         </div>
                     <?php endwhile; ?>

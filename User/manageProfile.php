@@ -383,7 +383,7 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
             <li>
                 <?= $row['staffID'] ?> - <?= $row['staffName'] ?>
                 <div class="action-buttons">
-                    <button class="view-btn" onclick="viewUser ('advisor', '<?= $row['staffID'] ?>')">View</button>
+                    <button class="view-btn" onclick="viewUser ('advisor', '<?= $row['staffID'] ?>')">View</button
                     <button class="edit-btn" onclick="editUser ('advisor', '<?= $row['staffID'] ?>', '<?= htmlspecialchars($row['staffName'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['staffEmail'], ENT_QUOTES) ?>')">Edit</button>
                     <a href="?delete=<?= $row['staffID'] ?>&type=advisor" class="delete-btn" onclick="return confirm('Are you sure you want to delete this advisor?')">Delete</a>
                 </div>
@@ -455,6 +455,13 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
         if (event.target === viewModal) closeModal('viewModal');
         if (event.target === editModal) closeModal('editModal');
     }
+
+  
+function editUser(type, id, name, email) {
+}
+
+
+
 </script>
 
 

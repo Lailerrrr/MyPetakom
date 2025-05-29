@@ -8,7 +8,7 @@ if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'admin') {
 }
 
 if (!isset($_GET['id']) || !isset($_GET['type'])) {
-    header("Location: manageProfiles.php");
+    header("Location: manageProfile.php");
     exit();
 }
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssss", $name, $email, $password, $id);
     $stmt->execute();
 
-    header("Location: manageProfiles.php");
+    header("Location: manageProfile.php");
     exit();
 }
 
@@ -58,7 +58,7 @@ $user = $result->fetch_assoc();
             <label>Password: <input type="password" name="password" placeholder="Enter new password" required></label>
             <button type="submit">Update Profile</button>
         </form>
-        <p><a href="manageProfiles.php">← Back to Manage Profiles</a></p>
+        <p><a href="manageProfile.php">← Back to Manage Profiles</a></p>
     </div>
 </body>
 </html>
