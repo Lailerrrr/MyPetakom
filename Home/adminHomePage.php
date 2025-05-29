@@ -57,7 +57,7 @@ $uptime = "99.9%";
         <nav class="menu">
             <ul>
                 <li><a href="../Home/adminHomePage.php" class="active">Dashboard</a></li>
-                <li><a href="../User/adminProfile.php">Profile</a></li>
+                <li><a href="/MyPetakom/User/manageProfile.php">Profile</a></li>
                 <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
                 <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                 <li><a href="#">Attendance Tracking</a></li>

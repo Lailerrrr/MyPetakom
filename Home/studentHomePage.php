@@ -50,7 +50,7 @@
 
             <nav class="menu">
                 <ul>
-                    <li><a href="/MyPetakom/User/studentProfile.php">Profile</a></li>
+                    <li><a href="/MyPetakom/User/Profiles.php">Profile</a></li>
                     <li><a href="/MyPetakom//membership/applyMembership.php">Apply Membership</a></li>
                     <li><a href="/MyPetakom//membership/viewMembership.php">View Membership</a></li>
                     <li><a href="/MyPetakom//Attendance/event_register.php">Event Attendance</a></li>

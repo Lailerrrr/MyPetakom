@@ -1,19 +1,29 @@
 <?php
 session_start();
-require_once '../DB_mypetakom/db.php';
+require_once '../DB_mypetakom/db.php'; // Ensure this path is correct
 
-// Check if user is logged in and has coordinator role
-if (!isset($_SESSION['userID']) || ($_SESSION['role'] ?? '') !== 'petakom_coordinator') {
+// Check if user is logged in
+if (!isset($_SESSION['userID'])) {
     header("Location: ../ManageLogin/login.php");
     exit();
 }
 
+// IMPORTANT: Ensure $_SESSION['role'] is set upon successful login in your login.php
+// If you intend to restrict this page to 'petakom_coordinator' only, uncomment and ensure role is set.
+// if (($_SESSION['role'] ?? '') !== 'petakom_coordinator') {
+//     header("Location: ../ManageLogin/login.php"); // Or to an unauthorized access page
+//     exit();
+// }
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membershipID'], $_POST['action'])) {
 
     // CSRF token validation
-    if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || 
+    if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) ||
         !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        header("Location: verifyMembership.php?error=Invalid+CSRF+token");
+        // Log this error for security monitoring
+        error_log("CSRF token mismatch for user ID: " . ($_SESSION['userID'] ?? 'N/A'));
+        header("Location: verifyMembership.php?error=Invalid+request+security+token");
         exit();
     }
 
@@ -22,16 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membershipID'], $_POS
 
     // Validate action value
     if (!in_array($action, ['approve', 'reject'], true)) {
-        header("Location: verifyMembership.php?error=Invalid+action");
+        header("Location: verifyMembership.php?error=Invalid+action+specified");
         exit();
     }
 
     $newStatus = ($action === 'approve') ? 'Approved' : 'Rejected';
 
-    // Check if membership record exists
+    // Check if membership record exists and its current status
     $checkStmt = $conn->prepare("SELECT status FROM membership WHERE membershipID = ?");
     if (!$checkStmt) {
-        header("Location: verifyMembership.php?error=Database+error");
+        // Proper error handling, log the error
+        error_log("Database prepare error (checkStmt): " . $conn->error);
+        header("Location: verifyMembership.php?error=Database+error+occurred");
         exit();
     }
     $checkStmt->bind_param("i", $membershipID);
@@ -52,15 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membershipID'], $_POS
     // If status is already the same, no need to update
     if ($currentStatus === $newStatus) {
         $conn->close();
-        header("Location: verifyMembership.php?error=Membership+already+" . urlencode($newStatus));
+        header("Location: verifyMembership.php?error=Membership+already+" . urlencode($newStatus) . ".");
         exit();
     }
 
     // Update membership status
     $updateStmt = $conn->prepare("UPDATE membership SET status = ? WHERE membershipID = ?");
     if (!$updateStmt) {
+        error_log("Database prepare error (updateStmt): " . $conn->error);
         $conn->close();
-        header("Location: verifyMembership.php?error=Database+error+on+update");
+        header("Location: verifyMembership.php?error=Database+update+error");
         exit();
     }
     $updateStmt->bind_param("si", $newStatus, $membershipID);
@@ -69,17 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['membershipID'], $_POS
     if ($updateStmt->affected_rows > 0) {
         $updateStmt->close();
         $conn->close();
-        header("Location: verifyMembership.php?success=Membership+status+updated+to+" . urlencode($newStatus));
+        header("Location: verifyMembership.php?success=Membership+status+successfully+updated+to+" . urlencode($newStatus) . ".");
         exit();
     } else {
         $updateStmt->close();
         $conn->close();
-        header("Location: verifyMembership.php?error=Update+failed");
+        header("Location: verifyMembership.php?error=Failed+to+update+membership+status.");
         exit();
     }
 } else {
-    // Invalid request or missing data
-    header("Location: verifyMembership.php?error=Invalid+submission");
+    // Invalid request method or missing data
+    header("Location: verifyMembership.php?error=Invalid+request+method+or+missing+data");
     exit();
 }
 

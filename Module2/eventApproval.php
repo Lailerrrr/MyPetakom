@@ -116,7 +116,7 @@ $result = $conn->query($query);
             <nav class="menu">
                 <ul>
                     <li><a href="../Home/adminHomePage.php" class="active">Dashboard</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="../User/manageProfile.php">Profile</a></li>
                     <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
                     <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                     <li><a href="#">Attendance Tracking</a></li>
