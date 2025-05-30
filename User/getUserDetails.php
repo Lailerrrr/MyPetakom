@@ -1,65 +1,76 @@
 <?php
+session_start();
 require_once '../DB_mypetakom/db.php';
 
-header('Content-Type: application/json');
-
-// Optional: Enable CORS if frontend is hosted elsewhere
-// header('Access-Control-Allow-Origin: *');
-
-// Check for required parameters
-if (!isset($_GET['type']) || !isset($_GET['id'])) {
-    echo json_encode(['error' => 'Missing parameters']);
+if (!isset($_SESSION['userID']) || strtolower($_SESSION['staffRole']) !== 'petakom coordinator') {
+    header("Location: ../ManageLogin/login.php");
     exit();
 }
 
-$type = $_GET['type'];
+if (!isset($_GET['type']) || !isset($_GET['id'])) {
+    die("Invalid request.");
+}
+
+$type = $_GET['type']; // 'student' or 'advisor'
 $id = $_GET['id'];
 
-// Validate the type parameter
-$validTypes = ['student', 'staff'];
-if (!in_array($type, $validTypes)) {
-    echo json_encode(['error' => 'Invalid user type']);
-    exit();
-}
-
-// Prepare the appropriate SQL query based on user type
 if ($type === 'student') {
-    $query = "SELECT studentID AS id, studentName AS name, studentEmail AS email, verify AS status, lastLogin FROM student WHERE studentID = ?";
+    $table = 'student';
+    $idField = 'studentID';
+    $nameField = 'studentName';
+    $emailField = 'studentEmail';
+    // Remove lastLogin because it does not exist
+    $sql = "SELECT $idField, $nameField, $emailField FROM $table WHERE $idField = ?";
+} else if ($type === 'advisor') {
+    $table = 'staff';
+    $idField = 'staffID';
+    $nameField = 'staffName';
+    $emailField = 'staffEmail';
+    // Remove lastLogin as well if not exist
+    $sql = "SELECT $idField, $nameField, $emailField, staffRole FROM $table WHERE $idField = ?";
 } else {
-    $query = "SELECT staffID AS id, staffName AS name, staffEmail AS email, staffRole AS status, lastLogin FROM staff WHERE staffID = ?";
+    die("Unknown user type.");
 }
 
-$stmt = $conn->prepare($query);
-
-// Check if statement preparation was successful
+$stmt = $conn->prepare($sql);
 if (!$stmt) {
-    echo json_encode(['error' => 'Failed to prepare SQL statement']);
-    exit();
+    die("Prepare failed: " . $conn->error);
 }
-
-// Bind and execute the query
 $stmt->bind_param("s", $id);
 $stmt->execute();
+
 $result = $stmt->get_result();
-
-// Check if the user exists and respond accordingly
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-
-    $response = [
-        'id' => $row['id'],
-        'name' => $row['name'],
-        'email' => $row['email'],
-        'status' => $row['status'] ?? 'N/A',
-        'lastLogin' => $row['lastLogin'] ?? 'N/A'
-    ];
-
-    echo json_encode($response);
-} else {
-    echo json_encode(['error' => 'User not found']);
+if ($result->num_rows === 0) {
+    die("User not found.");
 }
 
-// Clean up
-$stmt->close();
-$conn->close();
+$user = $result->fetch_assoc();
+
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>User Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .user-details { border: 1px solid #ccc; padding: 15px; max-width: 400px; }
+        .user-details h2 { margin-top: 0; }
+        .user-details p { margin: 5px 0; }
+        a { text-decoration: none; color: #2196F3; }
+    </style>
+</head>
+<body>
+    <div class="user-details">
+        <h2>User Details</h2>
+        <p><strong>ID:</strong> <?= htmlspecialchars($user[$idField]) ?></p>
+        <p><strong>Name:</strong> <?= htmlspecialchars($user[$nameField]) ?></p>
+        <p><strong>Email:</strong> <?= htmlspecialchars($user[$emailField]) ?></p>
+        <?php if ($type === 'advisor'): ?>
+            <p><strong>Role:</strong> <?= htmlspecialchars($user['staffRole']) ?></p>
+        <?php endif; ?>
+        <p><a href="manageProfile.php">Back to Manage Profiles</a></p>
+    </div>
+</body>
+</html>
