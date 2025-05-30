@@ -40,29 +40,29 @@ for ($i = 1; $i <= min($semesters_completed, $max_semesters); $i++) {
 }
 
 function getSemesterAndAcademicYear($studentId) {
-    $intakeYearSuffix = substr($studentId, 2, 2);  // e.g., '22'
-    $intakeYear = 2000 + (int)$intakeYearSuffix;  // 2022
+    $intakeYearSuffix = substr($studentId, 2, 2);  
+    $intakeYear = 2000 + (int)$intakeYearSuffix; 
 
-    $currentYear = (int)date("Y");                // 2025
-    $currentMonth = (int)date("m");               // 05
+    $currentYear = (int)date("Y");                
+    $currentMonth = (int)date("m");               
 
     // Calculate how many semesters passed since intake
     $semestersPassed = 0;
 
-    // Determine starting month of intake (assume February intake)
+    
     $startDate = new DateTime("$intakeYear-02-01");
     $now = new DateTime();
 
     $interval = $startDate->diff($now);
     $totalMonths = ($interval->y * 12) + $interval->m;
 
-    // Every 6 months is one semester (2 per year)
+
     $semestersPassed = floor($totalMonths / 6) ;
 
-    // Cap to max 8 semesters
+
     $semester = min($semestersPassed, 8);
 
-    // Determine academic year based on month
+    
     if ($currentMonth >= 9) {
         $academicYear = $currentYear . '/' . ($currentYear);
     } else {
