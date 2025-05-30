@@ -141,10 +141,7 @@ $result = $stmt->get_result();
         </table>
     </div><br>
     <div>
-        <form action="" method="post" enctype="multipart/form-data">
-    <label for="Stdid">Student ID:</label>
-    <input type="text" id="Stdid" name="StdID" required><br><br>
-
+        
     <label for="EID">Event ID:</label>
     <input type="text" id="EID" name="EventID" required><br><br>
 

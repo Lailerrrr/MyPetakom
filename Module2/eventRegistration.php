@@ -216,6 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <select name="eventLevel" required>
           <option value="UMPSA" selected>UMPSA</option>
           <option value="International">International</option>
+          <option value="National">National</option>
           <option value="State">State</option>
           <option value="District">District</option>
         </select>
