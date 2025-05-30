@@ -360,6 +360,7 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
 </div>
 
 <!-- User List -->
+<!-- User List -->
 <div class="student-list">
     <h3>📋 Student List</h3>
     <ul class="user-list">
@@ -367,14 +368,15 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
             <li>
                 <?= $row['studentID'] ?> - <?= $row['studentName'] ?>
                 <div class="action-buttons">
-                    <button class="view-btn" onclick="viewUser ('student', '<?= $row['studentID'] ?>')">View</button>
-                    <button class="edit-btn" onclick="editUser ('student', '<?= $row['studentID'] ?>', '<?= htmlspecialchars($row['studentName'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['studentEmail'], ENT_QUOTES) ?>')">Edit</button>
+                    <button class="view-btn" onclick="location.href='getUserDetails.php?type=student&id=<?= $row['studentID'] ?>'">View</button>
+                    <button class="edit-btn" onclick="location.href='editProfile.php?type=student&id=<?= $row['studentID'] ?>'">Edit</button>
                     <a href="?delete=<?= $row['studentID'] ?>&type=student" class="delete-btn" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
                 </div>
             </li>
         <?php endwhile; ?>
     </ul>
 </div>
+
 
 <div class="advisor-list">
     <h3>📋 Advisor List</h3>

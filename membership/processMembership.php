@@ -2,23 +2,22 @@
 session_start();
 require_once '../DB_mypetakom/db.php';
 
-// Check if the form was submitted via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Check CSRF token
-    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        die("Invalid CSRF token");
+    // CSRF validation
+    if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("Invalid CSRF token.");
     }
 
-    // Validate required fields
+    // Input validation (now allowing string membershipID)
     if (!isset($_POST['membershipID'], $_POST['action'])) {
-        die("Missing required data.");
+        die("Invalid form submission: Missing membershipID or action.");
     }
 
-    $membershipID = intval($_POST['membershipID']);
+    $membershipID = trim($_POST['membershipID']);
     $action = $_POST['action'];
 
-    // Determine the new status
+    // Sanitize action
     if ($action === 'approve') {
         $newStatus = 'Approved';
     } elseif ($action === 'reject') {
@@ -27,23 +26,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Invalid action.");
     }
 
-    // Prepare and execute the SQL update query
+    // Update the membership status in the database
     $stmt = $conn->prepare("UPDATE membership SET status = ? WHERE membershipID = ?");
-    $stmt->bind_param("si", $newStatus, $membershipID);
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    $stmt->bind_param("ss", $newStatus, $membershipID); // both are now strings
 
     if ($stmt->execute()) {
-        header("Location: verifyMembership.php?success=Membership successfully $newStatus.");
-        exit();
+        header("Location: verifyMembership.php?success=Membership ID $membershipID updated to $newStatus.");
     } else {
-        header("Location: verifyMembership.php?error=Failed to update membership status.");
-        exit();
+        header("Location: verifyMembership.php?error=Failed to update membership status for ID $membershipID.");
     }
 
     $stmt->close();
     $conn->close();
+    exit();
+
 } else {
-    // Redirect back if accessed directly
+    // Redirect if accessed directly
     header("Location: verifyMembership.php");
     exit();
 }
-?>
