@@ -24,6 +24,21 @@
     $stmt->bind_result($name, $student_id);
     $stmt->fetch();
     $stmt->close();
+
+    // Fetch cumulative merit per semester
+$merits = [];
+$meritQuery = "SELECT semester, academicYear, totalMerit FROM merit WHERE studentID = ? ORDER BY academicYear, semester";
+$meritStmt = $conn->prepare($meritQuery);
+$meritStmt->bind_param("s", $student_id);
+$meritStmt->execute();
+$meritResult = $meritStmt->get_result();
+
+while ($row = $meritResult->fetch_assoc()) {
+    $merits[] = $row;
+}
+
+$meritStmt->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -75,6 +90,34 @@
                         <strong>Student ID:</strong> <?php echo htmlspecialchars($student_id); ?>
                     </div>
                 </header>
+
+                <div style="margin: 30px 0; padding: 20px; background-color: #222; border-radius: 12px; color: #fff; max-width: 600px; box-shadow: 0 0 10px rgba(255,255,255,0.1);">
+                    <h2 style="margin-bottom: 15px; color: #ffd1e8;">📊 Cumulative Merit Summary</h2>
+
+                <?php if (count($merits) > 0): ?>
+                     <table style="width: 100%; border-collapse: collapse;">
+                         <thead>
+                                 <tr style="background-color: #333;">
+                                    <th style="padding: 8px; border-bottom: 1px solid #555;">Semester</th>
+                                    <th style="padding: 8px; border-bottom: 1px solid #555;">Academic Year</th>
+                                    <th style="padding: 8px; border-bottom: 1px solid #555;">Total Merit</th>
+                        </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($merits as $m): ?>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;"><?php echo htmlspecialchars($m['semester']); ?></td>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;"><?php echo htmlspecialchars($m['academicYear']); ?></td>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;"><?php echo htmlspecialchars($m['totalMerit']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No merit records available yet.</p>
+    <?php endif; ?>
+</div>
+
 
                 <div class="slideshow-container">
                     <div class="mySlides fade">

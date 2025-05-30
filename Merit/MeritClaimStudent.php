@@ -141,7 +141,8 @@ $result = $stmt->get_result();
         </table>
     </div><br>
     <div>
-        
+
+    <form method="POST" enctype="multipart/form-data">
     <label for="EID">Event ID:</label>
     <input type="text" id="EID" name="EventID" required><br><br>
 
@@ -150,6 +151,7 @@ $result = $stmt->get_result();
 
     <input type="submit" value="Submit"> 
 </form>
+
 </div>
 
 
