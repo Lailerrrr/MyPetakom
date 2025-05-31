@@ -150,8 +150,7 @@ if (!$user) {
                 <li><a href="../Home/<?= $role === 'student' ? 'studentHomePage.php' : 'advisorHomePage.php' ?>">Dashboard</a></li>
                 <li><a href="profile.php" class="active">Profile</a></li>
                 <?php if ($role !== 'student'): ?>
-                    <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
-                    <li><a href="../Module2/eventApproval.php">Event Management</a></li>
+              
                 <?php endif; ?>
                 <li>
                     <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
