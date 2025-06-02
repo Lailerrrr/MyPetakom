@@ -59,7 +59,8 @@ $stmt->close();
         <h1>Scan to Check Your Merit Points</h1><br>
         <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
         <p>Use this QR code to quickly access and share your merit information.</p>
-        <img src="generate_qr.php?studentID=<?= urlencode($student_id) ?>" alt="QR Code for Merit Info" style="margin-top:20px; width:200px; height:200px;">
+        <img src="generateQR.php?studentID=<?= urlencode($student_id) ?>" alt="QR Code for Merit Info" style="margin-top:20px; width:200px; height:200px;">
+
     </header>
 </main>
 

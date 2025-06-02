@@ -1,14 +1,16 @@
 <?php
-require_once '../includes/phpqrcode/qrlib.php'; // Make sure this path is correct
+require_once '../phpqrcode/qrlib.php'; // Make sure this path is correct
 
 if (isset($_GET['studentID'])) {
     $studentID = $_GET['studentID'];
 
     // URL to student merit info
-    $url = "http://localhost/MyPetakom/Merit/StudentMeritInfo.php?studentID=" . urlencode($studentID);
+    $localIP = '172.20.10.6';
+    $url = "http://172.20.10.6/MyPetakom/Merit/StudentMeritInfo.php?studentID=" . urlencode($studentID);
 
     header('Content-Type: image/png');
-    QRcode::png($url);
+    $size = 80;
+    QRcode::png($url, false, QR_ECLEVEL_L, $size);
 } else {
     echo "No student ID provided.";
 }
