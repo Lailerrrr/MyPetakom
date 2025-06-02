@@ -13,6 +13,27 @@ if ($con->connect_error) {
     die(json_encode(["success" => false, "message" => "DB connection failed"]));
 }
 
+// 🧠 Calculate semester & academic year based on studentID
+function getSemesterAndAcademicYear($studentId) {
+    $intakeYearSuffix = substr($studentId, 2, 2); // e.g. '22' from 'CB22001'
+    $intakeYear = 2000 + (int)$intakeYearSuffix;
+
+    $now = new DateTime();
+    $start = new DateTime("$intakeYear-02-01"); // assume intake starts Feb
+    $months = ($now->diff($start)->y * 12) + $now->diff($start)->m;
+    $semester = min(floor($months / 6) + 1, 8); // 6 months per semester
+
+    $currentYear = (int)date("Y");
+    $currentMonth = (int)date("m");
+    $academicYear = $currentMonth >= 9 
+        ? "$currentYear/$currentYear" 
+        : ($currentYear - 1) . "/$currentYear";
+
+    return [$semester, $academicYear];
+}
+
+[$semester, $academicYear] = getSemesterAndAcademicYear($studentID);
+
 // 🎯 Committee merit calculation
 $committeeQuery = "
     SELECT SUM(m.score) AS totalCommitteeMerit
@@ -57,31 +78,35 @@ $stmt2->close();
 
 $totalMerit = $committeeMerit + $participantMerit;
 
-// 🔁 Check if merit exists for student
-$check = $con->prepare("SELECT * FROM merit WHERE studentID = ?");
-$check->bind_param("s", $studentID);
+// 🔁 Check if merit record exists for this semester
+$check = $con->prepare("SELECT * FROM merit WHERE studentID = ? AND semester = ? AND academicYear = ?");
+$check->bind_param("sis", $studentID, $semester, $academicYear);
 $check->execute();
 $res = $check->get_result();
 
 if ($res->num_rows > 0) {
-    $update = $con->prepare("UPDATE merit SET totalMerit = ? WHERE studentID = ?");
-    $update->bind_param("is", $totalMerit, $studentID);
+    // Update existing record
+    $update = $con->prepare("UPDATE merit SET totalMerit = ? WHERE studentID = ? AND semester = ? AND academicYear = ?");
+    $update->bind_param("isis", $totalMerit, $studentID, $semester, $academicYear);
     $update->execute();
     $update->close();
 } else {
+    // Insert new record
     $meritID = uniqid("MRT");
-    $insert = $con->prepare("INSERT INTO merit (meritID, totalMerit, eventID, studentID) VALUES (?, ?, '', ?)");
-    $insert->bind_param("sis", $meritID, $totalMerit, $studentID);
+    $insert = $con->prepare("INSERT INTO merit (meritID, totalMerit, eventID, studentID, semester, academicYear) VALUES (?, ?, '', ?, ?, ?)");
+    $insert->bind_param("sisis", $meritID, $totalMerit, $studentID, $semester, $academicYear);
     $insert->execute();
     $insert->close();
 }
 
 $con->close();
 
-// ✅ Final JSON Output
+// ✅ Return result as JSON
 $response = [
     "success" => true,
     "studentID" => $studentID,
+    "semester" => $semester,
+    "academicYear" => $academicYear,
     "committeeMerit" => $committeeMerit,
     "participantMerit" => $participantMerit,
     "totalMerit" => $totalMerit
@@ -89,4 +114,5 @@ $response = [
 
 echo json_encode($response);
 ?>
+
 
