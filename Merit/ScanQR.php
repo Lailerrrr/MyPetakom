@@ -27,7 +27,7 @@ $stmt->close();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Scan QR - MyPetakom</title>
-    <link rel="stylesheet" href="scanQR.css" /> <!-- Your Pretty Savage CSS -->
+    <link rel="stylesheet" href="scanQR.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
 </head>
 <body>
@@ -48,7 +48,7 @@ $stmt->close();
             <li><a href="../membership/viewMembership.php">View Membership</a></li>
             <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
             <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-            <li><a href="#"class="active">Scan QR</a></li>
+            <li><a href="#" class="active">Scan QR</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>
@@ -59,4 +59,9 @@ $stmt->close();
         <h1>Scan to Check Your Merit Points</h1><br>
         <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
         <p>Use this QR code to quickly access and share your merit information.</p>
+        <img src="generate_qr.php?studentID=<?= urlencode($student_id) ?>" alt="QR Code for Merit Info" style="margin-top:20px; width:200px; height:200px;">
     </header>
+</main>
+
+</body>
+</html>
