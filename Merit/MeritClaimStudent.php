@@ -22,7 +22,7 @@ $stmt->close();
 
 //Handle new claim submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = $_POST['StdID'] ?? '';
+    
     $event_id = $_POST['EventID'] ?? '';
     $document = $_FILES['document']['name'] ?? '';
 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
-            $claimID = uniqid("CLM"); // generate unique claim ID
+            $claimID = uniqid("CLM");
             $stmt->bind_param("sssssss", $claimID, $claimStatus, $document, $approvalDate, $approvalBy, $event_id, $student_id);
 
             if ($stmt->execute()) {
@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "❌ No file uploaded.";
     }  
 }
+
 
 // Fetch claim list
 $sql = "SELECT * FROM meritclaim WHERE studentID = ?";
