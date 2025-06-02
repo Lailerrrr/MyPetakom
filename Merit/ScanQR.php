@@ -10,13 +10,14 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student') {
 $email = $_SESSION['email'];
 $name = "";
 $student_id = "";
+$qr_code = "";
 
 // Get student info
-$sql = "SELECT studentName, studentID FROM student WHERE studentEmail = ?";
+$sql = "SELECT studentName, studentID, qr_code FROM student WHERE studentEmail = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
-$stmt->bind_result($name, $student_id);
+$stmt->bind_result($name, $student_id, $qr_code);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -59,8 +60,12 @@ $stmt->close();
         <h1>Scan to Check Your Merit Points</h1><br>
         <p>Welcome, <strong><?php echo htmlspecialchars($name); ?></strong> (<?php echo htmlspecialchars($student_id); ?>)</p>
         <p>Use this QR code to quickly access and share your merit information.</p>
-        <img src="generateQR.php?studentID=<?= urlencode($student_id) ?>" alt="QR Code for Merit Info" style="margin-top:20px; width:200px; height:200px;">
 
+        <?php if (!empty($qr_code) && file_exists("../" . $qr_code)): ?>
+            <img src="/MyPetakom/<?php echo htmlspecialchars($qr_code); ?>" alt="QR Code for Merit Info" style="margin-top:20px; width:400px; height:400px;">
+        <?php else: ?>
+            <p>No QR code available.</p>
+        <?php endif; ?>
     </header>
 </main>
 
