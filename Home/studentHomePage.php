@@ -24,6 +24,7 @@ $stmt->execute();
 $stmt->bind_result($name, $student_id);
 $stmt->fetch();
 $stmt->close();
+
 function getSemesterAndAcademicYear($studentId) {
     // Step 1: Extract intake year from student ID
     $intakeYearSuffix = substr($studentId, 2, 2);
@@ -66,8 +67,6 @@ function getSemesterAndAcademicYear($studentId) {
 }
 $studentInfo = getSemesterAndAcademicYear($student_id);
 
-
-
 // Get merit records
 $merits = [];
 $meritQuery = "SELECT semester, academicYear, totalMerit FROM merit WHERE studentID = ? ORDER BY academicYear, semester";
@@ -83,7 +82,6 @@ while ($row = $meritResult->fetch_assoc()) {
 $meritStmt->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,6 +91,7 @@ $meritStmt->close();
     <title>Student Dashboard - MyPetakom</title>
     <link rel="stylesheet" href="studentHomePage.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
 </head>
 
 <body>
@@ -173,6 +172,12 @@ $meritStmt->close();
         <?php endif; ?>
     </div>
 
+    <!-- Merit Points Over Semesters Graph -->
+    <div style="margin: 30px 0; padding: 20px; background-color: #222; border-radius: 12px; color: #fff; max-width: 600px; box-shadow: 0 0 10px rgba(255,255,255,0.1);">
+        <h2 style="margin-bottom: 15px; color: #ffd1e8;">📈 Merit Points Over Semesters</h2>
+        <canvas id="meritChart" style="width:100%; max-width:600px;"></canvas>
+    </div>
+
     <div class="slideshow-container">
         <div class="mySlides fade"><div class="numbertext">1 / 5</div><img src="/MyPetakom/p1.jpg" style="width:100%"></div>
         <div class="mySlides fade"><div class="numbertext">2 / 5</div><img src="/MyPetakom/p2.jpg" style="width:100%"></div>
@@ -204,26 +209,45 @@ $meritStmt->close();
     };
 </script>
 
-<!-- Auto-calculate merit once per visit -->
+<!-- Prepare data for the graph -->
 <script>
-if (!localStorage.getItem('meritCalculated')) {
-    fetch('/MyPetakom/Merit/calculateMerit.php')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Merit calculation result:', data);
-            if (data.success) {
-                localStorage.setItem('meritCalculated', 'yes');
-                location.reload();
+    const semesters = [];
+    const totalMerits = [];
+
+    <?php foreach ($merits as $m): ?>
+        semesters.push("Semester <?php echo htmlspecialchars($m['semester']); ?>");
+        totalMerits.push(Number(<?php echo htmlspecialchars($m['totalMerit']); ?>)); // Ensure it's a number
+    <?php endforeach; ?>
+
+    console.log('Semesters:', semesters); // Debugging: Check semesters
+    console.log('Total Merits:', totalMerits); // Debugging: Check total merits
+
+    const ctx = document.getElementById('meritChart').getContext('2d');
+    const meritChart = new Chart(ctx, {
+        type: 'bar', // Change to 'line' if you prefer a line chart
+        data: {
+            labels: semesters,
+            datasets: [{
+                label: 'Total Merit Points',
+                data: totalMerits,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
-        })
-        .catch(error => console.error('Error:', error));
-} else {
-    localStorage.removeItem('meritCalculated'); // Allow next visit to recalculate
-}
+        }
+    });
 </script>
 
 </body>
 </html>
+
 
 
 
