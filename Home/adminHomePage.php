@@ -59,6 +59,8 @@ while ($row = $result->fetch_assoc()) {
     $eventCounts[] = $row['count'];
 }
 
+//Registeration Trends
+//Merit Distribution
 
 $uptime = "99.9%"; // Placeholder
 
