@@ -21,7 +21,8 @@ $stmt->fetch();
 $stmt->close();
 
 // Get attendance slots the student can register for
-$sql_events = "SELECT e.eventName, e.eventDescription, e.eventDate, e.venue, e.qrCode, s.slotID, s.slotName, s.attendanceDate, s.slotTime 
+$sql_events = "SELECT e.eventName, e.eventDescription, e.eventDate, e.venue, 
+                      s.slotID, s.slotName, s.attendanceDate, s.slotTime, s.qrCodePath 
                FROM AttendanceSlot s
                JOIN event e ON s.eventID = e.eventID";
 $result_events = $conn->query($sql_events);
@@ -77,7 +78,7 @@ $result_events = $conn->query($sql_events);
                         <p><strong>Venue:</strong> <?= htmlspecialchars($row['venue']) ?></p>
                     </div>
                     <div class="event-qr">
-                        <img src="<?= htmlspecialchars($row['qrCode']) ?>" alt="QR Code" width="150">
+                        <img src="<?= '../QR/' . htmlspecialchars($row['qrCodePath']) ?>" alt="QR Code" width="150">
                         <p>Scan to Register Attendance</p>
                     </div>
                 </div>

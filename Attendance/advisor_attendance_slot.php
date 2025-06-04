@@ -60,10 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
         $stmt->close();
 
         // Step 4: Generate QR Code
-        $qrContent = "http://localhost/MyPetakom/Attendance/student_attendance_register.php?slotID=$slotID";
+        // Instead of localhost
+        $url = "http://192.168.56.1/MyPetakom/QRattendance_register.php?slotID=$slotID";
         $qrFileName = "slot_$slotID.png";
         $qrPath = "../QR/$qrFileName";
-        QRcode::png($qrContent, $qrPath, QR_ECLEVEL_L, 4);
+        QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
 
         // Step 5: Update QR path
         $stmt = $conn->prepare("UPDATE AttendanceSlot SET qrCodePath = ? WHERE slotID = ?");

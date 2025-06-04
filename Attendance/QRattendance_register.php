@@ -23,7 +23,7 @@ $sql_slot = "SELECT s.slotName, s.attendanceDate, s.slotTime, e.eventName
              JOIN event e ON s.eventID = e.eventID 
              WHERE s.slotID = ?";
 $stmt_slot = $conn->prepare($sql_slot);
-$stmt_slot->bind_param("i", $slotID);
+$stmt_slot->bind_param("s", $slotID);
 $stmt_slot->execute();
 $result_slot = $stmt_slot->get_result();
 
@@ -38,7 +38,7 @@ $stmt_slot->close();
 // Check if student already registered attendance
 $sql_check = "SELECT * FROM attendance WHERE slotID = ? AND studentID = ?";
 $stmt_check = $conn->prepare($sql_check);
-$stmt_check->bind_param("is", $slotID, $studentID);
+$stmt_check->bind_param("ss", $slotID, $studentID);
 $stmt_check->execute();
 $result_check = $stmt_check->get_result();
 
@@ -48,7 +48,7 @@ if ($result_check->num_rows > 0) {
     // Register attendance
     $sql_insert = "INSERT INTO attendance (slotID, studentID) VALUES (?, ?)";
     $stmt_insert = $conn->prepare($sql_insert);
-    $stmt_insert->bind_param("is", $slotID, $studentID);
+    $stmt_insert->bind_param("ss", $slotID, $studentID);
 
     if ($stmt_insert->execute()) {
         $message = "🎉 Attendance successfully registered!";
@@ -67,7 +67,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Attendance Registration</title>
-    <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css"> <!-- Optional CSS file -->
+    <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css"> 
 </head>
 <body>
     <div class="container">
