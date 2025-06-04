@@ -21,14 +21,14 @@ if (isset($_SESSION['success'])) {
 $staffID = $_SESSION['userID'];
 $slots = [];
 $error = '';
-$success = '';
+
 
 // Create new slot
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
     $eventID = $_POST['eventID'];
     $slotTime = $_POST['slotTime'];
 
-    // Step 1: Get event info (without checking staffID)
+    // Get event info
     $stmt = $conn->prepare("SELECT eventName, eventDate FROM event WHERE eventID = ? AND staffID = ?");
     $stmt->bind_param("ss", $eventID, $staffID);
     $stmt->execute();
@@ -39,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
     if ($event) {
         $slotName = $event['eventName'];
         $attendanceDate = $event['eventDate'];
-        
 
-        // Step 2: Generate unique slotID
+        // Generate unique slotID
         $result = $conn->query("SELECT slotID FROM AttendanceSlot ORDER BY slotID DESC LIMIT 1");
         if ($row = $result->fetch_assoc()) {
             $lastID = $row['slotID'];
@@ -52,21 +51,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
             $slotID = "S001";
         }
 
-        // Step 3: Insert slot
+        // Insert slot
         $stmt = $conn->prepare("INSERT INTO AttendanceSlot (slotID, eventID, slotName, attendanceDate, slotTime) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $slotID, $eventID, $slotName, $attendanceDate, $slotTime);
-        $stmt->bind_param("sssss", $slotID, $eventID, $slotName, $attendanceDate, $slotTime);
+        
         $stmt->execute();
         $stmt->close();
 
-        // Step 4: Generate QR Code
-        // Instead of localhost
+        // Generate QR Code
         $url = "http://192.168.0.181/MyPetakom/Attendance/QRattendance_register.php?slotID=$slotID";
         $qrFileName = "slot_$slotID.png";
         $qrPath = "../QR/$qrFileName";
         QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
 
-        // Step 5: Update QR path
+        // Update QR path
         $stmt = $conn->prepare("UPDATE AttendanceSlot SET qrCodePath = ? WHERE slotID = ?");
         $stmt->bind_param("ss", $qrFileName, $slotID);
         $stmt->execute();
@@ -129,39 +127,36 @@ $stmt->close();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="d-flex">
-     <!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="bg-dark text-white p-3" style="min-width: 200px; height: 100vh;">
-       <aside class="sidebar">
-       <div class="sidebar-header">
-         <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
-            <div class="sidebar-text"> <!-- ✅ Add this class -->
-                <h2>MyPetakom</h2>
-                <p class="role-label">🧭 Advisor</p>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
+                <div class="sidebar-text">
+                    <h2>MyPetakom</h2>
+                    <p class="role-label">🧭 Advisor</p>
+                </div>
             </div>
-        </div>
 
-
-        <nav class="menu">
-            <ul>
-               
-                <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
-                <li><a href="../User/Profiles.php">Profile</a></li>
-                <li><a href="../Module2/eventList.php">Event List</a></li>
-                <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
-                <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
-                <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
-                <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
-                <li><a href="../Attendance/advisor_attendance_slot.php" class="active">Attendance Slot</a></li>
-                <li><a href="../Merit/MeritApprovalEventAdvisor.php">Merit Approval</a></li>
-                <li>
-                    <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
-                        <button name="logout"  class="sidebar-logout-button">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-    </aside>
-    
+            <nav class="menu">
+                <ul>
+                    <li><a href="../Home/advisorHomepage.php">User  Dashboard</a></li>
+                    <li><a href="../User /Profiles.php">Profile</a></li>
+                    <li><a href="../Module2/eventList.php">Event List</a></li>
+                    <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
+                    <li><a href="../Module2/manageEvent.php">Manage Events</a></li>
+                    <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>
+                    <li><a href="../Module2/eventMerit.php">Merit Applications</a></li>
+                    <li><a href="../Attendance/advisor_attendance_slot.php" class="active">Attendance Slot</a></li>
+                    <li><a href="../Merit/MeritApprovalEventAdvisor.php">Merit Approval</a></li>
+                    <li>
+                        <form method="post" action="../ManageLogin/Logout.php" style="display:inline;">
+                            <button name="logout" class="sidebar-logout-button">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
     </div>
 
     <!-- Main Content -->
