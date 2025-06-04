@@ -27,11 +27,45 @@ $stmt->bind_result($staffName, $staffEmail, $staffRole);
 $stmt->fetch();
 $stmt->close();
 
-// Sample dashboard stats
-$totalUsers = 120;
-$pendingEvents = 5;
-$meritRequests = 8;
-$uptime = "99.9%";
+
+// Get total number of students
+$result = $conn->query("SELECT COUNT(*) AS total FROM student");
+
+if ($result) {
+    $row = $result->fetch_assoc();
+    $totalUsers = $row['total'];
+} else {
+    $totalUsers = 0; // fallback in case of query failure
+}
+
+
+// Pending Events
+$sql = "SELECT COUNT(*) FROM event WHERE status = 'Pending'";
+$result = $conn->query($sql);
+$pendingEvents = $result->fetch_row()[0];
+
+// Merit Requests Today
+$sql = "SELECT COUNT(*) FROM meritapplication WHERE DATE(appliedDate) = CURDATE()";
+$result = $conn->query($sql);
+$meritRequests = $result->fetch_row()[0];
+
+// Event Statistics (Events by Type)
+$eventTypes = [];
+$eventCounts = [];
+$sql = "SELECT eventName, COUNT(*) as count FROM event GROUP BY eventName";
+$result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $eventTypes[] = $row['eventName'];
+    $eventCounts[] = $row['count'];
+}
+
+//Registeration Trends
+//Merit Distribution
+
+$uptime = "99.9%"; // Placeholder
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +91,7 @@ $uptime = "99.9%";
         <nav class="menu">
             <ul>
                 <li><a href="../Home/adminHomePage.php" class="active">Dashboard</a></li>
-                <li><a href="../User/adminProfile.php">Profile</a></li>
+                <li><a href="/MyPetakom/User/manageProfile.php">Profile</a></li>
                 <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
                 <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                 <li><a href="#">Attendance Tracking</a></li>

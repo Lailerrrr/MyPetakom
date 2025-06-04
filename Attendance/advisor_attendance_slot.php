@@ -144,7 +144,7 @@ $stmt->close();
             <ul>
                
                 <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
-                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
+                <li><a href="../User/Profiles.php">Profile</a></li>
                 <li><a href="../Module2/eventList.php">Event List</a></li>
                 <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
                 <li><a href="../Module2/manageEvent.php">Manage Events</a></li>

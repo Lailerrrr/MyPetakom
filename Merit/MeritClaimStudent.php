@@ -22,7 +22,7 @@ $stmt->close();
 
 //Handle new claim submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = $_POST['StdID'] ?? '';
+    
     $event_id = $_POST['EventID'] ?? '';
     $document = $_FILES['document']['name'] ?? '';
 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
-            $claimID = uniqid("CLM"); // generate unique claim ID
+            $claimID = uniqid("CLM");
             $stmt->bind_param("sssssss", $claimID, $claimStatus, $document, $approvalDate, $approvalBy, $event_id, $student_id);
 
             if ($stmt->execute()) {
@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "❌ No file uploaded.";
     }  
 }
+
 
 // Fetch claim list
 $sql = "SELECT * FROM meritclaim WHERE studentID = ?";
@@ -89,11 +90,11 @@ $result = $stmt->get_result();
     
     <nav class="menu">
             <ul>
-                <li><a href="../User/studentProfile.php">Profile</a></li>
+                <li><a href="../User/Profiles.php">Profile</a></li>
                 <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
                 <li><a href="../membership/viewMembership.php">View Membership</a></li>
                 <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
-                <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
+                <li><a href="../Merit/MeritClaimStudent.php" class = "active">Merit Claim</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
                 <li><a href="../ManageLogin/Logout.php">Logout</a></li>
             </ul>
@@ -141,10 +142,8 @@ $result = $stmt->get_result();
         </table>
     </div><br>
     <div>
-        <form action="" method="post" enctype="multipart/form-data">
-    <label for="Stdid">Student ID:</label>
-    <input type="text" id="Stdid" name="StdID" required><br><br>
 
+    <form method="POST" enctype="multipart/form-data">
     <label for="EID">Event ID:</label>
     <input type="text" id="EID" name="EventID" required><br><br>
 
@@ -153,6 +152,7 @@ $result = $stmt->get_result();
 
     <input type="submit" value="Submit"> 
 </form>
+
 </div>
 
 

@@ -13,7 +13,7 @@
             <ul>
                
                 <li><a href="../Home/advisorHomepage.php">User Dashboard</a></li>
-                <li><a href="../Advisor/advisorProfile.php">Profile</a></li>
+                <li><a href="../User/Profiles.php">Profile</a></li>
                 <li><a href="../Module2/eventRegistration.php">Event Registration</a></li>
                 <li><a href="../Module2/eventManage.php">Manage Events</a></li>
                 <li><a href="../Module2/eventCommittee.php">Committee Management</a></li>

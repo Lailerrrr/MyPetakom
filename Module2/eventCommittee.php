@@ -148,6 +148,7 @@ $students = $conn->query("SELECT studentID, studentName FROM student");
                 <option value="Secretary">Secretary</option>
                 <option value="Treasurer">Treasurer</option>
                 <option value="Member">Member</option>
+                <option value="Attendee">Attendee</option>
             </select>
 
             <button type="submit" name="submit">Assign as Committee</button>
