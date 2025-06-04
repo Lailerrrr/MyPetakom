@@ -26,6 +26,17 @@ $sql_events = "SELECT e.eventName, e.eventDescription, e.eventDate, e.venue,
                FROM AttendanceSlot s
                JOIN event e ON s.eventID = e.eventID";
 $result_events = $conn->query($sql_events);
+
+// Check for success message
+$success = isset($_GET['success']) && $_GET['success'] == 1;
+$eventID = isset($_GET['eventID']) ? $_GET['eventID'] : '';
+$staffID = isset($_GET['staffID']) ? $_GET['staffID'] : '';
+
+// Check if the student has registered for any events
+$registered_events = [];
+if ($success) {
+    $registered_events[] = $eventID; // Store the registered event ID
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,17 +58,17 @@ $result_events = $conn->query($sql_events);
         </div>
     </div>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="../User/Profiles.php">Profile</a></li>
-                <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
-                <li><a href="../membership/viewMembership.php" >View Membership</a></li>
-                <li><a href="../Attendance/event_register.php" class="active">Event Attendance</a></li>
-                <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
-                <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
-                <li><a href="../ManageLogin/Logout.php">Logout</a></li>
-            </ul>
-        </nav>
+    <nav class="menu">
+        <ul>
+            <li><a href="../User/Profiles.php">Profile</a></li>
+            <li><a href="../membership/applyMembership.php">Apply Membership</a></li>
+            <li><a href="../membership/viewMembership.php">View Membership</a></li>
+            <li><a href="../Attendance/event_register.php" class="active">Event Attendance</a></li>
+            <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
+            <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
+            <li><a href="../ManageLogin/Logout.php">Logout</a></li>
+        </ul>
+    </nav>
 </aside>
 
 <main class="main-content">
@@ -69,24 +80,47 @@ $result_events = $conn->query($sql_events);
     <div class="event-list">
         <?php if ($result_events->num_rows > 0): ?>
             <?php while ($row = $result_events->fetch_assoc()): ?>
-                <div class="event-card">
-                    <div class="event-details">
-                        <h3><?= htmlspecialchars($row['eventName']) ?> (<?= htmlspecialchars($row['slotName']) ?>)</h3>
-                        <p><strong>Description:</strong> <?= htmlspecialchars($row['eventDescription']) ?></p>
-                        <p><strong>Date:</strong> <?= htmlspecialchars($row['attendanceDate']) ?></p>
-                        <p><strong>Time:</strong> <?= htmlspecialchars($row['slotTime']) ?></p>
-                        <p><strong>Venue:</strong> <?= htmlspecialchars($row['venue']) ?></p>
+                <?php if (!in_array($row['slotID'], $registered_events)): // Check if the student has registered for this event ?>
+                    <div class="event-card">
+                        <div class="event-details">
+                            <h3><?= htmlspecialchars($row['eventName']) ?> (<?= htmlspecialchars($row['slotName']) ?>)</h3>
+                            <p><strong>Description:</strong> <?= htmlspecialchars($row['eventDescription']) ?></p>
+                            <p><strong>Date:</strong> <?= htmlspecialchars($row['attendanceDate']) ?></p>
+                            <p><strong>Time:</strong> <?= htmlspecialchars($row['slotTime']) ?></p>
+                            <p><strong>Venue:</strong> <?= htmlspecialchars($row['venue']) ?></p>
+                        </div>
+                        <div class="event-qr">
+                            <img src="<?= '../QR/' . htmlspecialchars($row['qrCodePath']) ?>" alt="QR Code" width="150">
+                            <p>Scan to Register Attendance</p>
+                        </div>
                     </div>
-                    <div class="event-qr">
-                        <img src="<?= '../QR/' . htmlspecialchars($row['qrCodePath']) ?>" alt="QR Code" width="150">
-                        <p>Scan to Register Attendance</p>
-                    </div>
-                </div>
+                <?php endif; ?>
             <?php endwhile; ?>
         <?php else: ?>
             <p>No event slots available.</p>
         <?php endif; ?>
     </div>
+
+    <!-- Display Attendance Registration Status -->
+    <?php if ($success): ?>
+        <h2>Attendance Registration Status</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event ID</th>
+                    <th>Staff ID</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?= htmlspecialchars($eventID) ?></td>
+                    <td><?= htmlspecialchars($staffID) ?></td>
+                    <td>Attendance registered successfully!</td>
+                </tr>
+            </tbody>
+        </table>
+    <?php endif; ?>
 </main>
 
 </body>
