@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_slot'])) {
 
         // Step 4: Generate QR Code
         // Instead of localhost
-        $url = "http://192.168.0.181/MyPetakom/QRattendance_register.php?slotID=$slotID";
+        $url = "http://192.168.0.181/MyPetakom/Attendance/QRattendance_register.php?slotID=$slotID";
         $qrFileName = "slot_$slotID.png";
         $qrPath = "../QR/$qrFileName";
         QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
