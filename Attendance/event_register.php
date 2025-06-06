@@ -20,23 +20,37 @@ $stmt->bind_result($name, $student_id);
 $stmt->fetch();
 $stmt->close();
 
-// Get attendance slots the student can register for
+// Fetch attendance records for the student (to identify already registered slotIDs)
+$registered_events = [];
+$sql_attendance_ids = "SELECT slotID FROM Attendance WHERE studentID = ?";
+$stmt_ids = $conn->prepare($sql_attendance_ids);
+$stmt_ids->bind_param("s", $student_id);
+$stmt_ids->execute();
+$result_ids = $stmt_ids->get_result();
+
+while ($row = $result_ids->fetch_assoc()) {
+    $registered_events[] = $row['slotID'];
+}
+$stmt_ids->close();
+
+// Get attendance slots + event info
 $sql_events = "SELECT e.eventName, e.eventDescription, e.eventDate, e.venue, 
                       s.slotID, s.slotName, s.attendanceDate, s.slotTime, s.qrCodePath 
                FROM AttendanceSlot s
                JOIN event e ON s.eventID = e.eventID";
 $result_events = $conn->query($sql_events);
 
-// Check for success message
-$success = isset($_GET['success']) && $_GET['success'] == 1;
-$eventID = isset($_GET['eventID']) ? $_GET['eventID'] : '';
-$staffID = isset($_GET['staffID']) ? $_GET['staffID'] : '';
-
-// Check if the student has registered for any events
-$registered_events = [];
-if ($success) {
-    $registered_events[] = $eventID; // Store the registered event ID
-}
+// Fetch detailed attendance records for display
+$sql_attendance = "
+    SELECT a.attendanceID, a.checkInTime, a.checkInDate, a.location, a.slotID, s.slotName
+    FROM Attendance a
+    JOIN AttendanceSlot s ON a.slotID = s.slotID
+    WHERE a.studentID = ?";
+$stmt_attendance = $conn->prepare($sql_attendance);
+$stmt_attendance->bind_param("s", $student_id);
+$stmt_attendance->execute();
+$result_attendance = $stmt_attendance->get_result();
+$stmt_attendance->close();
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +62,7 @@ if ($success) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div class="layout">
 <aside class="sidebar">
     <div class="sidebar-header">
         <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="logo" />
@@ -80,7 +94,7 @@ if ($success) {
     <div class="event-list">
         <?php if ($result_events->num_rows > 0): ?>
             <?php while ($row = $result_events->fetch_assoc()): ?>
-                <?php if (!in_array($row['slotID'], $registered_events)): // Check if the student has registered for this event ?>
+                <?php if (!in_array($row['slotID'], $registered_events)): ?>
                     <div class="event-card">
                         <div class="event-details">
                             <h3><?= htmlspecialchars($row['eventName']) ?> (<?= htmlspecialchars($row['slotName']) ?>)</h3>
@@ -101,27 +115,45 @@ if ($success) {
         <?php endif; ?>
     </div>
 
-    <!-- Display Attendance Registration Status -->
-    <?php if ($success): ?>
-        <h2>Attendance Registration Status</h2>
-        <table>
+    <br><br>
+
+    <!-- Display Attendance Records -->
+    <div class="table-wrapper">
+        <h2>Your Attendance Records</h2>
+        <section class="form-section">
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Event ID</th>
-                    <th>Staff ID</th>
-                    <th>Status</th>
+                    <th>Attendance ID</th>
+                    <th>Check-In Time</th>
+                    <th>Check-In Date</th>
+                    <th>Location</th>
+                    <th>Slot ID</th>
+                    <th>Slot Name</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><?= htmlspecialchars($eventID) ?></td>
-                    <td><?= htmlspecialchars($staffID) ?></td>
-                    <td>Attendance registered successfully!</td>
-                </tr>
+                <?php if ($result_attendance->num_rows > 0): ?>
+                    <?php while ($attendance = $result_attendance->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($attendance['attendanceID']) ?></td>
+                            <td><?= htmlspecialchars($attendance['checkInTime']) ?></td>
+                            <td><?= htmlspecialchars($attendance['checkInDate']) ?></td>
+                            <td><?= htmlspecialchars($attendance['location']) ?></td>
+                            <td><?= htmlspecialchars($attendance['slotID']) ?></td>
+                            <td><?= htmlspecialchars($attendance['slotName']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6">No attendance records found.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
-    <?php endif; ?>
+        </section>
+    </div>
 </main>
-
+</div>
 </body>
 </html>
