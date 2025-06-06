@@ -172,6 +172,7 @@ body, html {
     margin-bottom: 30px;
 }
 
+
 .chart-section h2,
 .form-section h2 {
     color: #ffa5d5;
@@ -197,6 +198,21 @@ button {
 button:hover {
     background: #ff80bf;
 }
+
+.chart-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; /* Adds space between chart cards */
+    margin-bottom: 40px;
+}
+
+.chart-section .card {
+    background: rgba(255, 64, 129, 0.1);
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0 0 15px #ff99cc;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

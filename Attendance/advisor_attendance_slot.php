@@ -126,9 +126,9 @@ $stmt->close();
 <link rel="stylesheet" href="../Attendance/advisor_attendance_slot.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<div class="d-flex">
+
     <!-- Sidebar -->
-    <div class="bg-dark text-white p-3" style="min-width: 200px; height: 100vh;">
+    
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="/MyPetakom/petakom-logo.png" alt="PETAKOM Logo" class="sidebar-logo" />
@@ -160,6 +160,7 @@ $stmt->close();
     </div>
 
     <!-- Main Content -->
+    <div class="main-wrapper">
     <div class="flex-grow-1 p-4">
 
         <header class="main-header">
@@ -220,9 +221,7 @@ $stmt->close();
                         </td>
                         <td>
                             <div class="d-flex flex-column gap-2">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $slot['slotID']; ?>">
-                                    Edit
-                                </button>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $slot['slotID']; ?>">Edit</button>
 
                                 <form method="post" onsubmit="return confirm('Are you sure you want to delete this slot?');">
                                     <input type="hidden" name="slotID" value="<?= $slot['slotID']; ?>">
@@ -265,4 +264,5 @@ $stmt->close();
             </table>
         </div>
     </div>
-</div>
+    </div>
+

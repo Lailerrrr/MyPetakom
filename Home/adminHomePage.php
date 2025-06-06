@@ -26,18 +26,10 @@ $stmt->execute();
 $stmt->bind_result($staffName, $staffEmail, $staffRole);
 $stmt->fetch();
 $stmt->close();
-
-
+ 
 // Get total number of students
 $result = $conn->query("SELECT COUNT(*) AS total FROM student");
-
-if ($result) {
-    $row = $result->fetch_assoc();
-    $totalUsers = $row['total'];
-} else {
-    $totalUsers = 0; // fallback in case of query failure
-}
-
+$totalUsers = ($result) ? $result->fetch_assoc()['total'] : 0;
 
 // Pending Events
 $sql = "SELECT COUNT(*) FROM event WHERE status = 'Pending'";
@@ -49,23 +41,48 @@ $sql = "SELECT COUNT(*) FROM meritapplication WHERE DATE(appliedDate) = CURDATE(
 $result = $conn->query($sql);
 $meritRequests = $result->fetch_row()[0];
 
-// Event Statistics (Events by Type)
-$eventTypes = [];
-$eventCounts = [];
-$sql = "SELECT eventName, COUNT(*) as count FROM event GROUP BY eventName";
+// Fetch event level statistics
+$eventLevelLabels = [];
+$eventLevelCounts = [];
+
+$sql = "SELECT eventLevel, COUNT(*) AS levelCount FROM event GROUP BY eventLevel";
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
-    $eventTypes[] = $row['eventName'];
-    $eventCounts[] = $row['count'];
+    $eventLevelLabels[] = $row['eventLevel'];
+    $eventLevelCounts[] = $row['levelCount'];
+}
+ 
+
+// Registration Trends: student attendance count per event
+$trendEventNames = [];
+$trendStudentCounts = [];
+$sql = "
+    SELECT e.eventName, COUNT(a.attendanceID) AS studentCount
+    FROM attendance a
+    JOIN attendanceslot s ON a.slotID = s.slotID
+    JOIN event e ON s.eventID = e.eventID
+    GROUP BY e.eventName
+    ORDER BY studentCount DESC
+";
+$result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $trendEventNames[] = $row['eventName'];
+    $trendStudentCounts[] = $row['studentCount'];
 }
 
-//Registeration Trends
-//Merit Distribution
+// Merit claim distribution by status
+$claimStatusLabels = [];
+$claimStatusCounts = [];
 
-$uptime = "99.9%"; // Placeholder
+$sql = "SELECT claimStatus, COUNT(*) AS count FROM meritclaim GROUP BY claimStatus";
+$result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $claimStatusLabels[] = $row['claimStatus'];
+    $claimStatusCounts[] = $row['count'];
+}
 
 
-
+ $uptime = "99.9%"; // Placeholder
 ?>
 
 <!DOCTYPE html>
@@ -96,16 +113,11 @@ $uptime = "99.9%"; // Placeholder
                 <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                 <li><a href="../Attendance/admin_track_attendance.php">Attendance Tracking</a></li>
                 <li><a href="#">Merit Applications</a></li>
-                <li><a href="#">Reports & Analytics</a></li>
-                <li><a href="#">System Settings</a></li>
-                <li>
-                <li>
+                 <li>
                     <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
                         <button type="submit" name="logout" class="sidebar-button">Logout</button>
                     </form>
-                </li>
-
-
+                 </li>
             </ul>
         </nav>
     </aside>
@@ -134,62 +146,114 @@ $uptime = "99.9%"; // Placeholder
                 <p><?= $uptime; ?> This Month</p>
             </div>
         </section>
+        
 
+        <h2>Reports & Analytics</h2><br>
         <section class="chart-section">
-            <h2>📊 Event Statistics</h2>
-            <canvas id="eventChart"></canvas>
+            <div class="card">
+                <h2>📊 Event Statistics</h2>
+                <canvas id="eventLevelChart"></canvas>
+            </div>
 
-            <h2>📈 Registration Trends</h2>
-            <canvas id="registrationChart"></canvas>
+            <div class="card">
+                <h2>📈 Registration Trends</h2>
+                <canvas id="registrationChart"></canvas>
+            </div>
 
-            <h2>🏅 Merit Distribution</h2>
-            <canvas id="meritChart"></canvas>
+            <div class="card">
+                <h2>🏅 Merit Distribution</h2>
+                <canvas id="meritChart"></canvas>
+            </div>
         </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const eventChart = new Chart(document.getElementById('eventChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Workshop', 'Talk', 'Seminar', 'Webinar'],
-                datasets: [{
-                    label: 'Events by Type',
-                    data: [5, 3, 4, 2],
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
-                }]
+        const eventLevelChart = new Chart(document.getElementById('eventLevelChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: <?= json_encode($eventLevelLabels); ?>,
+        datasets: [{
+            label: 'Number of Events',
+            data: <?= json_encode($eventLevelCounts); ?>,
+            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Events' }
+            },
+            x: {
+                title: { display: true, text: 'Event Level' }
             }
-        });
+        }
+    }
+});
+
 
         const registrationChart = new Chart(document.getElementById('registrationChart').getContext('2d'), {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                labels: <?= json_encode($trendEventNames); ?>,
                 datasets: [{
-                    label: 'Registrations',
-                    data: [10, 20, 15, 25, 18],
+                    label: 'Number of Students Attended',
+                    data: <?= json_encode($trendStudentCounts); ?>,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
                     borderColor: 'rgba(153, 102, 255, 1)',
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    fill: true
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Students' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Event Name' }
+                    }
+                }
             }
         });
 
-        const meritChart = new Chart(document.getElementById('meritChart').getContext('2d'), {
-            type: 'pie',
-            data: {
-                labels: ['Approved', 'Pending', 'Rejected'],
-                datasets: [{
-                    label: 'Merit Status',
-                    data: [50, 20, 10],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(255, 99, 132, 0.6)'
-                    ]
-                }]
+       const meritChart = new Chart(document.getElementById('meritChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($claimStatusLabels); ?>,
+        datasets: [{
+            label: 'Merit Claim Status',
+            data: <?= json_encode($claimStatusCounts); ?>,
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 205, 86, 0.6)',
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(54, 162, 235, 0.6)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
             }
-        });
+        }
+    }
+});
+
 
         // Prevent back navigation to cached page after logout
         window.history.pushState(null, "", window.location.href);

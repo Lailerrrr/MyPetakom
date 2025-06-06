@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Attendance already registered.";
                 } else {
                     // Record attendance
-                    $attendanceID = uniqid('att_');
+                    $attendanceID = 'att_' . bin2hex(random_bytes(8));
                     $checkInTime = date('H:i:s');
                     $checkInDate = date('Y-m-d');
 

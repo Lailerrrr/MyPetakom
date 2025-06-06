@@ -74,9 +74,7 @@ while ($row = $result->fetch_assoc()) {
                 <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
                 <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                 <li><a href="#" class="active">Attendance Tracking</a></li>
-                <li><a href="#">Merit Applications</a></li>
-                <li><a href="#">Reports & Analytics</a></li>
-                <li><a href="#">System Settings</a></li>
+                 <li><a href="#">Merit Applications</a></li>
                 <li>
                     <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
                         <button type="submit" name="logout" class="sidebar-button">Logout</button>
