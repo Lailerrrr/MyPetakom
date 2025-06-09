@@ -66,74 +66,7 @@ if (!$user) {
     <link rel="stylesheet" href="../Home/adminHomePage.css">
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-    <style>
-        .profile-content {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: 2rem auto;
-        }
-        .profile-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: 'Inter', sans-serif;
-        }
-        .form-actions {
-            grid-column: span 2;
-            text-align: right;
-            margin-top: 1rem;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-primary {
-            background-color: #4F46E5;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #4338CA;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .profile-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        .profile-header .role-label {
-            background-color: #E0E7FF;
-            color: #4F46E5;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-left: 1rem;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="sidebar">

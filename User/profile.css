@@ -13,7 +13,7 @@ body, html {
     min-height: 100vh;
 }
 
-/* Sidebar - consistent with adminHomePage */
+/* Sidebar */
 .sidebar {
     position: fixed;
     top: 0;
@@ -100,335 +100,117 @@ body, html {
     box-shadow: 0 0 12px #ff4081;
 }
 
-.logout-form {
-    margin: 0;
-}
-
-/* Main content container */
+/* Main content */
 .main-content {
-    margin-left: 280px; /* Adjust if sidebar width changes */
+    margin-left: 280px;
     padding: 40px 60px;
     background: #1a0a1a;
     overflow-y: auto;
     min-height: 100vh;
 }
 
-/* Main Content Header (for "Manage Profiles" and "Add New User" main titles) */
 .main-content h1 {
     font-weight: 700;
     font-size: 36px;
     color: #ff4081;
-    margin-bottom: 10px; /* Space between main title and sub-heading */
+    margin-bottom: 10px;
 }
 
-.main-content p.subtitle { /* For "Add New User" */
+.main-content p.subtitle {
     font-size: 18px;
     color: #fcb3d7;
-    margin-bottom: 30px; /* Space before the form container */
+    margin-bottom: 30px;
 }
 
-
-/* Form and List Container (replaces .profile-container for a more organized look) */
-.content-section {
-    background: rgba(255, 64, 129, 0.07); /* Slightly adjusted from 0.05 to 0.07 for consistency */
-    padding: 30px 40px;
-    border-radius: 16px;
-    box-shadow: 0 0 20px #ff4081;
-    margin-bottom: 30px; /* Space between sections if more are added */
-}
-
-/* Headings within content sections (e.g., "Add New User", "Student List") */
-.content-section h2 { /* Targeting the h2 inside content-section */
-    color: #ffa5d5;
-    margin-bottom: 20px;
-    text-align: left; /* Aligns with the admin home page section titles */
-    font-size: 24px; /* Make it a bit larger for section titles */
-    font-weight: 600;
-}
-
-
-/* Form Styling */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Increased gap for better spacing between form elements */
-    margin-bottom: 30px; /* Space between form and the next section/buttons */
-}
-
-.form-group { /* Wrapper for label and input for better control */
-    margin-bottom: 5px; /* Smaller margin-bottom for groups to use gap from form */
-}
-
-label {
-    font-weight: 600;
-    margin-bottom: 8px; /* More space between label and input */
-    color: #ffc8e6;
-    display: block; /* Ensures label takes its own line */
-}
-
-input, select {
-    padding: 12px 15px; /* Slightly more padding for better appearance */
+/* Profile Content Styling */
+.profile-content {
+    background-color: #1a0a1a;
     border-radius: 8px;
-    border: 1px solid #ff80bf; /* Keep a subtle border */
-    font-size: 1rem;
-    background-color: #2a132a;
-    color: white;
-    width: 100%; /* Ensure inputs take full width of their container */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); /* Inner shadow for depth */
-}
-
-input:focus, select:focus {
-    border-color: #ff4081;
-    outline: none;
-    box-shadow: 0 0 8px #ff4081, inset 0 1px 3px rgba(0,0,0,0.3); /* Glow and inner shadow on focus */
-}
-
-/* Custom dropdown arrow for consistency */
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffc8e6"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px center; /* Adjust position */
-    background-size: 20px; /* Slightly larger arrow */
-    padding-right: 40px; /* More space for the custom arrow */
-}
-
-/* Form action buttons (e.g., "Add User", "Student List") */
-.form-actions {
-    display: flex;
-    gap: 20px; /* Space between buttons */
-    margin-top: 20px; /* Space above buttons */
-    justify-content: flex-start; /* Align buttons to the left */
-}
-
-.form-actions button {
-    padding: 12px 25px; /* Generous padding */
-    border-radius: 10px; /* Slightly more rounded */
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    font-size: 1.05rem; /* Slightly larger font */
-    min-width: 150px; /* Ensure buttons have a minimum width */
-}
-
-.form-actions button.primary { /* For "Add User" */
-    background-color: #ff4081;
-    color: white;
-    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
-}
-
-.form-actions button.primary:hover {
-    background-color: #ff6699;
-    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
-}
-
-.form-actions button.secondary { /* For "Student List" */
-    background-color: #3a1a3a; /* Darker background, less prominent */
-    color: #ffc8e6;
-    border: 1px solid #ff80bf;
-}
-
-.form-actions button.secondary:hover {
-    background-color: #4a2a4a;
-    border-color: #ff4081;
-    color: #fff;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(255, 64, 129, 0.15);
+    max-width: 800px;
+    margin: 2rem auto;
 }
 
 
-/* User List Styling */
-.user-list {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 20px; /* Space above the list */
+.profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
 }
 
-.user-list li {
-    padding: 15px 20px; /* More padding */
-    border-bottom: 1px solid rgba(255, 153, 204, 0.2); /* Softer border */
-    background-color: rgba(255, 255, 255, 0.03);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffc8e6;
-    border-radius: 10px; /* Slightly more rounded */
-    margin-bottom: 12px; /* More space between list items */
-    transition: background-color 0.3s ease, transform 0.2s ease;
+.form-group {
+    margin-bottom: 1rem;
 }
 
-.user-list li:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    transform: translateY(-2px); /* Slight lift on hover */
-}
-
-.user-list .user-info span {
-    display: block; /* Ensures each piece of info is on its own line */
-    font-size: 0.95rem;
-    margin-bottom: 3px;
-}
-
-.user-list .user-info span:first-child {
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #fff; /* Make name more prominent */
-    font-size: 1.05rem;
+    color: #ffc8e6;
 }
 
-
-/* Action buttons (View, Edit, Delete) within list items */
-.action-buttons {
-    display: flex; /* Use flexbox for buttons within list item */
-    gap: 8px; /* Space between action buttons */
-}
-
-.view-btn, .edit-btn, .delete-btn {
-    padding: 8px 15px; /* More padding */
-    border: none;
-    border-radius: 6px; /* More rounded */
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 0.9rem; /* Slightly smaller font for action buttons */
-    color: white; /* Ensure text is white */
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.view-btn { background-color: #28a745; /* Darker green */ }
-.edit-btn { background-color: #007bff; /* Darker blue */ }
-.delete-btn { background-color: #dc3545; /* Darker red */ }
-
-.view-btn:hover, .edit-btn:hover, .delete-btn:hover {
-    transform: translateY(-1px); /* Slight lift on hover */
-    opacity: 0.9; /* Slight opacity change */
-}
-
-
-/* Success/Error Message */
-.message {
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 500;
-    border-left: 5px solid; /* Add a distinct border for messages */
-}
-
-.error {
-    background-color: rgba(255, 0, 0, 0.1);
-    color: #ff6b6b;
-    border-color: #ff6b6b;
-}
-
-.success {
-    background-color: rgba(0, 255, 0, 0.1);
-    color: #66bb6a;
-    border-color: #66bb6a;
-}
-
-/* Modals */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000; /* Ensure it's on top */
-    left: 0;
-    top: 0;
+.form-group input {
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6); /* Darker overlay */
-    display: flex; /* Use flex for centering */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-}
-
-.modal-content {
-    background-color: #1a0a1a; /* Dark background matching main content */
-    margin: auto; /* Remove margin and use flex centering */
-    padding: 30px; /* More padding */
-    border: 1px solid #ff4081; /* Pink border */
-    border-radius: 12px; /* Rounded corners */
-    width: 90%;
-    max-width: 500px; /* Max width for modal */
-    box-shadow: 0 5px 15px rgba(255, 64, 129, 0.5); /* Glowing shadow */
-    color: white; /* Ensure text is visible */
-}
-
-.modal-content h3 { /* Style for modal titles */
-    color: #ffa5d5;
-    margin-bottom: 20px;
-    font-size: 24px;
-    text-align: center;
-}
-
-.close {
-    color: #ffc8e6;
-    float: right;
-    font-size: 32px; /* Larger close icon */
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute; /* Position relative to modal-content if parent has relative */
-    top: 15px;
-    right: 20px;
-}
-
-.close:hover,
-.close:focus {
-    color: #ff4081; /* Highlight on hover */
-    text-decoration: none;
-}
-
-/* Modal form group adjustments for consistency */
-.modal-content .form-group label {
-    color: #ffc8e6;
-}
-
-.modal-content .form-group input,
-.modal-content .form-group select {
+    padding: 0.75rem;
     background-color: #2a132a;
-    border: 1px solid #ff80bf;
     color: white;
+    border: 1px solid #ff80bf;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
 }
 
-.modal-content .form-group input:focus,
-.modal-content .form-group select:focus {
+.form-group input:focus {
+    outline: none;
     border-color: #ff4081;
     box-shadow: 0 0 5px #ff4081;
 }
 
-.modal-actions { /* For buttons inside modal */
-    display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 10px;
-    margin-top: 20px;
+.form-actions {
+    grid-column: span 2;
+    text-align: right;
+    margin-top: 1rem;
 }
 
-.modal-actions button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 
-.modal-actions .confirm-btn {
-    background-color: #4CAF50; /* Green for confirm */
+.btn-primary {
+    background-color: #4F46E5;
     color: white;
 }
 
-.modal-actions .confirm-btn:hover {
-    background-color: #66bb6a;
+.btn-primary:hover {
+    background-color: #4338CA;
 }
 
-.modal-actions .cancel-btn {
-    background-color: #f44336; /* Red for cancel */
-    color: white;
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
-.modal-actions .cancel-btn:hover {
-    background-color: #ff6b6b;
+.profile-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
 }
 
+.profile-header .role-label {
+    background-color: #E0E7FF;
+    color: #4F46E5;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 1rem;
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -436,7 +218,6 @@ select {
         position: relative;
         width: 100%;
         height: auto;
-        padding-bottom: 0; /* Adjust if needed */
     }
 
     .main-content {
@@ -444,162 +225,11 @@ select {
         padding: 20px;
     }
 
-    .content-section {
-        padding: 20px;
+    .profile-form {
+        grid-template-columns: 1fr;
     }
 
     .form-actions {
-        flex-direction: column; /* Stack buttons vertically on small screens */
-        gap: 10px;
-    }
-
-    .form-actions button {
-        width: 100%; /* Full width for stacked buttons */
-        min-width: unset; /* Remove min-width constraint */
-    }
-
-    .modal-content {
-        width: 95%; /* Wider modal on smaller screens */
-        padding: 20px;
+        text-align: center;
     }
 }
-
-@media (max-width: 480px) {
-    .main-content {
-        padding: 15px;
-    }
-
-    .content-section {
-        padding: 15px;
-    }
-
-    .main-content h1 {
-        font-size: 28px;
-    }
-
-    .main-content p.subtitle {
-        font-size: 16px;
-    }
-
-    .content-section h2 {
-        font-size: 20px;
-    }
-
-    input, select, button {
-        padding: 10px 12px;
-        font-size: 0.95rem;
-    }
-
-    .user-list li {
-        flex-direction: column; /* Stack info and buttons */
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .action-buttons {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .view-btn, .edit-btn, .delete-btn {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
-}
-
-/* Ensure modals are hidden by default */
-#viewModal, #editModal {
-    display: none !important;
-}
-
-/* Only show when explicitly triggered */
-.modal.show {
-    display: block;
-}
-
-
-/* Coordinator Profile Section - Matching Style */
-    .user-profile-section {
-        margin-bottom: 25px;
-        background: white;
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .user-profile-section h3 {
-        color: #333;
-        font-size: 1.2rem;
-        margin-bottom: 15px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .profile-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px;
-        background: #f9f9f9;
-        border-radius: 6px;
-    }
-    
-    .profile-info {
-        flex-grow: 1;
-    }
-    
-    .profile-id {
-        font-weight: bold;
-        color: #444;
-        margin-bottom: 5px;
-    }
-    
-    .profile-name {
-        color: #666;
-    }
-    
-    .update-btn {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background-color 0.3s;
-    }
-    
-    .update-btn:hover {
-        background-color: #45a049;
-    }
-
-    
-    .user-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .user-item:last-child {
-        border-bottom: none;
-    }
-    
-    .user-actions {
-        display: flex;
-        gap: 8px;
-    }
-    
-    .action-btn {
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        border: none;
-        color: white;
-    }
-    
-    .view-btn { background-color: #2196F3; }
-    .edit-btn { background-color: #FFC107; color: #333; }
-    .delete-btn { background-color: #f44336; }
