@@ -1,4 +1,4 @@
-/* Reset and base styles */
+/* === Reset and Base Styles === */
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@ body, html {
     min-height: 100vh;
 }
 
-/* Sidebar */
+/* === Sidebar === */
 .sidebar {
     position: fixed;
     top: 0;
@@ -69,7 +69,6 @@ body, html {
     padding: 10px 15px;
     border-radius: 12px;
     display: block;
-    transition: background 0.3s, color 0.3s;
 }
 
 .menu ul li a:hover,
@@ -90,7 +89,6 @@ body, html {
     padding: 10px 15px;
     border-radius: 12px;
     cursor: pointer;
-    transition: background 0.3s, color 0.3s;
     font-family: 'Inter', sans-serif;
 }
 
@@ -100,7 +98,7 @@ body, html {
     box-shadow: 0 0 12px #ff4081;
 }
 
-/* Main content */
+/* === Main Content === */
 .main-content {
     margin-left: 280px;
     padding: 40px 60px;
@@ -122,7 +120,7 @@ body, html {
     margin-bottom: 30px;
 }
 
-/* Profile Content Styling */
+/* === Profile Section === */
 .profile-content {
     background-color: #1a0a1a;
     border-radius: 8px;
@@ -132,7 +130,7 @@ body, html {
     margin: 2rem auto;
 }
 
-
+/* === Form Styles === */
 .profile-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -150,7 +148,8 @@ body, html {
     color: #ffc8e6;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 0.75rem;
     background-color: #2a132a;
@@ -160,7 +159,8 @@ body, html {
     font-family: 'Inter', sans-serif;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     outline: none;
     border-color: #ff4081;
     box-shadow: 0 0 5px #ff4081;
@@ -190,29 +190,130 @@ body, html {
     background-color: #4338CA;
 }
 
-/* Profile Header */
-.profile-header {
+/* === Action Buttons (NO Hover Effect) === */
+.action-buttons {
     display: flex;
+    gap: 8px;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+}
+
+.view-btn {
+    background-color: #2196F3;
+}
+
+.edit-btn {
+    background-color: #FFC107;
+}
+
+.delete-btn {
+    background-color: #f44336;
+}
+
+.view-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover {
+    background-color: inherit;
+    color: white;
+    opacity: 1;
+    box-shadow: none;
+    filter: none;
+}
+
+/* === User List === */
+.user-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
 }
 
-.profile-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
+/* === Modal Styles (View + Edit) === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-.profile-header .role-label {
-    background-color: #E0E7FF;
-    color: #4F46E5;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-left: 1rem;
+.modal-content {
+    background-color: #1a0a1a;
+    color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ff4081;
+    width: 50%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255, 64, 129, 0.25);
+    font-family: 'Inter', sans-serif;
 }
 
-/* Responsive adjustments */
+.modal-content h3 {
+    color: #ffa5d5;
+    margin-bottom: 1rem;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    color: #ffc8e6;
+    margin-bottom: 10px;
+}
+
+.modal-content strong {
+    color: #ff80bf;
+}
+
+.close {
+    color: #ffc8e6;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+.close:hover {
+    color: #ff4081;
+}
+
+/* === Message Styles === */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.error {
+    background-color: #ffdddd;
+    color: #d8000c;
+}
+
+.success {
+    background-color: #ddffdd;
+    color: #4F8A10;
+}
+
+/* === Responsive === */
 @media (max-width: 768px) {
     .sidebar {
         position: relative;
@@ -233,3 +334,4 @@ body, html {
         text-align: center;
     }
 }
+

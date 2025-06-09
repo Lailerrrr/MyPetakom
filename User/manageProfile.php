@@ -127,108 +127,7 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
     <link rel="stylesheet" href="../User/profile.css">
     <link rel="stylesheet" href="../Home/adminHomePage.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-    <style>
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-            max-width: 600px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
-        }
-        
-        /* Action buttons */
-        .action-buttons {
-            display: inline-block;
-            margin-left: 10px;
-        }
-        
-        .view-btn, .edit-btn, .delete-btn {
-            padding: 5px 10px;
-            margin: 0 2px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            color: white;
-        }
-        
-        .view-btn { background-color: #4CAF50; }
-        .edit-btn { background-color: #2196F3; }
-        .delete-btn { background-color: #f44336; }
-        
-        /* Form styles */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .form-group input, 
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        /* Message styles */
-        .message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-        
-        .error {
-            background-color: #ffdddd;
-            color: #d8000c;
-        }
-        
-        .success {
-            background-color: #ddffdd;
-            color: #4F8A10;
-        }
-        
-        /* User list styles */
-        .user-list li {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            list-style-type: none;
-        }
-    </style>
+   
 </head>
 <body>
     <div class="profile-container">
@@ -358,7 +257,9 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
     </div>
 </div>
 
-<!-- User List -->
+
+
+
 <!-- User List -->
 <div class="student-list">
     <h3>📋 Student List</h3>
@@ -384,8 +285,8 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
             <li>
                 <?= $row['staffID'] ?> - <?= $row['staffName'] ?>
                 <div class="action-buttons">
-                    <button class="view-btn" onclick="viewUser ('advisor', '<?= $row['staffID'] ?>')">View</button
-                    <button class="edit-btn" onclick="editUser ('advisor', '<?= $row['staffID'] ?>', '<?= htmlspecialchars($row['staffName'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['staffEmail'], ENT_QUOTES) ?>')">Edit</button>
+                    <button class="view-btn" onclick="location.href='getUserDetails.php?type=advisor&id=<?= $row['staffID'] ?>'">View</button>
+                    <button class="edit-btn" onclick="location.href='editProfile.php?type=staff&id=<?= $row['staffID'] ?>'">Edit</button>
                     <a href="?delete=<?= $row['staffID'] ?>&type=advisor" class="delete-btn" onclick="return confirm('Are you sure you want to delete this advisor?')">Delete</a>
                 </div>
             </li>
@@ -460,6 +361,7 @@ $coordinator = $conn->query("SELECT * FROM staff WHERE staffID = '{$_SESSION['us
   
 function editUser(type, id, name, email) {
 }
+
 
 
 
