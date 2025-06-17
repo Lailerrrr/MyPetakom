@@ -10,9 +10,12 @@ body, html {
   background: #0a0a0a;
   color: white;
   display: flex;
-  min-height: 100vh;
+  flex-direction: row; /* Explicitly set */
+  min-height: 150vh;
   
 }
+
+
 
 .btn {
   background: #b14ac6;
@@ -217,13 +220,13 @@ body, html {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   body {
     flex-direction: column;
   }
   .sidebar {
     width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     overflow-x: auto;
     padding: 10px 20px;
   }
