@@ -12,7 +12,7 @@ $result = $conn->query($sql);
 
 while ($row = $result->fetch_assoc()) {
     $studentID = $row['studentID'];
-    $url = "http://172.20.10.6/MyPetakom/Merit/StudentMeritInfo.php?studentID=" . urlencode($studentID);
+    $url = "http://192.168.56.1/MyPetakom/Merit/StudentMeritInfo.php?studentID=" . urlencode($studentID);
 
     $fileName = $studentID . '.png';
     $filePath = $folder . $fileName; // physical path
