@@ -112,6 +112,7 @@ $meritStmt->close();
             <li><a href="/MyPetakom/Attendance/event_register.php">Event Attendance</a></li>
             <li><a href="/MyPetakom/Merit/MeritClaimStudent.php">Merit Claim</a></li>
             <li><a href="/MyPetakom/Merit/ScanQR.php">Scan QR</a></li>
+             <li><a href="../Module2/StudentEvent.php">Event Detail</a></li>
             <li><a href="/MyPetakom/ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>

@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once '../DB_mypetakom/db.php';
+require_once '../phpqrcode/qrlib.php'; // Adjust path as needed
+
 
 if (!isset($_SESSION['userID'])) {
     header("Location: ../ManageLogin/login.php");
@@ -40,6 +42,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param("ssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $eventLevel, $staffID);
+
+                $qrDir = "../Module2/qrcodes/";
+                if (!is_dir($qrDir)) {
+                    mkdir($qrDir, 0777, true);
+                }
+
+                $eventData = [
+                      "eventName" => $eventName,
+                      "eventDescription" => $eventDescription,
+                      "eventDate" => $eventDate,
+                      "venue" => $venue,
+                      "status" => $status,
+                      "eventLevel" => $eventLevel 
+                  ];
+
+                 // Encode JSON, then URL encode it for safe use in URL
+                $encodedData = urlencode(json_encode($eventData));
+
+                // Use your IP address or domain here
+                $qrContent = "http://localhost/MyPetakom/Module2/EventDetails.php?data=" . $encodedData;
+
+                $qrFilename = $qrDir . $eventID . ".png";
+                QRcode::png($qrContent, $qrFilename);
 
                 if ($stmt->execute()) {
                     $successMsg = "✅ Event registered successfully.";
