@@ -13,13 +13,13 @@ if ($con->connect_error) {
     die(json_encode(["success" => false, "message" => "DB connection failed"]));
 }
 
-// 🧠 Semester & Academic Year
+// 📘 Semester & Academic Year Calculation
 function getSemesterAndAcademicYear($studentId) {
-    $intakeYearSuffix = substr($studentId, 2, 2); // '22' from 'CB22001'
+    $intakeYearSuffix = substr($studentId, 2, 2);
     $intakeYear = 2000 + (int)$intakeYearSuffix;
 
     $now = new DateTime();
-    $start = new DateTime("$intakeYear-02-01"); // Assume intake Feb
+    $start = new DateTime("$intakeYear-02-01");
     $months = ($now->diff($start)->y * 12) + $now->diff($start)->m;
     $semester = min(floor($months / 6) + 1, 8);
 
@@ -34,7 +34,7 @@ function getSemesterAndAcademicYear($studentId) {
 
 [$semester, $academicYear] = getSemesterAndAcademicYear($studentID);
 
-// 🎯 Committee Merit
+// ✅ Committee Merit Calculation
 $committeeQuery = "
     SELECT SUM(m.score) AS totalCommitteeMerit
     FROM committee c
@@ -58,7 +58,7 @@ $row1 = $result1->fetch_assoc();
 $committeeMerit = (int)($row1['totalCommitteeMerit'] ?? 0);
 $stmt1->close();
 
-// 🧾 Participant Merit
+// ✅ Participant Merit Calculation
 $participantQuery = "
     SELECT SUM(m.score) AS totalParticipantMerit
     FROM registration r
@@ -78,31 +78,33 @@ $stmt2->close();
 
 $totalMerit = $committeeMerit + $participantMerit;
 
-// 🚨 Always create a NEW merit record per semester
-$meritID = uniqid("MRT");
-
-// Check if same semester+year exists — if yes, delete old record
-$check = $con->prepare("SELECT meritID FROM merit WHERE studentID = ? AND semester = ? AND academicYear = ?");
+// 📌 Check if record already exists
+$check = $con->prepare("SELECT meritID, totalMerit FROM merit WHERE studentID = ? AND semester = ? AND academicYear = ?");
 $check->bind_param("sis", $studentID, $semester, $academicYear);
 $check->execute();
 $res = $check->get_result();
 
 if ($res->num_rows > 0) {
-    $old = $res->fetch_assoc();
-    $delete = $con->prepare("DELETE FROM merit WHERE meritID = ?");
-    $delete->bind_param("s", $old['meritID']);
-    $delete->execute();
-    $delete->close();
+    // 🔄 Update if totalMerit is different
+    $existing = $res->fetch_assoc();
+    if ((int)$existing['totalMerit'] !== $totalMerit) {
+        $update = $con->prepare("UPDATE merit SET totalMerit = ? WHERE meritID = ?");
+        $update->bind_param("is", $totalMerit, $existing['meritID']);
+        $update->execute();
+        $update->close();
+    }
+} else {
+    // ➕ Insert new
+    $meritID = uniqid("MRT");
+    $insert = $con->prepare("INSERT INTO merit (meritID, totalMerit, eventID, studentID, semester, academicYear) VALUES (?, ?, NULL, ?, ?, ?)");
+    $insert->bind_param("sisis", $meritID, $totalMerit, $studentID, $semester, $academicYear);
+    $insert->execute();
+    $insert->close();
 }
-
-$insert = $con->prepare("INSERT INTO merit (meritID, totalMerit, eventID, studentID, semester, academicYear) VALUES (?, ?, NULL, ?, ?, ?)");
-$insert->bind_param("sisis", $meritID, $totalMerit, $studentID, $semester, $academicYear);
-$insert->execute();
-$insert->close();
 
 $con->close();
 
-// ✅ Final Response
+// ✅ Response
 echo json_encode([
     "success" => true,
     "studentID" => $studentID,
@@ -113,6 +115,7 @@ echo json_encode([
     "totalMerit" => $totalMerit
 ]);
 ?>
+
 
 
 
