@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 05:17 PM
+-- Generation Time: Jun 17, 2025 at 02:58 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,6 +51,16 @@ CREATE TABLE `attendanceslot` (
   `eventID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `attendanceslot`
+--
+
+INSERT INTO `attendanceslot` (`slotID`, `slotName`, `slotTime`, `qrCodePath`, `attendanceDate`, `eventID`) VALUES
+('S002', 'Hari Lahir Saya', '10:00:00', 'slot_S002.png', '2025-04-30', 'EVT6830d45'),
+('S004', 'Hari Gawai', '09:00:00', 'slot_S004.png', '2025-05-13', 'EVT6831d25'),
+('S005', 'Hari Gawai', '08:00:00', 'slot_S005.png', '2025-05-13', 'EVT6831d25'),
+('S006', 'Ceramah', '10:06:00', 'slot_S006.png', '2025-06-10', 'EVT6851584');
+
 -- --------------------------------------------------------
 
 --
@@ -70,7 +80,14 @@ CREATE TABLE `committee` (
 
 INSERT INTO `committee` (`committeeID`, `role`, `eventID`, `studentID`) VALUES
 ('CMT6831831', 'Chairperson', 'EVT6830d45', 'CA22074'),
-('CMT6831d29', 'Secretary', 'EVT6831d25', 'CA22074');
+('CMT6831d29', 'Secretary', 'EVT6831d25', 'CA22074'),
+('CMT6851585', 'Chairperson', 'EVT6851584', 'CA22057'),
+('CMT68515ff', 'Attendee', 'EVT68515fd', 'CA22057'),
+('CMT6851602', 'Chairperson', 'EVT68515fd', 'CA22074'),
+('CMT6851615', 'Chairperson', 'EVT6851584', 'CA24098'),
+('CMT6851623', 'Secretary', 'EVT6851623', 'CA22057'),
+('CMT6851639', 'Chairperson', 'EVT6851638', 'CA22057'),
+('CMT6851644', 'Chairperson', 'EVT6851638', 'CA22074');
 
 -- --------------------------------------------------------
 
@@ -79,7 +96,7 @@ INSERT INTO `committee` (`committeeID`, `role`, `eventID`, `studentID`) VALUES
 --
 
 CREATE TABLE `event` (
-  `eventName` varchar(100) NOT NULL,
+  `eventName` varchar(100) DEFAULT NULL,
   `eventID` varchar(10) NOT NULL,
   `eventDescription` varchar(100) NOT NULL,
   `eventDate` date NOT NULL,
@@ -98,7 +115,11 @@ CREATE TABLE `event` (
 
 INSERT INTO `event` (`eventName`, `eventID`, `eventDescription`, `eventDate`, `venue`, `approvalLetter`, `approvalDate`, `status`, `qrCode`, `eventLevel`, `staffID`) VALUES
 ('Hari Lahir Saya', 'EVT6830d45', 'dfdfsd', '2025-04-30', 'Dataran', 'uploads/CA22011_Assignment1__1_.pdf', '2025-05-20', 'Active', '', '', ''),
-('Hari Gawai', 'EVT6831d25', 'dfdsfdsfds', '2025-05-13', 'Bilik Guru', 'uploads/CA22011_Assignment__1_.pdf', '2025-05-22', 'Active', '', '', '');
+('Hari Gawai', 'EVT6831d25', 'dfdsfdsfds', '2025-05-13', 'Bilik Guru', 'uploads/CA22011_Assignment__1_.pdf', '2025-05-22', 'Active', '', '', ''),
+('Ceramah', 'EVT6851584', 'UAI', '2025-06-10', 'MASJID UMPSA', 'uploads/CA22050_DNS_Individual_Progress_Sheet.pdf', '2025-06-04', 'Active', '', 'UMPSA', 'staff02'),
+('PETAKOM MEETING', 'EVT68515fd', 'meeting', '2025-06-18', 'bilik petakom', 'uploads/CA22050_WEBE.pdf', '2025-06-11', 'Active', '', 'UMPSA', 'staff02'),
+('Sambutan Hari Raya', 'EVT6851623', 'Raya Fakulti', '2025-05-07', 'FK', 'uploads/CA22050_WEBE.pdf', '2025-05-01', 'Active', '', 'UMPSA', 'staff02'),
+('ICINO', 'EVT6851638', 'fgr', '2025-06-10', 'Dewan Pekan', 'uploads/CA22050_LAILATIE_DAV.pdf', '2025-06-10', 'Active', '', 'UMPSA', 'staff02');
 
 -- --------------------------------------------------------
 
@@ -110,8 +131,17 @@ CREATE TABLE `membership` (
   `membershipID` varchar(10) NOT NULL,
   `studentCard` varchar(100) NOT NULL,
   `status` varchar(20) NOT NULL,
-  `studentID` varchar(10) NOT NULL
+  `studentID` varchar(10) NOT NULL,
+  `apply_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `membership`
+--
+
+INSERT INTO `membership` (`membershipID`, `studentCard`, `status`, `studentID`, `apply_at`) VALUES
+('M68361146c', 'card_68361146ce8762.83616948.jpg', 'Pending', 'CA22057', '2025-05-28 03:23:50'),
+('M683611b3b', 'card_683611b3bb76a0.48429624.jpg', 'Pending', 'CA22074', '2025-05-28 03:25:39');
 
 -- --------------------------------------------------------
 
@@ -123,8 +153,8 @@ CREATE TABLE `merit` (
   `meritID` varchar(10) NOT NULL,
   `semester` varchar(10) NOT NULL,
   `academicYear` varchar(10) NOT NULL,
-  `totalMerit` int(255) NOT NULL,
-  `eventID` varchar(10) NOT NULL,
+  `totalMerit` int(11) NOT NULL DEFAULT 0,
+  `eventID` varchar(255) DEFAULT NULL,
   `studentID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -141,6 +171,13 @@ CREATE TABLE `meritapplication` (
   `eventID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `meritapplication`
+--
+
+INSERT INTO `meritapplication` (`meritApplicationID`, `appliedDate`, `approvalStatus`, `eventID`) VALUES
+('MA90', '2025-06-17', 'Approved', 'EVT6851584');
+
 -- --------------------------------------------------------
 
 --
@@ -151,11 +188,22 @@ CREATE TABLE `meritclaim` (
   `claimID` varchar(10) NOT NULL,
   `claimStatus` varchar(20) NOT NULL,
   `claimLetter` varchar(255) NOT NULL,
-  `approval_date` date NOT NULL,
-  `approval_by` varchar(50) NOT NULL,
+  `approval_date` datetime DEFAULT NULL,
+  `approval_by` varchar(50) DEFAULT NULL,
   `eventID` varchar(10) NOT NULL,
   `studentID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `meritclaim`
+--
+
+INSERT INTO `meritclaim` (`claimID`, `claimStatus`, `claimLetter`, `approval_date`, `approval_by`, `eventID`, `studentID`) VALUES
+('CLM6835b9a', 'Approved', 'bukti dns.pdf', '2025-06-17 14:22:27', 'staff02', 'EVT6830d45', 'CA22036'),
+('CLM6835b9e', 'Approved', 'CA22050_LAILATIE_DAV.pdf', '2025-06-17 14:22:28', 'staff02', 'EVT6831d25', 'CA22079'),
+('CLM6835e22', 'Approved', 'CA22050_LAB3NETMANAGEMENT.pdf', '2025-06-17 14:22:28', 'staff02', 'EV5678', 'CA22057'),
+('CLM6835e2d', 'Approved', 'CA22050_LAB3NETMANAGEMENT.pdf', '2025-06-17 14:22:29', 'staff02', 'EV5678', 'CA22057'),
+('CLM6851591', 'Approved', 'CA22050_WEBE.pdf', '2025-06-17 14:01:39', 'staff02', 'EVT6851584', 'CA22057');
 
 -- --------------------------------------------------------
 
@@ -172,6 +220,27 @@ CREATE TABLE `meritscore` (
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `meritscore`
+--
+
+INSERT INTO `meritscore` (`scoreID`, `event_level`, `commitRole`, `score`, `created_at`, `updated_at`) VALUES
+(1, 'International', 'Main Committee', 100, '2025-06-17', '2025-06-17'),
+(2, 'International', 'Committee', 70, '2025-06-17', '2025-06-17'),
+(3, 'International', 'Participant', 50, '2025-06-17', '2025-06-17'),
+(4, 'National', 'Main Committee', 80, '2025-06-17', '2025-06-17'),
+(5, 'National', 'Committee', 50, '2025-06-17', '2025-06-17'),
+(6, 'National', 'Participant', 40, '2025-06-17', '2025-06-17'),
+(7, 'State', 'Main Committee', 60, '2025-06-17', '2025-06-17'),
+(8, 'State', 'Committee', 40, '2025-06-17', '2025-06-17'),
+(9, 'State', 'Participant', 30, '2025-06-17', '2025-06-17'),
+(10, 'District', 'Main Committee', 40, '2025-06-17', '2025-06-17'),
+(11, 'District', 'Committee', 30, '2025-06-17', '2025-06-17'),
+(12, 'District', 'Participant', 15, '2025-06-17', '2025-06-17'),
+(13, 'UMPSA', 'Main Committee', 30, '2025-06-17', '2025-06-17'),
+(14, 'UMPSA', 'Committee', 20, '2025-06-17', '2025-06-17'),
+(15, 'UMPSA', 'Participant', 5, '2025-06-17', '2025-06-17');
+
 -- --------------------------------------------------------
 
 --
@@ -181,7 +250,7 @@ CREATE TABLE `meritscore` (
 CREATE TABLE `registration` (
   `registrationID` int(11) NOT NULL,
   `studentID` varchar(20) NOT NULL,
-  `eventID` int(11) NOT NULL,
+  `eventID` varchar(10) DEFAULT NULL,
   `registrationDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -228,9 +297,10 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`studentID`, `studentName`, `studentEmail`, `studentPassword`, `studentCard`, `verify`, `qr_code`) VALUES
-('CA22057', 'ANIS AYU SYAFIQAH BINTI NABZHAM', 'anisayu@gmail.com', '$2y$10$hWydwrNl7FI9b0oHeo4exOcTtZUrDOJeOejoOuLWySz1V1O.HN9vy', '', '', ''),
-('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', '$2y$10$jDXIPvaLPbUukmdvNS9fIu1RJWTlB5u3lBSSHuuO1CrG/yUm1LpEq', '', '', ''),
-('CA23044', 'ALIYA MAISARA BINTI ANUAR', 'aliyamaisara@gmail.com', '$2y$10$y8eG5dXfTd7NQvkvM5Yp..ASTRb8YlRckduuCJJf2BmkkG0MaOHV6', '', '', '');
+('CA22057', 'ANIS AYU SYAFIQAH BINTI NABZHAM', 'anisayu@gmail.com', '$2y$10$DuNYrF4XgJkkDFBSI27oq.dtdJQRVRVuZemgAPehkjG.edJ.dro1G', '', 'Not Applied', ''),
+('CA22074', 'ISMA IWANI BINTI ISMAIL', 'ismaiwani@gmail.com', '$2y$10$HZHsJrO6ASIqSwvfmtUsFuiU7Z1CqZ1T6dmJY/h04gGjfHtxBXInW', '', 'Not Applied', ''),
+('CA23098', 'IZZAH ALIA BINTI ALI', 'izzah@gmail.com', '$2y$10$03zOvTair/gv68CpQyHnj.mhc52B2NL8olJkiKRbL6idM6RBYjsGm', '', 'Not Applied', ''),
+('CA24098', 'ALIYA MAISARA BINTI ANUAR', 'aliyamaisara@gmail.com', '$2y$10$.Bk1KBYXgzjhbZ95qFQvyOE/i6VWaWgG.t8ARD8yZ0jlU/yyf.wZy', '', 'Not Applied', '');
 
 --
 -- Indexes for dumped tables
