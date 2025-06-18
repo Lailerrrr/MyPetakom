@@ -3,8 +3,9 @@ session_start();
 require_once '../DB_mypetakom/db.php';
 
 // Fetch events with QR code paths
-$sql = "SELECT eventName, eventID FROM event ORDER BY eventDate DESC";
+$sql = "SELECT eventName, eventID, qrCode FROM event ORDER BY eventDate DESC";
 $result = $conn->query($sql);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -123,22 +124,21 @@ box-shadow: 0 0 12px #ff69b4;
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $result->fetch_assoc()): 
+           <?php while ($row = $result->fetch_assoc()): 
                 $eventName = htmlspecialchars($row['eventName']);
-                $eventID = $row['eventID'];
-                $qrPath = "../Module2/qrcodes/" . $eventID . ".png";
+                    $qrPath = "../" . $row['qrCode']; // Prepend '../' to get correct relative path
                 ?>
-                <tr>
-                    <td><?= $eventName ?></td>
-                    <td>
-                        <?php if (file_exists($qrPath)): ?>
-                            <img src="<?= $qrPath ?>" alt="QR Code" class="qr">
-                        <?php else: ?>
-                            <span style="color: #f57c7c;">QR not found</span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
+                    <tr>
+                        <td><?= $eventName ?></td>
+                        <td>
+                            <?php if (!empty($row['qrCode']) && file_exists($qrPath)): ?>
+                                <img src="<?= $qrPath ?>" alt="QR Code" class="qr">
+                            <?php else: ?>
+                                <span style="color: #f57c7c;">QR not found</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
         </tbody>
     </table>
     <?php else: ?>

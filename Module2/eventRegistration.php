@@ -40,8 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (move_uploaded_file($_FILES["approvalLetter"]["tmp_name"], $targetFilePath)) {
                 $approvalLetter = $targetFilePath;
 
-                $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $eventLevel, $staffID);
+                
 
                 $qrDir = "../Module2/qrcodes/";
                 if (!is_dir($qrDir)) {
@@ -66,18 +65,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $qrFilename = $qrDir . $eventID . ".png";
                 QRcode::png($qrContent, $qrFilename);
                 $relativeQRPath = "Module2/qrcodes/" . $eventID . ".png";
-                $updateQR = $conn->prepare("UPDATE event SET qrCode = ? WHERE eventID = ?");
-                $updateQR->bind_param("ss", $relativeQRPath, $eventID);
-                $updateQR->execute();
-                $updateQR->close();
+               $stmt = $conn->prepare("INSERT INTO event (eventName, eventID, eventDescription, eventDate, venue, approvalLetter, approvalDate, status, eventLevel, staffID, qrCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+               $stmt->bind_param("sssssssssss", $eventName, $eventID, $eventDescription, $eventDate, $venue, $approvalLetter, $approvalDate, $status, $eventLevel, $staffID, $relativeQRPath);
+
 
                 if ($stmt->execute()) {
-    // Save QR path to DB
-    $relativeQRPath = "Module2/qrcodes/" . $eventID . ".png";
-    $updateQR = $conn->prepare("UPDATE event SET qrCode = ? WHERE eventID = ?");
-    $updateQR->bind_param("ss", $relativeQRPath, $eventID);
-    $updateQR->execute();
-    $updateQR->close();
+   
 
     $successMsg = "✅ Event registered successfully with QR code.";
 } else {
