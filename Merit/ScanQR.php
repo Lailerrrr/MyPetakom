@@ -50,6 +50,7 @@ $stmt->close();
             <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
             <li><a href="../Merit/MeritClaimStudent.php">Merit Claim</a></li>
             <li><a href="#" class="active">Scan QR</a></li>
+            <li><a href="../Module2/StudentEvent.php">Event Detail</a></li>
             <li><a href="../ManageLogin/Logout.php">Logout</a></li>
         </ul>
     </nav>

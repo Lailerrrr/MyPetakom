@@ -61,16 +61,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $encodedData = urlencode(json_encode($eventData));
 
                 // Use your IP address or domain here
-                $qrContent = "http://localhost/MyPetakom/Module2/EventDetails.php?data=" . $encodedData;
+                $qrContent = "http://172.20.10.6/MyPetakom/Module2/EventDetails.php?data=" . $encodedData;
 
                 $qrFilename = $qrDir . $eventID . ".png";
                 QRcode::png($qrContent, $qrFilename);
+                $relativeQRPath = "Module2/qrcodes/" . $eventID . ".png";
+                $updateQR = $conn->prepare("UPDATE event SET qrCode = ? WHERE eventID = ?");
+                $updateQR->bind_param("ss", $relativeQRPath, $eventID);
+                $updateQR->execute();
+                $updateQR->close();
 
                 if ($stmt->execute()) {
-                    $successMsg = "✅ Event registered successfully.";
-                } else {
-                    $errorMsg = "❌ Database error: " . $stmt->error;
-                }
+    // Save QR path to DB
+    $relativeQRPath = "Module2/qrcodes/" . $eventID . ".png";
+    $updateQR = $conn->prepare("UPDATE event SET qrCode = ? WHERE eventID = ?");
+    $updateQR->bind_param("ss", $relativeQRPath, $eventID);
+    $updateQR->execute();
+    $updateQR->close();
+
+    $successMsg = "✅ Event registered successfully with QR code.";
+} else {
+    $errorMsg = "❌ Database error: " . $stmt->error;
+}
+
+
+
+               
 
                 $stmt->close();
             } else {

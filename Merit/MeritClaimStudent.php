@@ -96,6 +96,7 @@ $result = $stmt->get_result();
                 <li><a href="../Attendance/event_register.php">Event Attendance</a></li>
                 <li><a href="../Merit/MeritClaimStudent.php" class = "active">Merit Claim</a></li>
                 <li><a href="../Merit/ScanQR.php">Scan QR</a></li>
+                <li><a href="../Module2/StudentEvent.php">Event Detail</a></li>
                 <li><a href="../ManageLogin/Logout.php">Logout</a></li>
             </ul>
     </nav>
