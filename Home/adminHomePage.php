@@ -112,8 +112,7 @@ while ($row = $result->fetch_assoc()) {
                 <li><a href="../membership/verifyMembership.php">Verify Membership</a></li>
                 <li><a href="../Module2/eventApproval.php">Event Management</a></li>
                 <li><a href="../Attendance/admin_track_attendance.php">Attendance Tracking</a></li>
-                <li><a href="#">Merit Applications</a></li>
-                 <li>
+                <li>
                     <form method="post" action="../ManageLogin/Logout.php" class="logout-form">
                         <button type="submit" name="logout" class="sidebar-button">Logout</button>
                     </form>
